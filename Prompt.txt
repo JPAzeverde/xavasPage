@@ -1,0 +1,92 @@
+Atue como um engenheiro de prompt e crie um prompt que será enviado no deepseek para a criação da seguinte pagina/sistema de pagina em html, css e js puro:
+
+Quero os códigos para uma pagina de organização pessoal que vai salvar tudo em planilhas no exel
+
+Quero as seguintes paginas
+
+Games
+	Quero visualizar o jogos cadastrados em "andamento"
+	Quero visualizar o jogos cadastrados em "terminados"
+	Quero visualizar o jogos cadastrados em "a jogar"
+	Quero visualizar o jogos cadastrados em "dropados"
+	Nessa pagina eu poderei cadastra os jogos com:
+		Nome
+		Imagem Capa
+		Ano de lançamento
+		Plataforma(PC, PS4, XBOX, NINTENDO 64...)
+		Emulador?(sim/não)(ou alguma chekbox, o que achar melhor)
+		Nota:(0 a 100)
+
+TV Shows
+	Quero visualizar os dados cadastrados em "andamento"
+	Quero visualizar os dados cadastrados em "terminados"
+	Quero visualizar os dados cadastrados em "para ver/ler"
+	Quero visualizar os dados cadastrados em "dropados"
+	Nessa pagina eu poderei cadastra os items com:
+		Nome:
+		Imagem de capa:
+		Ano lançamento:
+		Idioma:
+		Nota:
+		Tipo(select com:Filme, serie, anime, desenho, manga, livro, historia em quadrinho...)
+		
+Afazeres
+	Quero visualizar os dados cadastrados em "andamento"
+	Quero visualizar os dados cadastrados em "Finalizado"
+	Quero visualizar os dados cadastrados em "para fazer"
+	Quero visualizar os dados cadastrados em "Esquecido"
+	Quero a vizualização dos dados em um unico calendario
+	Nessa pagina eu poderei cadastra os items com:
+		Nome:
+		Tag(pessoal, frelance, unilavras...)
+		Data:
+		Horario(Não Obrigatorio):
+		Data Terminino(Não Obrigatorio):
+		Status:
+
+ProtocoloSemanal
+	Quero visualizar as atividades obrigatórias/esperadas do dia de hoje com um chekbox
+	Quero visualizar as atividades obrigatórias/esperadas da semana
+	Nessa pagina eu poderei cadastra os items com:
+		Nome:
+		Tag(pessoal, frelance, unilavras...)
+		Dia Semana:
+		Horario-inicio:
+		Horario-Termino(Não Obrigatorio):
+
+Consumação
+	Quero vizualizar os itens que esta preste a acabar(um chek-box com a opção de mudar o status para "acabou" que salva a data que acabou, e calcula um tempo para o próximo item que for cadastrado igual ,a adiciona a data de previsão de terminar)
+	Quero vizualizar os itens que esta em estoque
+	Quero vizualizar os itens que ja acabaram
+	Nessa pagina eu poderei selecionar um item cadastrado(nome, marca, quantidade) e mudar apenas a data de abertura ou cadastra os items com:
+		Nome:
+		Marca:
+		Quantidade(ml,g,unidade):
+		Data-abertura:
+		
+	
+Home
+	Quero um pouco de tudo aqui
+	Quero uma mensagem engraçada de bem vindo sempre
+	Quero uma pequena parte com a previsão do tempo(Lavras MG  e  Campos Gerais MG, e que tenha a opção de adicionar ou remover alguma cidade)
+	Os afazeres obrigatório do meu protocolo no dia de hoje
+	Uma calendário semanal com as Afazeres da semana os items abertos na semana e os items que tem previsão de acabar na semana
+	Os jogos que estão em andamento e aguardando a serem jogados
+	A series/filmes/livros... que estão em andamento e os aguardando a serem lidos/assistidos
+
+
+
+Quero tudo isso salvo no google planilhas
+A primeira parte da resposta quero como deveria ficar a organização da pasta e um css global para usar no site
+Quero que a resposta seja divida em etapas, enviar uma etapa, esperar minha confirmação para a próxima etapa e assim  por diante
+
+Quero um visual moderno, minimalista e muito dark
+
+Quero que os textos do site inteiro seja em inglês com uma pegada militar
+Porem o prompt quero em português
+Quero o passo a passo para a configuração de enviar os dados para o google planilhas
+
+
+Sabendo que meu nome é João Pedro, e meu nick é Xavas
+
+Quero o nome da pasta principal como xavasPage
