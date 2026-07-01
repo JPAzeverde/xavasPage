@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0; url=pages/login.html">
+  <title>xavasPage</title>
+</head>
+<body>
+  <script>
+    // Redireciona automaticamente para login ou home
+    if (localStorage.getItem('xavas_session')) {
+      window.location.href = 'pages/home.html';
+    } else {
+      window.location.href = 'pages/login.html';
+    }
+  </script>
+</body>
+</html>

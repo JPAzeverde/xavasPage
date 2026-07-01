@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>xavasPage — ARCHIVE (TV Shows)</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/tvshows.css">
+  <link rel="stylesheet" href="../css/home.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main -->
+    <main class="main-content">
+      <h2>&#x1F4FA; RECON FILES (TV/Shows/Books)</h2>
+      <div class="tabs" id="showsTabs"></div>
+      
+      <div style="margin-bottom: var(--spacing-lg);">
+        <button id="addShowBtn" class="btn btn-primary">&#x2795; NEW INTEL</button>
+      </div>
+
+      <div id="showsGrid" class="shows-grid"></div>
+    </main>
+  </div>
+
+  <!-- Add/Edit Modal -->
+  <div id="showModal" class="overlay hidden">
+    <div class="modal">
+      <div class="card-header">
+        <h3 id="modalTitle">NEW INTEL</h3>
+        <button id="closeModalBtn" class="btn btn-ghost btn-icon">&times;</button>
+      </div>
+      <form id="showForm">
+        <div>
+          <label for="showName">Title *</label>
+          <input type="text" id="showName" required>
+        </div>
+        <div>
+          <label for="showCover">Cover Image URL</label>
+          <input type="url" id="showCover" placeholder="https://...">
+        </div>
+        <div>
+          <label for="showYear">Release Year *</label>
+          <input type="number" id="showYear" min="1900" max="2099" value="2024" required>
+        </div>
+        <div>
+          <label for="showLanguage">Language</label>
+          <input type="text" id="showLanguage" placeholder="English, Japanese, etc.">
+        </div>
+        <div>
+          <label for="showType">Type *</label>
+          <select id="showType" required>
+            <option value="">-- Select --</option>
+            <option value="Film">Film</option>
+            <option value="Series">Series</option>
+            <option value="Anime">Anime</option>
+            <option value="Cartoon">Cartoon</option>
+            <option value="Manga">Manga</option>
+            <option value="Book">Book</option>
+            <option value="Comic">Comic</option>
+            <option value="Documentary">Documentary</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div>
+          <label for="showScore">Score</label>
+          <div class="range-container">
+            <input type="range" id="showScore" min="0" max="100" value="50">
+            <span id="showScoreValue" class="range-value">50</span>
+          </div>
+        </div>
+        <div>
+          <label for="showStatus">Status</label>
+          <select id="showStatus">
+            <option value="To Watch/Read">To Watch/Read</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+            <option value="Dropped">Dropped</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary w-full">SAVE INTEL</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/auth.js"></script>
+  <script src="../js/session.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/navigation.js"></script>
+  <script src="../js/tvshows.js"></script>
+  <script>
+    requireAuth();
+    renderSidebar('sidebar-container');
+  </script>
+  
+</body>
+</html>

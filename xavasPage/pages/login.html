@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>xavasPage — AUTHENTICATION REQUIRED</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/login.css">
+</head>
+<body class="login-page">
+
+  <div class="login-container">
+    <div class="login-header">
+      <div class="login-emblem">&#x1F6E1;</div> <!-- escudo Unicode -->
+      <h1 class="login-title">XAVASPAGE</h1>
+      <p class="login-subtitle">// RESTRICTED ACCESS //</p>
+      <p class="login-warning">AUTHORIZED PERSONNEL ONLY</p>
+    </div>
+
+    <form id="loginForm" class="login-form">
+      <div class="form-group">
+        <label for="username">Operador (Callsign)</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="user"
+          autocomplete="off"
+          required
+          autofocus
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password">Access Code</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="••••••••"
+          required
+        >
+      </div>
+
+      <div id="errorMsg" class="error-msg hidden">Authentication failed. Stand down.</div>
+
+      <button type="submit" class="btn btn-primary btn-lg w-full" id="loginBtn">
+        <span class="btn-text">GRANT ACCESS</span>
+        <span class="btn-loader hidden">VERIFYING…</span>
+      </button>
+    </form>
+
+    <div class="login-footer">
+      <span class="text-mono">xavasPage v1.0 — NIGHTWATCH</span>
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/session.js"></script>
+  <script>
+    (function() {
+      // Redirect if already logged in
+      if (isSessionValid()) {
+        window.location.href = 'home.html';
+        return;
+      }
+
+      const form = document.getElementById('loginForm');
+      const errorDiv = document.getElementById('errorMsg');
+      const loginBtn = document.getElementById('loginBtn');
+      const btnText = loginBtn.querySelector('.btn-text');
+      const btnLoader = loginBtn.querySelector('.btn-loader');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+
+        if (!username || !password) {
+          showError('Both fields are required.');
+          return;
+        }
+
+        // UI feedback
+        loginBtn.disabled = true;
+        btnText.classList.add('hidden');
+        btnLoader.classList.remove('hidden');
+        errorDiv.classList.add('hidden');
+
+        try {
+          const isValid = await authenticate(username, password);
+          if (isValid) {
+            loginSession();
+            window.location.href = 'home.html';
+          } else {
+            showError('Invalid credentials. Access denied.');
+          }
+        } catch (err) {
+          showError('System error. Try again later.');
+          console.error(err);
+        } finally {
+          loginBtn.disabled = false;
+          btnText.classList.remove('hidden');
+          btnLoader.classList.add('hidden');
+        }
+      });
+
+      function showError(msg) {
+        errorDiv.textContent = msg;
+        errorDiv.classList.remove('hidden');
+        // Shake animation
+        errorDiv.style.animation = 'none';
+        errorDiv.offsetHeight; // trigger reflow
+        errorDiv.style.animation = 'shake 0.4s ease';
+      }
+    })();
+  </script>
+</body>
+</html>

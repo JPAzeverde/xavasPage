@@ -1,0 +1,166 @@
+/* ============================================================
+   HOME / COMMAND CENTER
+   ============================================================ */
+
+
+
+/* Welcome banner */
+.welcome-banner {
+  background: var(--bg-tertiary);
+  border-left: 4px solid var(--accent-primary);
+  padding: var(--spacing-md) var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+.welcome-text {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+/* Weather widget */
+.weather-grid {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-lg);
+}
+.weather-card {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--bg-quaternary);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  min-width: 130px;
+  flex: 1;
+}
+.weather-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-xs);
+}
+.weather-city {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.btn-icon-small {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.7rem;
+  padding: 2px;
+}
+.weather-body {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+.weather-icon { font-size: 1.8rem; }
+.weather-temp { font-size: 1.4rem; font-weight: 600; color: var(--text-primary); }
+.weather-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: var(--spacing-xs); }
+.add-city { display: flex; align-items: center; justify-content: center; }
+
+/* Section headers */
+.section-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--bg-quaternary);
+  padding-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+/* Today’s missions */
+.mission-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+.mission-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+}
+.mission-time {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--accent-primary);
+  min-width: 50px;
+}
+
+/* Weekly calendar compact */
+.week-calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: var(--spacing-lg);
+}
+.day-column {
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-xs);
+  min-height: 120px;
+}
+.day-header {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--text-muted);
+  margin-bottom: var(--spacing-xs);
+}
+.day-item {
+  font-size: 0.65rem;
+  padding: 2px 4px;
+  margin-bottom: 2px;
+  border-radius: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.day-item.task { background: rgba(60, 179, 113, 0.15); color: var(--accent-primary); }
+.day-item.consumable-open { background: rgba(240, 173, 78, 0.15); color: var(--warning); }
+.day-item.consumable-end { background: rgba(220, 53, 69, 0.15); color: var(--danger); }
+
+/* Cards grid */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--spacing-md);
+}
+.media-card {
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--bg-quaternary);
+  transition: transform var(--transition-fast);
+}
+.media-card:hover { transform: translateY(-2px); }
+.media-cover {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  background: var(--bg-quaternary);
+}
+.media-info {
+  padding: var(--spacing-sm);
+}
+.media-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.media-meta {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  display: flex;
+  justify-content: space-between;
+}

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>xavasPage — COMMAND CENTER</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/home.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <!-- Sidebar container -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main content -->
+    <main class="main-content">
+      <!-- Welcome banner -->
+      <div class="welcome-banner">
+        <span class="welcome-text" id="welcomeMsg">Loading intel...</span>
+      </div>
+
+      <!-- Weather -->
+      <h3 class="section-title">&#x26C8; RECON REPORT (Weather)</h3>
+      <div id="weatherWidget" class="weather-grid"></div>
+
+      <!-- Today’s Protocol Missions -->
+      <h3 class="section-title">&#x1F4CB; TODAY’S MISSIONS</h3>
+      <ul id="todayMissions" class="mission-list"></ul>
+
+      <!-- Weekly Calendar (afazeres + consumables) -->
+      <h3 class="section-title">&#x1F4C5; WEEKLY BRIEFING</h3>
+      <div id="weekCalendar" class="week-calendar"></div>
+
+      <!-- Games in progress -->
+      <h3 class="section-title">&#x1F3AE; ACTIVE OPERATIONS (Games)</h3>
+      <div id="gamesGrid" class="cards-grid"></div>
+
+      <!-- TV/Shows in progress -->
+      <h3 class="section-title">&#x1F4FA; ONGOING RECON (TV/Shows)</h3>
+      <div id="showsGrid" class="cards-grid"></div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/auth.js"></script>
+  <script src="../js/session.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/weather.js"></script>
+  <script src="../js/mockData.js"></script>
+  <script src="../js/navigation.js"></script>
+  <script>
+    // ---------- SESSION CHECK ----------
+    requireAuth();
+
+    // ---------- SIDEBAR ----------
+    renderSidebar('sidebar-container');
+
+    // ---------- WELCOME MESSAGE ----------
+    const messages = [
+      "Good hunting, Xavas. Today we own the sky.",
+      "Welcome back, Commander. Coffee is in the mess hall, enemies are on the radar.",
+      "Standby, João Pedro. Your missions are loaded and ready.",
+      "Morning, operator. The perimeter is clear. Let's get to work.",
+      "Lock and load, Xavas. Another day, another op."
+    ];
+    document.getElementById('welcomeMsg').textContent = messages[Math.floor(Math.random() * messages.length)];
+
+    // ---------- WEATHER ----------
+    renderWeatherWidget('weatherWidget');
+
+    // ---------- TODAY’S MISSIONS ----------
+    function getTodayProtocol() {
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const today = days[new Date().getDay()];
+      return MOCK_PROTOCOL.filter(p => p.day === today);
+    }
+
+    function renderTodayMissions() {
+      const missions = getTodayProtocol();
+      const list = document.getElementById('todayMissions');
+      if (missions.length === 0) {
+        list.innerHTML = '<li class="empty-state"><p>No missions scheduled for today. Stand down.</p></li>';
+        return;
+      }
+      list.innerHTML = missions.map(m => `
+        <li class="mission-item">
+          <span class="mission-time">${m.start}${m.end ? ' - ' + m.end : ''}</span>
+          <span>${m.name} (${m.tag})</span>
+        </li>
+      `).join('');
+    }
+    renderTodayMissions();
+
+    // ---------- WEEKLY CALENDAR ----------
+    function renderWeekCalendar() {
+      const weekDays = getCurrentWeekDays(); // from utils
+      const container = document.getElementById('weekCalendar');
+      container.innerHTML = weekDays.map(day => {
+        const dayStr = dateToYMD(day);
+        const shortName = day.toLocaleDateString('en', { weekday: 'short' });
+        const dayNum = day.getDate();
+
+        // Tasks
+        const tasks = MOCK_TASKS.filter(t => t.date === dayStr);
+        // Consumables opening this week (just show if opened date matches)
+        const consumOpen = MOCK_CONSUMABLES.filter(c => c.opened === dayStr);
+        // Consumables ending this week (predicted end matches)
+        const consumEnd = MOCK_CONSUMABLES.filter(c => c.predictedEnd === dayStr);
+
+        let itemsHtml = '';
+        tasks.forEach(t => itemsHtml += `<div class="day-item task" title="${t.name}">${t.name}</div>`);
+        consumOpen.forEach(c => itemsHtml += `<div class="day-item consumable-open" title="Opened: ${c.name}">+ ${c.name}</div>`);
+        consumEnd.forEach(c => itemsHtml += `<div class="day-item consumable-end" title="Ends: ${c.name}">- ${c.name}</div>`);
+
+        return `
+          <div class="day-column">
+            <div class="day-header">${shortName} ${dayNum}</div>
+            ${itemsHtml || '<div style="font-size:0.6rem;color:var(--text-muted);text-align:center;">—</div>'}
+          </div>
+        `;
+      }).join('');
+    }
+    renderWeekCalendar();
+
+    // ---------- GAMES ----------
+    function renderGames() {
+      const inProgress = MOCK_GAMES.filter(g => g.status === 'In Progress');
+      const toPlay = MOCK_GAMES.filter(g => g.status === 'To Play').slice(0, 2); // limited
+      const combined = [...inProgress, ...toPlay];
+      const grid = document.getElementById('gamesGrid');
+      grid.innerHTML = combined.map(g => `
+        <div class="media-card">
+          <img src="${g.cover}" alt="${g.name}" class="media-cover" onerror="this.src='https://via.placeholder.com/200x120/1a1f22/3cb371?text=NO+IMAGE'">
+          <div class="media-info">
+            <div class="media-title">${g.name}</div>
+            <div class="media-meta">
+              <span>${g.platform}</span>
+              <span class="badge badge-accent">${g.status}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+    renderGames();
+
+    // ---------- SHOWS ----------
+    function renderShows() {
+      const inProgress = MOCK_SHOWS.filter(s => s.status === 'In Progress' || s.status === 'To Watch/Read');
+      const grid = document.getElementById('showsGrid');
+      grid.innerHTML = inProgress.map(s => `
+        <div class="media-card">
+          <img src="${s.cover}" alt="${s.name}" class="media-cover" onerror="this.src='https://via.placeholder.com/200x120/1a1f22/3cb371?text=NO+IMAGE'">
+          <div class="media-info">
+            <div class="media-title">${s.name}</div>
+            <div class="media-meta">
+              <span>${s.type}</span>
+              <span class="badge badge-info">${s.status}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+    renderShows();
+  </script>
+</body>
+</html>
