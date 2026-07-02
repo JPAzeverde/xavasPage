@@ -1,115 +1,25 @@
-/* ============================================================
-   LOGIN PAGE — TACTICAL AUTHENTICATION
-   ============================================================ */
-
-.login-page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background:
-    radial-gradient(ellipse at 20% 50%, rgba(30, 86, 49, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 20%, rgba(60, 179, 113, 0.08) 0%, transparent 50%),
-    var(--bg-primary);
+body, main {
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--sp-12);
+    align-items: center;
 }
 
-.login-container {
-  width: 100%;
-  max-width: 420px;
-  padding: var(--spacing-xl);
+#login-header {
+    border-bottom: solid 1px var(--border-light-grey);
+    margin-bottom: var(--sp-4);
+    padding: var(--sp-1) var(--sp-6);
+    text-align: center;
+    text-transform: uppercase;
 }
 
-.login-header {
-  text-align: center;
-  margin-bottom: var(--spacing-xl);
-}
-
-.login-emblem {
-  font-size: 3.5rem;
-  margin-bottom: var(--spacing-sm);
-  filter: drop-shadow(0 0 12px var(--accent-glow));
-}
-
-.login-title {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  letter-spacing: 0.12em;
-  color: var(--text-primary);
-  text-shadow: 0 0 20px var(--accent-glow);
-  margin-bottom: var(--spacing-xs);
-}
-
-.login-subtitle {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  color: var(--text-muted);
-  margin-bottom: var(--spacing-xs);
-}
-
-.login-warning {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.15em;
-  color: var(--danger);
-  margin-bottom: 0;
-}
-
-.login-form {
-  background: var(--bg-secondary);
-  border: 1px solid var(--bg-quaternary);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-lg);
-  box-shadow: var(--shadow-md);
-}
-
-.form-group {
-  margin-bottom: var(--spacing-md);
-}
-
-.error-msg {
-  background: rgba(220, 53, 69, 0.1);
-  border-left: 4px solid var(--danger);
-  padding: var(--spacing-sm) var(--spacing-md);
-  margin-bottom: var(--spacing-md);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--danger);
-  animation: shake 0.4s ease;
-}
-
-.btn-loader {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-.btn-loader::after {
-  content: '';
-  width: 14px;
-  height: 14px;
-  border: 2px solid transparent;
-  border-top-color: currentColor;
-  border-radius: 50%;
-  animation: spin 0.6s linear infinite;
-}
-
-.login-footer {
-  text-align: center;
-  margin-top: var(--spacing-lg);
-  color: var(--text-muted);
-  font-size: 0.65rem;
-  letter-spacing: 0.1em;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-6px); }
-  40% { transform: translateX(6px); }
-  60% { transform: translateX(-4px); }
-  80% { transform: translateX(4px); }
+.alert-error {
+    font-size: 0.7rem; /* Adicionado o 0 antes do ponto para manter o padrão */
+    color: var(--color-red-light);
+    border: solid 1px var(--color-red-light);
+    padding: var(--sp-1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
 }

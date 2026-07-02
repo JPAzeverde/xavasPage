@@ -1,18 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=pages/login.html">
-  <title>xavasPage</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HUB_xvs</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/index.css">
+    
+    <script src="js/guard.js"></script>
 </head>
-<body>
-  <script>
-    // Redireciona automaticamente para login ou home
-    if (localStorage.getItem('xavas_session')) {
-      window.location.href = 'pages/home.html';
-    } else {
-      window.location.href = 'pages/login.html';
-    }
-  </script>
+<body id="home-page" class="layout-dashboard">
+
+    <header id="main-header" class="header-container">
+        <div id="header-01">
+            <a href="" id="logo-header">
+                <h1 id="welcome-title" >HUB</h1>
+            </a>
+            <p id="welcome-subtitle">Online</p>
+        </div>
+
+        <button id="menu-header" class="btn-primary btn-menu">Menu</button>
+
+        <div id="header-02">
+            <a href="pages/protocol.html" class="link-header">Protocol</a>
+            <a href="pages/operations.html" class="link-header">Operations</a>
+            <a href="pages/enternaiment.html" class="link-header">Entertainment</a>
+            <a href="pages/logistc.html" class="link-header">Logistic</a>
+            <a href="pages/training.html" class="link-header" style="display: none;">Training</a>
+            <button id="btn-logout" class="btn-danger">Exit</button>
+        </div>
+    </header>
+
+    <script src="js/header.js"></script>
+
+    <script>
+        document.getElementById('btn-logout').addEventListener('click', function() {
+            sessionStorage.removeItem('portal_pessoal_auth');
+            // Como estamos na raiz (index.html), apontamos para dentro de 'pages'
+            window.location.replace('pages/login.html');
+        });
+    </script>
+
 </body>
 </html>

@@ -1,0 +1,337 @@
+@import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&display=swap');
+
+/* =========================================
+   1. CSS VARIABLES (Tema & Design System)
+========================================= */
+:root {
+  /* Backgrounds */
+  --bg-black:        #000000;
+  --bg-dark-grey:    #09090b;
+  --bg-grey:         #18181b;
+  --bg-white:        #ffffff;
+  --bg-off-white:    #fafafa;
+  --bg-light-grey:   #f4f4f5;
+
+  /* Textos */
+  --txt-white:       #ffffff;
+  --txt-light-grey:  #a1a1aa;
+  --txt-grey:        #52525b;
+  --txt-black:       #000000;
+  --txt-dark-grey:   #3f3f46;
+  --txt-medium-grey: #71717a;
+
+  /* Cores de Destaque & Status */
+  --color-green-light: #4ade80;
+  --color-green-dark:  #166534;
+  --color-green-neon:  #09ff00;
+  --color-red-light:   #f87171; 
+  --color-red-dark:    #7f1d1d;
+  --color-yellow:      #fbbf24;
+  --color-blue-light:  #a9d0ff;
+  --color-blue:        #60a5fa;
+
+  /* Bordas Claras e Escuras */
+  --border-black:        #09090b;
+  --border-darker-grey:  #18181b;
+  --border-dark-grey:    #27272a;
+  --border-grey:         #3f3f46;
+  --border-light-grey:   #d4d4d8;
+  --border-medium-grey:  #a1a1aa;
+  --border-off-white:    #e4e4e7;
+  --border-white:        #f4f4f5;
+
+  /* Espaçamentos (Abreviação "sp" para ficar curto) */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+
+  /* Border Radius (Abreviação "rad") */
+  --rad-sm: 2px;
+  --rad-md: 4px;
+  --rad-lg: 6px;
+
+  /* Sombras (Abreviação "sh") */
+  --sh-sm: 0 1px 2px rgba(0,0,0,0.6);
+  --sh-md: 0 4px 12px rgba(0,0,0,0.5);
+  --sh-lg: 0 8px 24px rgba(0,0,0,0.7);
+
+  /* Transições (Abreviação "tr") */
+  --tr-fast: 120ms ease;
+  --tr-base: 200ms ease;
+}
+
+
+/* =========================================
+   2. RESET & BASE
+========================================= */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Cascadia Code", monospace, sans-serif;
+  transition: var(--tr-base); /* Usando a variável de transição global */
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-black);
+  color: var(--txt-white);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* =========================================
+   3. TIPOGRAFIA
+========================================= */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--txt-white);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+h1 { font-size: 1.75rem; }
+h2 { font-size: 1.5rem;  }
+h3 { font-size: 1.25rem; }
+h4 { font-size: 1.1rem;  }
+
+p, li {
+  color: var(--txt-light-grey);
+  font-size: 1rem;
+  margin-bottom: var(--sp-4);
+}
+
+ul, ol {
+  padding-left: var(--sp-6);
+}
+
+a {
+  color: var(--txt-white);
+  text-decoration: none;
+}
+
+a:hover { 
+  color: var(--color-green-neon);
+}
+
+
+/* =========================================
+   4. FORMULÁRIOS, INPUTS & BOTÕES
+========================================= */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  align-items: center;
+}
+
+input {
+  background-color: var(--bg-grey);
+  color: var(--txt-white);
+  border: none;
+  padding: var(--sp-1);
+  width: 100%;
+  font-size: 1rem;
+}
+
+button {
+  border: none;
+  border-radius: var(--rad-sm);
+  padding: var(--sp-1) var(--sp-3);
+  font-weight: 800;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer; /* Adicionado para melhor usabilidade */
+}
+
+/* Tipos de Botões */
+.btn-primary, .btn-ghost {
+  background-color: var(--bg-black);
+  color: var(--txt-white);
+  border: solid 1px var(--border-medium-grey);
+}
+
+.btn-primary:hover {
+  background-color: var(--bg-white);
+  color: var(--txt-black);
+  border: solid 1px var(--border-grey);
+}
+
+.btn-danger {
+  background-color: var(--bg-black);
+  color: var(--txt-white);
+  border: solid 1px var(--border-medium-grey);
+}
+
+.btn-danger:hover {
+  background-color: var(--color-red-dark);
+  color: var(--color-red-light);
+  border: solid 1px var(--color-red-light);
+}
+.btn-menu{
+  display: none;
+}
+#menu-header {
+  font-size: 12px;
+  
+}
+
+
+/* =========================================
+   5. COMPONENTES & LAYOUT
+========================================= */
+.card {
+  background: var(--bg-dark-grey);
+  border: solid 1px var(--border-light-grey);
+  padding: var(--sp-3);
+  border-radius: var(--rad-md);
+}
+
+.ready {
+  color: var(--color-green-dark);
+}
+
+/* Header Principal */
+header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-3); /* Removida duplicação var(--space-3) var(--space-3) */
+  border-bottom: solid 1px var(--border-dark-grey);
+  position: relative;
+}
+
+#header-01 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start; /* 'start' corrigido para 'flex-start' (padrão flexbox) */
+  text-align: center;
+}
+
+#header-01 a, #header-01 p {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+#header-01 p {
+  margin-top: -6px;
+}
+
+#header-02 {
+  display: flex;
+  gap: 1rem;
+}
+
+#welcome-title {
+  font-size: 2rem;
+}
+
+#welcome-title:hover {
+  color: var(--color-green-neon);
+}
+
+#welcome-subtitle {
+  font-size: 0.875rem; /* 14px convertido para rem */
+  color: var(--color-green-dark);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.link-header {
+  position: relative;
+  padding-bottom: var(--sp-1); /* Espaço entre o texto e a linha */
+}
+
+/* 2. Cria a linha na parte inferior (invisível por padrão) */
+.link-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px; /* Espessura da borda */
+  background-color: var(--color-green-neon);
+  
+  /* Esconde a linha reduzindo a escala dela para 0 */
+  transform: scaleX(0); 
+  
+  /* Controla de onde a animação começa/termina */
+  transform-origin: right; 
+  transition: transform var(--tr-base);
+}
+
+/* 3. Aciona a animação quando o mouse passa por cima */
+.link-header:hover::after {
+  transform: scaleX(1); /* Expande a linha para 100% do tamanho */
+  transform-origin: left; 
+}
+
+/* Media Query para telas menores (Tablets e Celulares) */
+@media (max-width: 768px) {
+  /* 1. Mostra o botão do menu */
+  .btn-menu {
+    display: flex;
+    font-size: 1.2rem;
+    padding: var(--sp-2) var(--sp-3);
+  }
+
+  /* 2. Transforma o menu em um card flutuante moderno */
+  #header-02 {
+    position: absolute;
+    top: 100%;
+    right: var(--sp-3);
+    left: var(--sp-3);
+    background-color: var(--bg-dark-grey);
+    border: 1px solid var(--border-dark-grey);
+    border-radius: var(--rad-md);
+    padding: var(--sp-5);
+    flex-direction: column;
+    box-shadow: var(--sh-lg);
+    z-index: 100;
+    width: 50%;
+    left: 50%;
+    
+    /* Configuração da animação (escondido por padrão) */
+    opacity: 0;
+    transform: translateY(-15px);
+    pointer-events: none; /* Impede cliques quando invisível */
+    transition: opacity var(--tr-base), transform var(--tr-base);
+  }
+
+  /* 3. Classe ativada via JavaScript quando o menu abre */
+  header.menu-open #header-02 {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto; /* Reativa os cliques */
+  }
+
+  /* 4. Ajustes finos para os links e botões no mobile */
+  #header-02 a, #header-02 button {
+    width: 100%;
+    text-align: center;
+    padding: var(--sp-2) 0;
+  }
+  #btn-logout{
+    max-width: 100px;
+    margin: auto;
+  }
+}
