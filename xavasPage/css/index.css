@@ -1,4 +1,7 @@
-#section-useful-links {
+/* =========================================
+   1. BARRA DE LINKS RÁPIDOS
+========================================= */
+#quick-links-bar {
     display: flex;
     flex-direction: row; 
     justify-content: center;
@@ -9,50 +12,173 @@
     border-bottom: solid 1px var(--border-dark-grey);
 }
 
-.useful-links {
+.quick-link-item {
     display: inline-block;
 }
 
-
-.useful-links svg {
+.quick-link-item svg {
     width: 20px;  
     height: auto;
-    fill: #FFFFFF; /* Começa branco puro */
+    fill: #FFFFFF;
     transition: fill 0.3s ease-in-out; 
     display: block;
 }
 
-
-.useful-links.icon-whatsapp:hover svg {
+.quick-link-item.brand-whatsapp:hover svg {
     fill: #25D366; 
 }
 
-.useful-links.icon-youtube:hover svg {
+.quick-link-item.brand-youtube:hover svg {
     fill: #FF0000;
 }
 
-.useful-links.icon-crunchyroll:hover svg {
+.quick-link-item.brand-crunchyroll:hover svg {
     fill: #FE6313;
 }
 
-#update-home{
+
+/* =========================================
+   2. CONTEÚDO PRINCIPAL DO DASHBOARD
+========================================= */
+#dashboard-main-content {
     display: grid;
-    grid-template-columns: 5fr 2fr;
+    grid-template-columns: 3fr 1fr;
+    gap: 2rem;
+    padding: var(--sp-10) 0;
+    border-bottom: solid 2px var(--border-grey);
 }
 
-#news-container{
+
+/* =========================================
+   3. FEED DE NOTÍCIAS
+========================================= */
+#news-feed-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    justify-content: center;
+    align-items: start;
+}
+
+.news-card {
+    background-color: var(--bg-grey);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: var(--sp-3);
+    border: solid 2px var(--border-light-grey);
+    border-radius: var(--rad-sm);
+    height: 100%;
+}
+
+.news-card-title {
+    font-size: 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: var(--txt-white);
+    height: 60px;
+}
+
+.news-card-summary {
+    line-height: .9;
+    color: var(--txt-light-grey);
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.news-card:hover {
+    margin-top: -4px;
+    margin-bottom: 4px;
+    background-color: var(--bg-black);
+}
+
+.news-card:hover .news-card-title {
+    color: var(--txt-light-grey);
+}
+
+.news-card:hover .news-card-summary {
+    color: var(--txt-medium-grey);
+}
+
+
+/* =========================================
+   4. WIDGET DE CLIMA
+========================================= */
+#weather-widget {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#weather-cards-wrapper {
     display: flex;
     flex-direction: row;
-    
+    gap: var(--sp-2);
 }
-#weather-update{
-  display: flex;
 
+.weather-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1; /* Valor mantido do original, embora recomendável usar px/rem */
+    border: solid 1.5px var(--border-light-grey);
+    border-radius: var(--rad-sm);
+    padding: var(--sp-2);
+    width: 100%;
 }
-#weather-container{
-  display: flex;
+
+.weather-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: var(--sp-3);
 }
-.error-msg{
-  display: none;
-  color: var(--color-red-light);
+
+.weather-city-name {
+    font-size: 16px;
+}
+
+.weather-temp-current, 
+.weather-temp-range, 
+.weather-sun-time {
+    font-size: 13px;
+    line-height: 1.2;
+}
+
+/* Previsões Futuras */
+.weather-forecast-list {
+    display: flex;
+    gap: 4px;
+}
+
+.weather-forecast-day {
+    border: solid 1.1px var(--border-grey);
+    border-radius: var(--rad-sm);
+    padding: 2px 3px;
+}
+
+.forecast-day-name {
+    font-weight: 600;
+    line-height: 1;
+}
+
+.forecast-time, 
+.forecast-temp-range, 
+.forecast-condition {
+    font-size: 12px;
+    line-height: 1;
+}
+
+/* Formulário de Adicionar Cidade */
+.weather-add-city-form {
+    display: flex;
+    gap: 1rem;
+}
+
+.weather-error-msg {
+    display: none;
+    color: var(--color-red-light);
 }

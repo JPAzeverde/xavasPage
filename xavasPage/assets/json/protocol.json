@@ -1,0 +1,34 @@
+{
+  "1": [
+    {
+      "hourId": 5,
+      "type": "daily-protocol",
+      "name": "Wake UP",
+      "time": "05:30",
+      "tag": "Health"
+    },
+    {
+      "hourId": 5,
+      "type": "daily-task",
+      "name": "Break Fast",
+      "time": "05:40 - 06:00",
+      "tag": "Nutrition"
+    },
+    {
+      "hourId": 6,
+      "type": "daily-task",
+      "name": "Work Out",
+      "time": "06:00 - 07:30",
+      "tag": "Health"
+    }
+  ],
+  "2": [
+    {
+      "hourId": 8,
+      "type": "daily-task",
+      "name": "Team Meeting",
+      "time": "08:00 - 09:00",
+      "tag": "Work"
+    }
+  ]
+}

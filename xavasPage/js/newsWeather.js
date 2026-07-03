@@ -1,25 +1,51 @@
-// --- 1. NOTÍCIAS ---
+// --- 1. NOTÍCIAS (Google Apps Script) ---
 async function fetchNews() {
-    const newsContainer = document.getElementById('news-container');
+    const newsContainer = document.getElementById("news-feed-container");
+
+    const url = "https://script.google.com/macros/s/AKfycbwpgPVvrAmgBxvGLKd4sAi3uQHPmNee_kQN-WhS648utoLqyRzuQotfraYvdUAP-7rxGA/exec/exec";
+
     try {
-        const response = await fetch('https://servicodados.ibge.gov.br/api/v3/noticias/?qtd=2');
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error(`Erro HTTP ${response.status}`);
+        }
+
         const data = await response.json();
-        newsContainer.innerHTML = ''; 
-        data.items.forEach(news => {
+
+        console.log(data);
+
+        newsContainer.innerHTML = "";
+
+        // Se o Apps Script retornar diretamente a resposta da FreeNewsApi
+        const articles = data.data || data.articles || [];
+
+        if (articles.length === 0) {
+            newsContainer.innerHTML = "<p>Nenhuma notícia encontrada.</p>";
+            return;
+        }
+
+        articles.forEach(news => {
             newsContainer.innerHTML += `
-                <div class="news-item">   
-                    <a href="${news.link}" target="_blank"><h2>${news.titulo}</h2></a>
-                    <a href="${news.link}" target="_blank"><p class="news-summary">${news.introducao}</p></a>
-                </div>
+                <a href="${news.url}" class="news-card" target="_blank">
+                    <h2 class="news-card-title">${news.title}</h2>
+                    <p class="news-card-summary">
+                        ${news.description || news.subtitle || ""}
+                    </p>
+                </a>
             `;
         });
+
     } catch (error) {
-        newsContainer.innerHTML = '<p>Erro ao carregar as notícias.</p>';
+        console.error("Erro ao carregar notícias:", error);
+        newsContainer.innerHTML =
+            "<p>Erro ao carregar as notícias.</p>";
     }
 }
 
 // --- 2. GERENCIAMENTO DE CIDADES E CLIMA ---
-const defaultCity = { id: Date.now(), name: "Lavras, MG", lat: -21.2466, lon: -45.0022 };
+// A cidade padrão agora não tem a sigla do estado
+const defaultCity = { id: Date.now(), name: "Lavras", lat: -21.2466, lon: -45.0022 };
 
 function getSavedCities() {
     const saved = localStorage.getItem('myWeatherCities');
@@ -27,14 +53,14 @@ function getSavedCities() {
 }
 
 function getWeatherCondition(code) {
-    if (code <= 3) return "Parcialmente Nublado";
-    if (code > 3 && code < 80) return "Chuvoso";
-    if (code >= 80) return "Tempestade";
-    return "Céu Limpo / Ensolarado";
+    if (code <= 3) return "Cloudy";
+    if (code > 3 && code < 80) return "Rainy";
+    if (code >= 80) return "Stormy"; // ou "Thunderstorm" se preferir
+    return "Clear";
 }
 
 async function renderWeather() {
-    const weatherContainer = document.getElementById('weather-container');
+    const weatherContainer = document.getElementById('weather-cards-wrapper'); // Atualizado
     const cities = getSavedCities();
     weatherContainer.innerHTML = ''; 
 
@@ -44,53 +70,83 @@ async function renderWeather() {
     }
 
     for (const city of cities) {
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current_weather=true&daily=temperature_2m_max,temperature_2m_min&timezone=auto`;
+        // Adicionado "weathercode" na lista de parâmetros "daily" na URL
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,weathercode&timezone=auto`;
         
         try {
             const response = await fetch(url);
             const data = await response.json();
             
+            // --- DADOS DE HOJE (Índice 0) ---
             const currentTemp = Math.round(data.current_weather.temperature);
             const minTemp = Math.round(data.daily.temperature_2m_min[0]);
             const maxTemp = Math.round(data.daily.temperature_2m_max[0]);
             const condition = getWeatherCondition(data.current_weather.weathercode);
 
+            const sunrise = data.daily.sunrise[0].split("T")[1];
+            const sunset = data.daily.sunset[0].split("T")[1];
+
+            // --- DADOS DE AMANHÃ (Índice 1) ---
+            const minTemp1 = Math.round(data.daily.temperature_2m_min[1]);
+            const maxTemp1 = Math.round(data.daily.temperature_2m_max[1]);
+            const sunrise1 = data.daily.sunrise[1].split("T")[1];
+            const sunset1 = data.daily.sunset[1].split("T")[1];
+            const condition1 = getWeatherCondition(data.daily.weathercode[1]);
+            
+            // Formatando o nome do dia para o formato local (ex: "quinta-feira")
+            const date1 = new Date(data.daily.time[1] + 'T00:00:00');
+            const dayName1 = date1.toLocaleDateString('en-US', { weekday: 'short' });
+
+            // --- DADOS DE DEPOIS DE AMANHÃ (Índice 2) ---
+            const minTemp2 = Math.round(data.daily.temperature_2m_min[2]);
+            const maxTemp2 = Math.round(data.daily.temperature_2m_max[2]);
+            const sunrise2 = data.daily.sunrise[2].split("T")[1];
+            const sunset2 = data.daily.sunset[2].split("T")[1];
+            const condition2 = getWeatherCondition(data.daily.weathercode[2]);
+
+            const date2 = new Date(data.daily.time[2] + 'T00:00:00');
+            const dayName2 = date2.toLocaleDateString('en-US', { weekday: 'short' });
+
+            // Variáveis inseridas no HTML com as NOVAS CLASSES
             weatherContainer.innerHTML += `
-                <div class="weather-item">
-                    <div class="weather-item-header">
-                        <h3>${city.name}</h3>
+                <div class="weather-card">
+                    <div class="weather-card-header">
+                        <h3 class="weather-city-name">${city.name}</h3>
                         <button class="btn-danger-mini" onclick="removeCity(${city.id})">X</button>
+                    </div>
+                    <p class="weather-temp-current">${currentTemp}°C - ${condition}</p>
+                    <p class="weather-sun-time">${sunrise} | ${sunset}</p>
+                    <p class="weather-temp-range">${minTemp}°C | ${maxTemp}°C</p>
+                    <div class="weather-forecast-list">
+                    
+                        <div class="weather-forecast-day">
+                            <p class="forecast-day-name">${dayName1.toUpperCase()}</p>
+                            <p class="forecast-time">${sunrise1}|${sunset1}</p>
+                            <p class="forecast-temp-range">${minTemp1}~${maxTemp1}°C</p>
+                            <p class="forecast-condition">${condition1}</p>
+                        </div>
+                        
+                        <div class="weather-forecast-day">
+                            <p class="forecast-day-name">${dayName2.toUpperCase()}</p>
+                            <p class="forecast-time">${sunrise2}|${sunset2}</p>
+                            <p class="forecast-temp-range">${minTemp2}~${maxTemp2}°C</p>
+                            <p class="forecast-condition">${condition2}</p>
+                        </div>
                         
                     </div>
-                    
-                    
-                    <p><strong>Atual:</strong> ${currentTemp} °C</p>
-                    <p><strong>Mín:</strong> ${minTemp} °C | <strong>Máx:</strong> ${maxTemp} °C</p>
-                    <p><strong>Previsão:</strong> ${condition}</p>
                 </div>
             `;
         } catch (error) {
-            console.error(`Erro ao carregar o clima de ${city.name}`);
+            console.error(`Erro ao carregar o clima de ${city.name}`, error);
         }
     }
 }
 
-// --- 3. ADICIONAR E REMOVER CIDADES (Com Sigla do Estado) ---
-
-// Dicionário para traduzir o Estado para Sigla
-const estadosBR = {
-    "Acre": "AC", "Alagoas": "AL", "Amapá": "AP", "Amazonas": "AM",
-    "Bahia": "BA", "Ceará": "CE", "Distrito Federal": "DF", "Espírito Santo": "ES",
-    "Goiás": "GO", "Maranhão": "MA", "Mato Grosso": "MT", "Mato Grosso do Sul": "MS",
-    "Minas Gerais": "MG", "Pará": "PA", "Paraíba": "PB", "Paraná": "PR",
-    "Pernambuco": "PE", "Piauí": "PI", "Rio de Janeiro": "RJ", "Rio Grande do Norte": "RN",
-    "Rio Grande do Sul": "RS", "Rondônia": "RO", "Roraima": "RR", "Santa Catarina": "SC",
-    "São Paulo": "SP", "Sergipe": "SE", "Tocantins": "TO"
-};
+// --- 3. ADICIONAR E REMOVER CIDADES ---
 
 async function addNewCity() {
-    const input = document.getElementById('city-input');
-    const errorMsg = document.getElementById('city-error');
+    const input = document.getElementById('weather-city-input'); // Atualizado
+    const errorMsg = document.getElementById('weather-city-error'); // Atualizado
     const cityName = input.value.trim();
 
     if (!cityName) return;
@@ -103,22 +159,19 @@ async function addNewCity() {
 
         if (data.results && data.results.length > 0) {
             const loc = data.results[0];
-            let ufOuPais = loc.admin1; // Por padrão, pega a região/estado
+            
+            // Verificação no console
+            console.log("Dados brutos vindos da API:", loc);
 
-            // Verifica se é no Brasil e se o estado está na nossa lista de siglas
-            if (loc.country_code === "BR" && estadosBR[loc.admin1]) {
-                ufOuPais = estadosBR[loc.admin1];
-            } else if (loc.country_code !== "BR") {
-                // Se não for no Brasil, usa a sigla do país (ex: PT, US, GB)
-                ufOuPais = loc.country_code;
-            }
-
+            // Salva apenas o loc.name (sem estado ou país)
             const newCity = {
                 id: Date.now(), 
-                name: `${loc.name}${ufOuPais ? ', ' + ufOuPais : ''}`, 
+                name: loc.name, 
                 lat: loc.latitude,
                 lon: loc.longitude
             };
+
+            console.log("Objeto final salvo:", newCity);
 
             const cities = getSavedCities();
             cities.push(newCity);
@@ -143,11 +196,13 @@ function removeCity(idToRemove) {
 }
 
 // --- 4. INICIALIZAÇÃO ---
-fetchNews();
+
+if (typeof fetchNews === "function") fetchNews(); 
+
 renderWeather();
 
 // Permite adicionar cidade apertando a tecla "Enter"
-document.getElementById('city-input').addEventListener('keypress', function (e) {
+document.getElementById('weather-city-input').addEventListener('keypress', function (e) { // Atualizado
     if (e.key === 'Enter') {
         addNewCity();
     }
