@@ -74,7 +74,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Cascadia Code", monospace, sans-serif;
   transition: var(--tr-base); /* Usando a variável de transição global */
 }
 
@@ -87,11 +86,13 @@ html {
 
 body {
   background-color: var(--bg-black);
-  color: var(--txt-white);
+  color: var(--txt-dark-grey);
   line-height: 1.6;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  font-family: "Cascadia Code", monospace, sans-serif;
+
 }
 
 
@@ -103,6 +104,8 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   line-height: 1;
   letter-spacing: -0.03em;
+  
+
 }
 
 h1 { font-size: 1.75rem; }
@@ -177,7 +180,7 @@ button {
 .btn-danger {
   background-color: var(--bg-black);
   color: var(--txt-white);
-  border: solid 1px var(--border-medium-grey);
+  border: solid 1px #00000000;
 }
 
 .btn-danger:hover {
@@ -185,9 +188,27 @@ button {
   color: var(--color-red-light);
   border: solid 1px var(--color-red-light);
 }
+
+.btn-danger-mini {
+  background-color: var(--bg-black);
+  color: var(--txt-white);
+  border: solid 1px #00000000;
+  border-radius: 100000px;
+  font-size: 10px;
+  padding: var(--sp-1);
+  line-height: 1;
+}
+
+.btn-danger-mini:hover {
+  background-color: var(--color-red-dark);
+  color: var(--color-red-light);
+  border: solid 1px var(--color-red-light);
+}
+
 .btn-menu{
   display: none;
 }
+
 #menu-header {
   font-size: 12px;
   
@@ -334,4 +355,11 @@ header {
     max-width: 100px;
     margin: auto;
   }
+}
+
+.container{
+  max-width: 1400px;
+  padding: var(--sp-12) 0;
+  margin-right: auto;
+  margin-left: auto;
 }

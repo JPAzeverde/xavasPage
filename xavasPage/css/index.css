@@ -1,0 +1,58 @@
+#section-useful-links {
+    display: flex;
+    flex-direction: row; 
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    padding: var(--sp-2) 0;
+    background-color: var(--bg-dark-grey);
+    border-bottom: solid 1px var(--border-dark-grey);
+}
+
+.useful-links {
+    display: inline-block;
+}
+
+
+.useful-links svg {
+    width: 20px;  
+    height: auto;
+    fill: #FFFFFF; /* Começa branco puro */
+    transition: fill 0.3s ease-in-out; 
+    display: block;
+}
+
+
+.useful-links.icon-whatsapp:hover svg {
+    fill: #25D366; 
+}
+
+.useful-links.icon-youtube:hover svg {
+    fill: #FF0000;
+}
+
+.useful-links.icon-crunchyroll:hover svg {
+    fill: #FE6313;
+}
+
+#update-home{
+    display: grid;
+    grid-template-columns: 5fr 2fr;
+}
+
+#news-container{
+    display: flex;
+    flex-direction: row;
+    
+}
+#weather-update{
+  display: flex;
+
+}
+#weather-container{
+  display: flex;
+}
+.error-msg{
+  display: none;
+  color: var(--color-red-light);
+}
