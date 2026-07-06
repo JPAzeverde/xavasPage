@@ -22,4 +22,12 @@ body, main {
     justify-content: center;
     align-items: center;
     line-height: 1;
+    transition: .3s;
+}
+
+#error-message {
+    display: none;
+    transform: scale(0);
+    transition: transform 0.2s ease-out;
+    transform-origin: center;
 }

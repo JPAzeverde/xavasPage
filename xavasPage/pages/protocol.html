@@ -6,6 +6,8 @@
     <title>Protocol_xsv</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/protocol.css">
+    
+    <script src="../js/guard.js"></script>
 </head>
 <body>
     <header id="main-header" class="header-container">
@@ -25,10 +27,69 @@
             <button id="btn-logout" class="btn-danger">Exit</button>
         </div>
     </header>
+    <section id="hero-protocol" class="container">
+        <h1>Week Protocol</h1>
+        <button class="btn-primary" id="btn-01-addTask">+ task</button>
+    </section>
+    <section id="form-task-section">
+        <form id="taskForm">
+            <div class="form-group-task">
+                <input type="text" id="task" name="task" placeholder="Task..." required>
+            </div>
+            <div class="form-group-task">
+                <input class="input-time" type="time" id="startTime" name="startTime" required>
+                <label for="startTime">StartTime</label>
+            </div>
+            <div class="form-group-task">
+                <input class="input-time" type="time" id="endTime" name="endTime">
+                <label for="endTime">EndTime</label>
+            </div>
+            <div class="form-group-task">
+                <select id="tag" class="form-tag-select" name="tag" required>
+                    <option value="">Select a tag</option>
+                    <option value="work">Work</option>
+                    <option value="training">Training</option>
+                    <option value="study">Study</option>
+                    <option value="health">Health</option>
+                    <option value="nutrition">Nutrition</option>
+                    <option value="personal">Personal</option>
+                    <option value="hygiene">Hygiene</option>
+                    <option value="cleaning">Cleaning</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group-task">
+                <select id="day" class="form-day-select" name="day" required>
+                    <option value="">Select a day</option>
+                    <option value="monday">MONDAY</option>
+                    <option value="tuesday">TUESDAY</option>
+                    <option value="wednesday">WEEDNESDAY</option>
+                    <option value="thuesday">THUESDAY</option>
+                    <option value="friday">FRIDAY</option>
+                    <option value="saturday">SATURDAR</option>
+                    <option value="sunday">SUNDAY</option>
+                </select>
+            </div>
+            <!-- O seletor de dia será injetado via JS, mas podemos deixar o espaço -->
+            <button type="submit" class="btn-primary" id="btn-02-addTask">Salvar Tarefa</button>
+        </form>
+    </section>
 
     <section id="section-week-procotol" class="container">
+        <div class="week">
+            
+            
+        </div>
     </section>
+
+    
     
     <script src="../js/protocol.js"></script>
+    <script>
+        document.getElementById('btn-logout').addEventListener('click', function() {
+            sessionStorage.removeItem('portal_pessoal_auth');
+            window.location.replace('login.html');
+        });
+    </script>
 </body>
 </html>

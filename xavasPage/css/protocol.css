@@ -1,65 +1,179 @@
-/* =========================================
-   3. HORÁRIOS (SLOTS)
-========================================= */
-
-.hour {
-  height: 120px; /* Altura fixa para sincronizar os pixels com os minutos (1h = 120px) */
-  position: relative; /* Transforma o bloco em âncora para os cards absolutos */
-  display: block; /* Remove o flexbox para não forçar empilhamento */
-  padding: 0; 
-  border-bottom: 1px solid var(--border-dark-grey);
+#hero-protocol{
+height: 10vh;
+width: 100%;
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
 }
-
-.hour:last-child {
-  border-bottom: none;
-}
-
-.time-day {
-  color: var(--txt-medium-grey);
-  font-size: 0.75rem;
-  position: absolute;
-  top: var(--sp-2);
-  right: var(--sp-2);
-  z-index: 1; /* Fica atrás das tarefas, se sobreporem */
-  user-select: none;
-}
-
-/* =========================================
-   4. CARDS DE TAREFAS (ABSOLUTOS)
-========================================= */
-
-.daily-protocol, .daily-task {
-  position: absolute; /* Permite que o JS posicione exatamente no minuto certo */
-  z-index: 5; /* Garante que fique acima das linhas da grade */
-  overflow: hidden; /* Evita que o texto vaze se a tarefa for muito curta */
-  
-  /* Ajuste de espaçamento interno para o modo compacto */
-  padding: var(--sp-1) var(--sp-2);
-  border-radius: var(--rad-sm);
+#form-task-section{
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  max-width: 200px;
+  margin: 0 auto;
+  padding: var(--sp-2) 0;
+}
+#taskForm, .form-group-task{
+  width: 100%;
+  transition: 1s;
+}
+.form-group-task{
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  gap: 1rem;
+ 
+}
+.form-group-task label{
+  font-size: 14px;
+  text-align: start;
+  color: #fff;
+  width: 50%;
+}
+.form-group-task input{
+  font-size: 14px;
+  text-align: start;
+  color: #fff;
   
-  border-left: 3px solid transparent;
-  cursor: default;
-  transition: transform var(--tr-fast), box-shadow var(--tr-fast);
+}
+.input-time{
+  width: 80px;
+}
+.title-tag{
+  color: var(--txt-white);
+  text-transform: uppercase;
+}
+.form-tag-select, .form-day-select{
+  background-color: #000;
+  color: var(--txt-grey);
+  padding: var(--sp-1) var(--sp-2);
+  width: 100%;
+  border-radius: var(--rad-sm);
+  
 }
 
-.daily-protocol:hover, .daily-task:hover {
-  transform: translateX(2px);
-  box-shadow: var(--sh-md); /* Aumentei a sombra no hover para dar destaque */
-  z-index: 10; /* Traz o card para frente ao passar o mouse */
+#section-week-procotol{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-bottom: var(--sp-12);
+}
+.week{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  border: solid 1px var(--border-medium-grey);
+  
+}
+.hour-colum{
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  border-right: solid 1px var(--border-grey);
+}
+.day{
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-grey);
+  border-right: solid 1px var(--border-medium-grey);
+  line-height: 1;
+  width: 100%;
+}
+.day:last-of-type{
+  border: none;
+}
+.day-title{
+  font-size: 18px;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--txt-light-grey);
+  border-bottom: solid 1px #fff;
+  width: 100%;
+  padding: var(--sp-1) 0;
+  font-weight: 400;
+  width: 100%;
+}
+.hour{
+  height: 20px;
+  width: 100%;
+  border-bottom: dotted 1px var(--border-grey);
+  padding: var(--sp-1);
+}
+.hour-txt{
+  font-size: 10px;
 }
 
-.daily-protocol {
-  background-color: rgba(96, 165, 250, 0.9); /* Adicionado opacidade para não sumir o fundo */
-  border-left-color: var(--color-blue);
-  backdrop-filter: blur(4px); /* Efeito moderno para cards sobrepostos */
+
+.task{
+  background-color: var(--bg-black);
+  padding: var(--sp-1);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: .25rem;
+  gap: .4rem;
+  border: solid 1px #000;
+  border-radius: var(--rad-sm);
+  height: max-content;
+}
+.task:hover{
+  border: solid 1px var(--border-grey);
+}
+.header-task{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.title-task{
+  font-size: 16px;
+  color: var(--txt-white);
 }
 
-.daily-task {
-  background-color: rgba(39, 39, 42, 0.95); /* Baseado no bg-dark-grey com leve transparência */
-  border: 1px solid var(--border-grey);
-  border-left: 3px solid var(--color-green-light);
-  backdrop-filter: blur(4px);
+.tag{
+  font-size: 10px;
+  padding: var(--sp-1) var(--sp-2);
+  width:fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  font-weight: 900;
+  line-height: .9;
+  text-align: center;
+  border-radius: var(--rad-sm);
+}
+.health{
+  background-color: var(--color-green-dark);
+  color: var(--txt-white);
+}
+.nutrition{
+  background-color: var(--color-yellow);
+  color: var(--txt-white);
+}
+.study{
+  background-color: var(--color-blue-light);
+  color: var(--txt-white);
+}
+.training{
+  background-color: var(--color-red-light);
+  color: var(--txt-white);
+}
+.work{
+  background-color: var(--color-blue);
+  color: var(--txt-white);
+}
+.bottom-task{
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: .5rem;
+
+}
+
+.start-time ,.end-time{
+  font-size: 12px;
+}
+ .mid-time {
+  font-size: 10px;
 }

@@ -22,14 +22,28 @@ loginForm.addEventListener('submit', async function(event) {
     const hashDoUsuarioDigitado = await criarHash(usernameDigitado);
     const hashDaSenhaDigitada = await criarHash(passwordDigitada);
     
-    if (hashDoUsuarioDigitado === VALID_USER_HASH && hashDaSenhaDigitada === VALID_PASS_HASH) {
-        errorMessage.style.display = 'none';
+    if (hashDoUsuarioDigitado === VALID_USER_HASH &&
+        hashDaSenhaDigitada === VALID_PASS_HASH) {
+
+        errorMessage.style.transform = 'scale(0)';
+
+        setTimeout(() => {
+            errorMessage.style.display = 'none';
+        }, 200);
+
         sessionStorage.setItem('portal_pessoal_auth', 'auth_token_8x99_valid');
         window.location.href = '../index.html';
-        
+
     } else {
+
         inputPass.value = '';
+
         errorMessage.style.display = 'block';
+
+        // Força o navegador a aplicar o display antes da animação
+        requestAnimationFrame(() => {
+            errorMessage.style.transform = 'scale(1)';
+        });
     }
 });
 

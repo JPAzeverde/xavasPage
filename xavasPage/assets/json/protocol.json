@@ -1,34 +1,319 @@
-{
-  "1": [
-    {
-      "hourId": 5,
-      "type": "daily-protocol",
-      "name": "Wake UP",
-      "time": "05:30",
-      "tag": "Health"
-    },
-    {
-      "hourId": 5,
-      "type": "daily-task",
-      "name": "Break Fast",
-      "time": "05:40 - 06:00",
-      "tag": "Nutrition"
-    },
-    {
-      "hourId": 6,
-      "type": "daily-task",
-      "name": "Work Out",
-      "time": "06:00 - 07:30",
-      "tag": "Health"
-    }
-  ],
-  "2": [
-    {
-      "hourId": 8,
-      "type": "daily-task",
-      "name": "Team Meeting",
-      "time": "08:00 - 09:00",
-      "tag": "Work"
-    }
-  ]
-}
+[
+  {
+    "id": "1",
+    "task": "WakeUp",
+    "startTime": "08:00",
+    "endTime": "",
+    "tag": "health",
+    "day": "monday"
+  },
+  {
+    "id": "2",
+    "task": "WakeUp",
+    "startTime": "08:00",
+    "endTime": "",
+    "tag": "health",
+    "day": "tuesday"
+  },
+  {
+    "id": "3",
+    "task": "WakeUp",
+    "startTime": "08:00",
+    "endTime": "",
+    "tag": "health",
+    "day": "wednesday"
+  },
+
+  {
+    "id": "4",
+    "task": "WakeUp",
+    "startTime": "08:00",
+    "endTime": "",
+    "tag": "health",
+    "day": "thursday"
+  },
+
+  {
+    "id": "5",
+    "task": "WakeUp",
+    "startTime": "08:00",
+    "endTime": "",
+    "tag": "health",
+    "day": "friday"
+  },
+
+  {
+    "id": "6",
+    "task": "WakeUp",
+    "startTime": "09:00",
+    "endTime": "",
+    "tag": "health",
+    "day": "saturday"
+  },
+
+  {
+    "id": "7",
+    "task": "WakeUp",
+    "startTime": "09:00",
+    "endTime": "",
+    "tag": "health",
+    "day": "sunday"
+  },
+  {
+    "id": "8",
+    "task": "BreakFast",
+    "startTime": "08:10",
+    "endTime": "09:00",
+    "tag": "nutrition",
+    "day": "monday"
+  },
+  {
+    "id": "9",
+    "task": "BreakFast",
+    "startTime": "08:10",
+    "endTime": "09:00",
+    "tag": "nutrition",
+    "day": "tuesday"
+  },
+  {
+    "id": "10",
+    "task": "BreakFast",
+    "startTime": "08:10",
+    "endTime": "09:00",
+    "tag": "nutrition",
+    "day": "wednesday"
+  },
+  {
+    "id": "11",
+    "task": "BreakFast",
+    "startTime": "08:10",
+    "endTime": "09:00",
+    "tag": "nutrition",
+    "day": "thursday"
+  },
+  {
+    "id": "12",
+    "task": "BreakFast",
+    "startTime": "08:10",
+    "endTime": "09:00",
+    "tag": "nutrition",
+    "day": "friday"
+  },
+  {
+    "id": "13",
+    "task": "BreakFast",
+    "startTime": "09:10",
+    "endTime": "10:00",
+    "tag": "nutrition",
+    "day": "saturday"
+  },
+  {
+    "id": "14",
+    "task": "BreakFast",
+    "startTime": "09:10",
+    "endTime": "10:00",
+    "tag": "nutrition",
+    "day": "sunday"
+  },
+  {
+    "id": "15",
+    "task": "WorkOut",
+    "startTime": "9:00",
+    "endTime": "11:00",
+    "tag": "health",
+    "day": "monday"
+  },
+  {
+    "id": "16",
+    "task": "WorkOut",
+    "startTime": "9:00",
+    "endTime": "11:00",
+    "tag": "training",
+    "day": "tuesday"
+  },
+  {
+    "id": "17",
+    "task": "WorkOut",
+    "startTime": "9:00",
+    "endTime": "11:00",
+    "tag": "training",
+    "day": "wednesday"
+  },
+  {
+    "id": "18",
+    "task": "WorkOut",
+    "startTime": "9:00",
+    "endTime": "11:00",
+    "tag": "training",
+    "day": "friday"
+  },
+  {
+    "id": "19",
+    "task": "WorkOut",
+    "startTime": "10:00",
+    "endTime": "11:30",
+    "tag": "training",
+    "day": "saturday"
+  },
+  {
+    "id": "20",
+    "task": "Lunch",
+    "startTime": "11:30",
+    "endTime": "12:30",
+    "tag": "nutrition",
+    "day": "monday"
+  },
+  {
+    "id": "21",
+    "task": "Lunch",
+    "startTime": "11:30",
+    "endTime": "12:30",
+    "tag": "nutrition",
+    "day": "tuesday"
+  },
+  {
+    "id": "22",
+    "task": "Lunch",
+    "startTime": "11:30",
+    "endTime": "12:30",
+    "tag": "nutrition",
+    "day": "wednesday"
+  },
+  {
+    "id": "23",
+    "task": "Lunch",
+    "startTime": "11:30",
+    "endTime": "12:30",
+    "tag": "nutrition",
+    "day": ""
+  },
+  {
+    "id": "24",
+    "task": "Lunch",
+    "startTime": "11:30",
+    "endTime": "12:30",
+    "tag": "nutrition",
+    "day": "thursday"
+  },
+  {
+    "id": "25",
+    "task": "Lunch",
+    "startTime": "11:30",
+    "endTime": "12:30",
+    "tag": "nutrition",
+    "day": "friday"
+  },
+  {
+    "id": "26",
+    "task": "Lunch",
+    "startTime": "11:30",
+    "endTime": "12:30",
+    "tag": "nutrition",
+    "day": "saturday"
+  },
+  {
+    "id": "28",
+    "task": "Lunch",
+    "startTime": "11:30",
+    "endTime": "13:00",
+    "tag": "nutrition",
+    "day": "sunday"
+  },
+  {
+    "id": "29",
+    "task": "Snak",
+    "startTime": "16:00",
+    "endTime": "17:00",
+    "tag": "nutrition",
+    "day": "monday"
+  },
+  {
+    "id": "30",
+    "task": "Snak",
+    "startTime": "16:00",
+    "endTime": "17:00",
+    "tag": "nutrition",
+    "day": "tuesday"
+  },
+  {
+    "id": "31",
+    "task": "Snak",
+    "startTime": "16:00",
+    "endTime": "17:00",
+    "tag": "nutrition",
+    "day": "wednesday"
+  },
+  {
+    "id": "32",
+    "task": "Snak",
+    "startTime": "16:00",
+    "endTime": "17:00",
+    "tag": "nutrition",
+    "day": "thursday"
+  },
+  {
+    "id": "33",
+    "task": "Snak",
+    "startTime": "15:00",
+    "endTime": "16:00",
+    "tag": "nutrition",
+    "day": "friday"
+  },
+  {
+    "id": "34",
+    "task": "Snak",
+    "startTime": "15:00",
+    "endTime": "16:00",
+    "tag": "nutrition",
+    "day": "saturday"
+  },
+  {
+    "id": "35",
+    "task": "Snak",
+    "startTime": "16:00",
+    "endTime": "17:00",
+    "tag": "nutrition",
+    "day": "sunday"
+  },
+  {
+    "id": "36",
+    "task": "Sleep",
+    "startTime": "23:59",
+    "endTime": "",
+    "tag": "health",
+    "day": "monday"
+  },
+  {
+    "id": "37",
+    "task": "Sleep",
+    "startTime": "23:59",
+    "endTime": "",
+    "tag": "health",
+    "day": "tuesday"
+  },
+  {
+    "id": "38",
+    "task": "Sleep",
+    "startTime": "23:59",
+    "endTime": "",
+    "tag": "health",
+    "day": "wednesday"
+  },
+  {
+    "id": "39",
+    "task": "Sleep",
+    "startTime": "23:59",
+    "endTime": "",
+    "tag": "health",
+    "day": "thursday"
+  },
+  {
+    "id": "40",
+    "task": "Sleep",
+    "startTime": "23:59",
+    "endTime": "",
+    "tag": "health",
+    "day": "sunday"
+  }
+
+]

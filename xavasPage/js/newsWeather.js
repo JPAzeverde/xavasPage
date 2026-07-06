@@ -1,46 +1,84 @@
-// --- 1. NOTÍCIAS (Google Apps Script) ---
 async function fetchNews() {
     const newsContainer = document.getElementById("news-feed-container");
+    const CACHE_KEY = 'cachedNews';
+    const CACHE_DURATION = 30 * 60 * 1000;
 
-    const url = "https://script.google.com/macros/s/AKfycbwpgPVvrAmgBxvGLKd4sAi3uQHPmNee_kQN-WhS648utoLqyRzuQotfraYvdUAP-7rxGA/exec/exec";
-
-    try {
-        const response = await fetch(url);
-
-        if (!response.ok) {
-            throw new Error(`Erro HTTP ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        console.log(data);
-
-        newsContainer.innerHTML = "";
-
-        // Se o Apps Script retornar diretamente a resposta da FreeNewsApi
-        const articles = data.data || data.articles || [];
-
-        if (articles.length === 0) {
-            newsContainer.innerHTML = "<p>Nenhuma notícia encontrada.</p>";
+    // Verifica se há cache válido
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (cached) {
+        const { data, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_DURATION) {
+            // Cache ainda é válido, renderiza direto
+            renderArticles(data);
             return;
         }
+    }
 
-        articles.forEach(news => {
-            newsContainer.innerHTML += `
-                <a href="${news.url}" class="news-card" target="_blank">
-                    <h2 class="news-card-title">${news.title}</h2>
-                    <p class="news-card-summary">
-                        ${news.description || news.subtitle || ""}
-                    </p>
-                </a>
-            `;
-        });
+    // Se não há cache ou expirou, busca da API
+    const brazilRss = "https://g1.globo.com/rss/g1/";
+    const worldRss = "http://feeds.bbci.co.uk/news/world/rss.xml";
+    const brazilUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(brazilRss)}`;
+    const worldUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(worldRss)}`;
+
+    try {
+        const [brazilResponse, worldResponse] = await Promise.all([
+            fetch(brazilUrl),
+            fetch(worldUrl)
+        ]);
+
+        const brazilData = brazilResponse.ok ? await brazilResponse.json() : null;
+        const worldData = worldResponse.ok ? await worldResponse.json() : null;
+
+        const brazilArticle = brazilData?.items?.[0] || null;
+        const worldArticle = worldData?.items?.[0] || null;
+
+        const articles = { brazilArticle, worldArticle };
+
+        // Salva no cache com timestamp
+        localStorage.setItem(CACHE_KEY, JSON.stringify({
+            data: articles,
+            timestamp: Date.now()
+        }));
+
+        renderArticles(articles);
 
     } catch (error) {
         console.error("Erro ao carregar notícias:", error);
-        newsContainer.innerHTML =
-            "<p>Erro ao carregar as notícias.</p>";
+        // Tenta usar cache mesmo que expirado, como fallback
+        const oldCache = localStorage.getItem(CACHE_KEY);
+        if (oldCache) {
+            renderArticles(JSON.parse(oldCache).data);
+        } else {
+            newsContainer.innerHTML = "<p>Erro ao carregar as notícias.</p>";
+        }
     }
+}
+
+function renderArticles({ brazilArticle, worldArticle }) {
+    const newsContainer = document.getElementById("news-feed-container");
+    newsContainer.innerHTML = "";
+
+    if (!brazilArticle && !worldArticle) {
+        newsContainer.innerHTML = "<p>Nenhuma notícia encontrada.</p>";
+        return;
+    }
+
+    function createCard(article, sourceLabel) {
+        if (!article) return "";
+        return `
+            <a href="${article.link}" class="news-card" target="_blank">
+                
+                <h2 class="news-card-title">${article.title}</h2>
+                <p class="news-card-summary">
+                    ${article.description ? article.description.replace(/<[^>]+>/g, '').substring(0, 200) + '...' : ''}
+                </p>
+            </a>
+        `;
+    }
+
+    newsContainer.innerHTML += createCard(worldArticle, "Mundo");
+    newsContainer.innerHTML += createCard(brazilArticle, "Brasil");
+    
 }
 
 // --- 2. GERENCIAMENTO DE CIDADES E CLIMA ---
