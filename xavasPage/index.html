@@ -16,7 +16,7 @@
 
     <header id="main-header" class="header-container">
         <div id="header-01">
-            <a href="" id="logo-header">
+            <a href="index.html" id="logo-header">
                 <h1 id="welcome-title">HUB</h1>
             </a>
             <p id="welcome-subtitle">Online</p>
@@ -28,7 +28,7 @@
             <a href="pages/protocol.html" class="link-header">Protocol</a>
             <a href="pages/operations.html" class="link-header">Operations</a>
             <a href="pages/enternaiment.html" class="link-header">Entertainment</a>
-            <a href="pages/logistc.html" class="link-header">Logistic</a>
+            <a href="pages/supplies.html" class="link-header">Supplies</a>
             <a href="pages/training.html" class="link-header" style="display: none;">Training</a>
             <button id="btn-logout" class="btn-danger">Exit</button>
         </div>
@@ -60,7 +60,7 @@
     <section id="dashboard-main-content" class="container">
         
         <div id="news-feed-container">
-
+            
         </div>
 
         <div id="weather-widget">
@@ -77,9 +77,60 @@
 
     </section>
 
+    <section id="nexts-protocol-sections" class="container">
+        <h2 class="title-daily-protocol">Daily Protocol</h2>
+        <div id="nexts-protocol">
+
+        </div>
+    </section>
+
+    <section id="supplies-home-sections" class="container">
+        <div class="header-supplies-home">
+            <h2 class="title-daily-protocol">Supplies</h2>
+            <button id="btn-toggle-home-supplies" class="btn-primary">+ Add</button>
+        </div>
+
+        <div id="home-supplies-form-container">
+            <form id="home-supplies-form">
+                <div class="form-group">
+                    <input type="text" id="h-supplies" placeholder="Item" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="h-brand" placeholder="Brand" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="h-url" placeholder="Imagem(url)" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="h-qnt" placeholder="Quantity(ml/un/g)" required>
+                </div>
+                <div class="form-group">
+                    <select id="h-tag" class="form-select" required>
+                        <option value="">Select a tag</option>
+                        <option value="health">Health</option>
+                        <option value="nutrition">Nutrition</option>
+                        <option value="hygiene">Hygiene</option>
+                        <option value="cleaning">Cleaning</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group form-group-checkbox">
+                    <p class="label-checkbox" style="color: #fff; font-size: 14px; width: 50%;">Opened Today?</p>
+                    <input type="checkbox" id="h-aceitar" class="input-checkbox" style="width: 10%;">
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">ADD ITEM</button>
+            </form>
+        </div>
+        
+        <div id="supplies-home">
+            
+        </div>
+    </section>
 
     <script src="js/header.js"></script>
     <script src="js/newsWeather.js"></script>
+    <script src="js/protocolHome.js"></script>
+    <script src="js/supliesHome.js"></script>
 
     <script>
         document.getElementById('btn-logout').addEventListener('click', function() {

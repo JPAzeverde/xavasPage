@@ -1,79 +1,90 @@
-#hero-protocol{
-height: 10vh;
-width: 100%;
-display: flex;
-flex-direction: row;
-justify-content: space-between;
-align-items: center;
+/* ============================================================
+   1. HERO SECTION
+   ============================================================ */
+.protocol-hero {
+  height: 10vh;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  text-transform: uppercase;
 }
-#form-task-section{
+
+/* ============================================================
+   2. TASK FORM
+   ============================================================ */
+.task-form-section {
   display: flex;
   flex-direction: column;
   max-width: 200px;
   margin: 0 auto;
   padding: var(--sp-2) 0;
 }
-#taskForm, .form-group-task{
+
+.task-form, 
+.form-group {
   width: 100%;
   transition: 1s;
 }
-.form-group-task{
+
+.form-group {
   display: flex;
   flex-direction: row;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   gap: 1rem;
- 
+  margin-bottom: 1rem;
 }
-.form-group-task label{
+
+.form-group label {
   font-size: 14px;
-  text-align: start;
+  text-align: left;
   color: #fff;
   width: 50%;
 }
-.form-group-task input{
+
+.form-group input {
   font-size: 14px;
-  text-align: start;
+  text-align: left;
   color: #fff;
-  
 }
-.input-time{
+
+.form-input-time {
   width: 80px;
 }
-.title-tag{
-  color: var(--txt-white);
-  text-transform: uppercase;
-}
-.form-tag-select, .form-day-select{
-  background-color: #000;
-  color: var(--txt-grey);
-  padding: var(--sp-1) var(--sp-2);
-  width: 100%;
-  border-radius: var(--rad-sm);
+
+.form-select {
   
 }
 
-#section-week-procotol{
+/* ============================================================
+   3. SCHEDULE GRID (Tabela da Semana)
+   ============================================================ */
+.protocol-schedule {
   display: flex;
   flex-direction: column;
   width: 100%;
   padding-bottom: var(--sp-12);
 }
-.week{
+
+.schedule-grid {
   display: flex;
   flex-direction: row;
   width: 100%;
   border: solid 1px var(--border-medium-grey);
-  
 }
-.hour-colum{
+
+/* Colunas (Dias e Horas) */
+.schedule-grid__time-col {
   display: flex;
   flex-direction: column;
-  justify-content: start;
-  align-items: start;
+  justify-content: flex-start;
+  align-items: flex-start;
   border-right: solid 1px var(--border-grey);
 }
-.day{
+
+.schedule-grid__day-col {
   display: flex;
   flex-direction: column;
   background-color: var(--bg-grey);
@@ -81,10 +92,12 @@ align-items: center;
   line-height: 1;
   width: 100%;
 }
-.day:last-of-type{
+
+.schedule-grid__day-col:last-of-type {
   border: none;
 }
-.day-title{
+
+.schedule-grid__day-title {
   font-size: 18px;
   text-align: center;
   text-transform: uppercase;
@@ -93,20 +106,24 @@ align-items: center;
   width: 100%;
   padding: var(--sp-1) 0;
   font-weight: 400;
-  width: 100%;
 }
-.hour{
+
+/* Células de tempo */
+.schedule-grid__hour-cell {
   height: 20px;
   width: 100%;
   border-bottom: dotted 1px var(--border-grey);
   padding: var(--sp-1);
 }
-.hour-txt{
+
+.schedule-grid__hour-label {
   font-size: 10px;
 }
 
-
-.task{
+/* ============================================================
+   4. TASK CARDS (Os bloquinhos de tarefas)
+   ============================================================ */
+.task-card {
   background-color: var(--bg-black);
   padding: var(--sp-1);
   display: flex;
@@ -117,23 +134,44 @@ align-items: center;
   border-radius: var(--rad-sm);
   height: max-content;
 }
-.task:hover{
+
+.task-card:hover {
   border: solid 1px var(--border-grey);
 }
-.header-task{
+
+.task-card__header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
-.title-task{
+
+.task-card__title {
   font-size: 16px;
   color: var(--txt-white);
 }
 
-.tag{
+.task-card__footer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: .5rem;
+}
+
+.task-card__time {
+  font-size: 12px;
+}
+
+.task-card__time-separator {
+  font-size: 10px;
+}
+
+/* ============================================================
+   5. TAGS & MODIFIERS
+   ============================================================ */
+.task-card__tag {
   font-size: 10px;
   padding: var(--sp-1) var(--sp-2);
-  width:fit-content;
+  width: fit-content;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -143,37 +181,11 @@ align-items: center;
   text-align: center;
   border-radius: var(--rad-sm);
 }
-.health{
-  background-color: var(--color-green-dark);
-  color: var(--txt-white);
-}
-.nutrition{
-  background-color: var(--color-yellow);
-  color: var(--txt-white);
-}
-.study{
-  background-color: var(--color-blue-light);
-  color: var(--txt-white);
-}
-.training{
-  background-color: var(--color-red-light);
-  color: var(--txt-white);
-}
-.work{
-  background-color: var(--color-blue);
-  color: var(--txt-white);
-}
-.bottom-task{
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  gap: .5rem;
 
-}
-
-.start-time ,.end-time{
-  font-size: 12px;
-}
- .mid-time {
-  font-size: 10px;
-}
+/* Cores das Tags */
+.tag--health    { background-color: var(--color-green-dark);  color: var(--txt-white); }
+.tag--nutrition { background-color: var(--color-yellow);      color: var(--txt-white); }
+.tag--study     { background-color: var(--color-blue-light);  color: var(--txt-white); }
+.tag--training  { background-color: var(--color-red-light);   color: var(--txt-white); }
+.tag--work      { background-color: var(--color-blue);        color: var(--txt-white); }
+.tag--other     { background-color: var(--border-grey);       color: var(--txt-white); }

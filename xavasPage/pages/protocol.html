@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Protocol_xsv</title>
+    <title>Protocol Hub</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/protocol.css">
-    
     <script src="../js/guard.js"></script>
 </head>
 <body>
@@ -17,35 +16,42 @@
             </a>
             <p id="welcome-subtitle">Online</p>
         </div>
+
         <button id="menu-header" class="btn-primary btn-menu">Menu</button>
+
         <div id="header-02">
-            <a href="pages/protocol.html" class="link-header">Protocol</a>
-            <a href="pages/operations.html" class="link-header">Operations</a>
-            <a href="pages/enternaiment.html" class="link-header">Entertainment</a>
-            <a href="pages/logistc.html" class="link-header">Logistic</a>
-            <a href="pages/training.html" class="link-header" style="display: none;">Training</a>
+            <a href="protocol.html" class="link-header">Protocol</a>
+            <a href="operations.html" class="link-header">Operations</a>
+            <a href="enternaiment.html" class="link-header">Entertainment</a>
+            <a href="supplies.html" class="link-header">Supplies</a>
+            <a href="training.html" class="link-header" style="display: none;">Training</a>
             <button id="btn-logout" class="btn-danger">Exit</button>
         </div>
     </header>
-    <section id="hero-protocol" class="container">
+
+    <section id="protocol-hero" class="container protocol-hero">
         <h1>Week Protocol</h1>
-        <button class="btn-primary" id="btn-01-addTask">+ task</button>
+        <button id="btn-toggle-task-form" class="btn-primary">+ Task</button>
     </section>
-    <section id="form-task-section">
-        <form id="taskForm">
-            <div class="form-group-task">
-                <input type="text" id="task" name="task" placeholder="Task..." required>
+
+    <section id="task-form-section" class="task-form-section">
+        <form id="task-form" class="task-form">
+            <div class="form-group">
+                <input type="text" id="task" name="task" placeholder="Task description..." required>
             </div>
-            <div class="form-group-task">
-                <input class="input-time" type="time" id="startTime" name="startTime" required>
-                <label for="startTime">StartTime</label>
+            
+            <div class="form-group">
+                <input type="time" id="startTime" name="startTime" class="form-input-time" required>
+                <label for="startTime">Start Time</label>
             </div>
-            <div class="form-group-task">
-                <input class="input-time" type="time" id="endTime" name="endTime">
-                <label for="endTime">EndTime</label>
+            
+            <div class="form-group">
+                <input type="time" id="endTime" name="endTime" class="form-input-time">
+                <label for="endTime">End Time</label>
             </div>
-            <div class="form-group-task">
-                <select id="tag" class="form-tag-select" name="tag" required>
+            
+            <div class="form-group">
+                <select id="tag" name="tag" class="form-select" required>
                     <option value="">Select a tag</option>
                     <option value="work">Work</option>
                     <option value="training">Training</option>
@@ -58,32 +64,29 @@
                     <option value="other">Other</option>
                 </select>
             </div>
-            <div class="form-group-task">
-                <select id="day" class="form-day-select" name="day" required>
+            
+            <div class="form-group">
+                <select id="day" name="day" class="form-select" required>
                     <option value="">Select a day</option>
                     <option value="monday">MONDAY</option>
                     <option value="tuesday">TUESDAY</option>
-                    <option value="wednesday">WEEDNESDAY</option>
-                    <option value="thuesday">THUESDAY</option>
+                    <option value="wednesday">WEDNESDAY</option>
+                    <option value="thursday">THURSDAY</option>
                     <option value="friday">FRIDAY</option>
-                    <option value="saturday">SATURDAR</option>
+                    <option value="saturday">SATURDAY</option>
                     <option value="sunday">SUNDAY</option>
                 </select>
             </div>
-            <!-- O seletor de dia será injetado via JS, mas podemos deixar o espaço -->
-            <button type="submit" class="btn-primary" id="btn-02-addTask">Salvar Tarefa</button>
+            
+            <button type="submit" id="btn-submit-task" class="btn-primary">ADD</button>
         </form>
     </section>
 
-    <section id="section-week-procotol" class="container">
-        <div class="week">
-            
-            
-        </div>
+    <section id="protocol-schedule" class="container protocol-schedule">
+        <div class="schedule-grid">
+            </div>
     </section>
 
-    
-    
     <script src="../js/protocol.js"></script>
     <script>
         document.getElementById('btn-logout').addEventListener('click', function() {

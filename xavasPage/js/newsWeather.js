@@ -1,15 +1,26 @@
 async function fetchNews() {
     const newsContainer = document.getElementById("news-feed-container");
-    const CACHE_KEY = 'cachedNews';
-    const CACHE_DURATION = 30 * 60 * 1000;
+    const CACHE_KEY = 'cachedNews_v2';
+    const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
+
+    // Função auxiliar para selecionar um artigo aleatório do array
+    const getRandomArticle = (items) => {
+        if (!items || items.length === 0) return null;
+        const randomIndex = Math.floor(Math.random() * items.length);
+        return items[randomIndex];
+    };
 
     // Verifica se há cache válido
     const cached = localStorage.getItem(CACHE_KEY);
     if (cached) {
-        const { data, timestamp } = JSON.parse(cached);
+        const { brazilItems, worldItems, timestamp } = JSON.parse(cached);
+        
         if (Date.now() - timestamp < CACHE_DURATION) {
-            // Cache ainda é válido, renderiza direto
-            renderArticles(data);
+            // Cache é válido: pega uma notícia diferente/aleatória da lista salva
+            renderArticles({
+                brazilArticle: getRandomArticle(brazilItems),
+                worldArticle: getRandomArticle(worldItems)
+            });
             return;
         }
     }
@@ -29,25 +40,34 @@ async function fetchNews() {
         const brazilData = brazilResponse.ok ? await brazilResponse.json() : null;
         const worldData = worldResponse.ok ? await worldResponse.json() : null;
 
-        const brazilArticle = brazilData?.items?.[0] || null;
-        const worldArticle = worldData?.items?.[0] || null;
+        // Pegamos as listas completas (ou um array vazio se der erro)
+        const brazilItems = brazilData?.items || [];
+        const worldItems = worldData?.items || [];
 
-        const articles = { brazilArticle, worldArticle };
-
-        // Salva no cache com timestamp
+        // Salva a LISTA COMPLETA no cache, e não apenas um artigo
         localStorage.setItem(CACHE_KEY, JSON.stringify({
-            data: articles,
+            brazilItems,
+            worldItems,
             timestamp: Date.now()
         }));
 
-        renderArticles(articles);
+        // Renderiza passando um artigo aleatório das novas listas
+        renderArticles({
+            brazilArticle: getRandomArticle(brazilItems),
+            worldArticle: getRandomArticle(worldItems)
+        });
 
     } catch (error) {
         console.error("Erro ao carregar notícias:", error);
-        // Tenta usar cache mesmo que expirado, como fallback
+        
+        // Tenta usar o cache mesmo que expirado, como fallback
         const oldCache = localStorage.getItem(CACHE_KEY);
         if (oldCache) {
-            renderArticles(JSON.parse(oldCache).data);
+            const { brazilItems, worldItems } = JSON.parse(oldCache);
+            renderArticles({
+                brazilArticle: getRandomArticle(brazilItems),
+                worldArticle: getRandomArticle(worldItems)
+            });
         } else {
             newsContainer.innerHTML = "<p>Erro ao carregar as notícias.</p>";
         }

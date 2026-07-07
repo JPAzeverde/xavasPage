@@ -1,0 +1,187 @@
+#supplies-hero{
+  height: 10vh;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  text-transform: uppercase;
+}
+#supplies-form-section{
+    display: flex;
+    flex-direction: column;
+    max-width: 200px;
+    margin: 0 auto;
+    padding: var(--sp-2) 0;
+}
+
+
+
+.task-form, 
+.form-group {
+  width: 100%;
+  transition: 1s;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  font-size: 14px;
+  text-align: left;
+  color: #fff;
+  width: 50%;
+}
+
+.form-group input {
+  font-size: 14px;
+  text-align: left;
+  color: #fff;
+}
+
+.form-input-time {
+  width: 80px;
+}
+.form-group-checkbox{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 0;
+    line-height: 1;
+}
+.input-checkbox{
+    width: 10%;
+}
+/* Animação suave para o formulário */
+#supplies-form-section {
+    display: flex;
+    flex-direction: column;
+    max-width: 300px; /* Levemente aumentado para caber os inputs melhor */
+    margin: 0 auto;
+    padding: 0;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, padding 0.5s ease;
+}
+
+#supplies-form-section.show {
+    max-height: 800px;
+    opacity: 1;
+    padding: var(--sp-4) 0;
+}
+#supplies-itens{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 3rem;
+}
+/* Grids de exibição dos itens */
+.supply-category {
+    margin-bottom: var(--sp-6);
+    background-color: var(--bg-grey);
+    display: flex;
+    flex-direction: column;
+    padding: var(--sp-2);
+    border-radius: var(--rad-sm);
+    border: solid 1px var(--border-grey);
+    width: 100%;
+    align-items: center;
+}
+.title-category{
+    text-align: center;
+}
+
+.items-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-4);
+    margin-top: var(--sp-3);
+}
+
+/* Cards dos Produtos (Estilo Capa) */
+.product-card {
+    width: 128px;
+    height: 100px;
+    border-radius: var(--rad-md);
+    background-size: cover;
+    background-position: top;
+    position: relative;
+    cursor: pointer;
+    box-shadow: var(--sh-md);
+    border: 1px solid var(--border-grey);
+    overflow: hidden;
+    transition: transform var(--tr-fast);
+}
+
+.product-card:hover {
+    transform: scale(1.05);
+    border-color: var(--color-green-light);
+}
+
+.product-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    padding: var(--sp-2) var(--sp-1);
+    text-align: center;
+    backdrop-filter: blur(2px);
+}
+
+.product-info p {
+    font-size: 11px;
+    margin: 0;
+    color: var(--txt-white);
+    line-height: 1.2;
+}
+
+.product-info .brand {
+    font-size: 9px;
+    color: var(--color-blue-light);
+}
+
+/* Badge de Previsão */
+.forecast-badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: var(--color-yellow);
+    color: var(--bg-black);
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    padding: 2px 0;
+}
+
+/* Estilos do Modal */
+.modal-hidden {
+    display: none;
+}
+
+.modal-visible {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    width: 90%;
+    max-width: 350px;
+}

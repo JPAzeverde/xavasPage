@@ -152,6 +152,14 @@ input {
   font-size: 1rem;
 }
 
+select{
+  background-color: #000;
+  color: var(--txt-grey);
+  padding: var(--sp-1) var(--sp-2);
+  width: 100%;
+  border-radius: var(--rad-sm);
+}
+
 button {
   border: none;
   border-radius: var(--rad-sm);
@@ -223,6 +231,12 @@ button {
   background: var(--bg-dark-grey);
   border: solid 1px var(--border-light-grey);
   padding: var(--sp-3);
+  border-radius: var(--rad-md);
+}
+.mini-card{
+  background: var(--bg-dark-grey);
+  border: solid 1px var(--border-light-grey);
+  padding: var(--sp-1);
   border-radius: var(--rad-md);
 }
 
