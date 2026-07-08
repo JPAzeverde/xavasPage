@@ -1,0 +1,237 @@
+/* =========================================
+   LAYOUT DO KANBAN
+========================================= */
+.operations-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--sp-6) var(--sp-3) var(--sp-4) var(--sp-3);
+}
+
+.kanban-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--sp-4);
+    padding: 0 var(--sp-3) var(--sp-8) var(--sp-3);
+    align-items: start;
+}
+
+.kanban-column {
+    background-color: var(--bg-grey);
+    border: 1px solid var(--border-dark-grey);
+    border-radius: var(--rad-md);
+    display: flex;
+    flex-direction: column;
+    min-height: 400px;
+}
+
+.column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--sp-3);
+    border-bottom: 1px solid var(--border-dark-grey);
+}
+
+.column-header h3 {
+    font-size: 1rem;
+}
+
+.task-count {
+    background-color: var(--bg-dark-grey);
+    color: var(--txt-medium-grey);
+    padding: 2px var(--sp-2);
+    border-radius: var(--rad-sm);
+    font-size: 0.8rem;
+}
+
+.column-content {
+    padding: var(--sp-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    flex-grow: 1;
+}
+
+/* =========================================
+   CARDS DE TAREFA
+========================================= */
+.task-card {
+    background-color: var(--bg-dark-grey);
+    border: 1px solid var(--border-grey);
+    border-radius: var(--rad-sm);
+    padding: var(--sp-3);
+    cursor: pointer;
+    transition: var(--tr-fast);
+}
+
+.task-card:hover {
+    border-color: var(--color-green-neon);
+    transform: translateY(-2px);
+    box-shadow: var(--sh-md);
+}
+
+.task-card h4 {
+    font-size: 1rem;
+    margin-bottom: var(--sp-1);
+}
+
+.task-card p {
+    font-size: 0.8rem;
+    color: var(--txt-medium-grey);
+}
+
+.task-date {
+    display: block;
+    margin-top: var(--sp-2);
+    font-size: 0.75rem;
+    color: var(--txt-grey);
+}
+
+/* =========================================
+   MODAL ESTILO NOTION
+========================================= */
+.modal-overlay {
+    display: none; /* Escondido por padrão */
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    width: 90%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-5);
+    background-color: var(--bg-black);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-dark-grey);
+    padding-bottom: var(--sp-3);
+}
+
+.title-input {
+    background: transparent;
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding: 0;
+}
+
+.title-input:focus {
+    outline: none;
+    border-bottom: 1px solid var(--color-green-neon);
+}
+
+.modal-props {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    background-color: var(--bg-grey);
+    padding: var(--sp-4);
+    border-radius: var(--rad-sm);
+}
+
+.prop-row {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    align-items: center;
+}
+
+.prop-row label {
+    color: var(--txt-medium-grey);
+    font-size: 0.9rem;
+}
+
+.modal-editor {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+}
+
+.modal-editor textarea {
+    background-color: var(--bg-grey);
+    color: var(--txt-white);
+    border: 1px solid var(--border-dark-grey);
+    border-radius: var(--rad-sm);
+    padding: var(--sp-3);
+    min-height: 250px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.modal-editor textarea:focus {
+    outline: none;
+    border-color: var(--color-green-neon);
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--border-dark-grey);
+    padding-top: var(--sp-4);
+}
+
+/* =========================================
+   ESTADOS DE DRAG AND DROP
+========================================= */
+.task-card[draggable="true"] {
+    cursor: grab;
+}
+
+.task-card[draggable="true"]:active {
+    cursor: grabbing;
+}
+
+.task-card.dragging {
+    opacity: 0.5;
+    border: dashed 1px var(--color-green-neon);
+    transform: scale(0.98);
+}
+
+.kanban-column.drag-over {
+    background-color: var(--border-dark-grey);
+    border: dashed 1px var(--color-green-neon);
+    transition: var(--tr-fast);
+}
+
+/* =========================================
+   TAGS DOS PROJETOS
+========================================= */
+.task-tag {
+    display: inline-block;
+    padding: 2px var(--sp-2);
+    border-radius: var(--rad-sm);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--txt-white);
+    margin-bottom: var(--sp-2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Cores Específicas das Tags */
+.tag-unilavras { 
+    background-color: #009DE1; 
+}
+.tag-solargun { 
+    background-color: #031C36; 
+    border: 1px solid var(--border-grey); /* Borda adicionada pois a cor é muito escura */
+}
+.tag-pessoal { 
+    background-color: var(--color-green-dark); /* Utilizando sua variável */
+}

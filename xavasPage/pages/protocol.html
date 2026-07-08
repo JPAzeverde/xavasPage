@@ -3,96 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Protocol Hub</title>
+    <title>Protocol Hub - HUB</title>
+    
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/protocol.css">
+    
     <script src="../js/guard.js"></script>
 </head>
-<body>
-    <header id="main-header" class="header-container">
-        <div id="header-01">
-            <a href="../index.html" id="logo-header">
-                <h1 id="welcome-title">HUB</h1>
+<body class="layout-dashboard">
+
+    <header class="header">
+        <div class="header__brand">
+            <a href="../index.html" class="header__logo">
+                <h1 class="title-lg">HUB</h1>
             </a>
-            <p id="welcome-subtitle">Online</p>
+            <p class="text-small header__status">Online</p>
         </div>
 
-        <button id="menu-header" class="btn-primary btn-menu">Menu</button>
+        <button id="btn-menu" class="btn btn--ghost header__menu-toggle">Menu</button>
 
-        <div id="header-02">
-            <a href="protocol.html" class="link-header">Protocol</a>
-            <a href="operations.html" class="link-header">Operations</a>
-            <a href="enternaiment.html" class="link-header">Entertainment</a>
-            <a href="supplies.html" class="link-header">Supplies</a>
-            <a href="training.html" class="link-header" style="display: none;">Training</a>
-            <button id="btn-logout" class="btn-danger">Exit</button>
-        </div>
+        <nav id="main-nav" class="header__nav">
+            <a href="protocol.html" class="header__link header__link--active">Protocol</a>
+            <a href="operations.html" class="header__link">Operations</a>
+            <a href="enternaiment.html" class="header__link">Entertainment</a>
+            <a href="supplies.html" class="header__link">Supplies</a>
+            <button id="btn-logout" class="btn btn--danger header__logout">Exit</button>
+        </nav>
     </header>
 
-    <section id="protocol-hero" class="container protocol-hero">
-        <h1>Week Protocol</h1>
-        <button id="btn-toggle-task-form" class="btn-primary">+ Task</button>
-    </section>
+    <main class="container protocol">
+        
+        <section class="protocol__hero">
+            <h2 class="title-lg">Week Protocol</h2>
+            <button id="btn-toggle-task-form" class="btn btn--primary">+ Task</button>
+        </section>
 
-    <section id="task-form-section" class="task-form-section">
-        <form id="task-form" class="task-form">
-            <div class="form-group">
-                <input type="text" id="task" name="task" placeholder="Task description..." required>
-            </div>
-            
-            <div class="form-group">
-                <input type="time" id="startTime" name="startTime" class="form-input-time" required>
-                <label for="startTime">Start Time</label>
-            </div>
-            
-            <div class="form-group">
-                <input type="time" id="endTime" name="endTime" class="form-input-time">
-                <label for="endTime">End Time</label>
-            </div>
-            
-            <div class="form-group">
-                <select id="tag" name="tag" class="form-select" required>
-                    <option value="">Select a tag</option>
-                    <option value="work">Work</option>
-                    <option value="training">Training</option>
-                    <option value="study">Study</option>
-                    <option value="health">Health</option>
-                    <option value="nutrition">Nutrition</option>
-                    <option value="personal">Personal</option>
-                    <option value="hygiene">Hygiene</option>
-                    <option value="cleaning">Cleaning</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <select id="day" name="day" class="form-select" required>
-                    <option value="">Select a day</option>
-                    <option value="monday">MONDAY</option>
-                    <option value="tuesday">TUESDAY</option>
-                    <option value="wednesday">WEDNESDAY</option>
-                    <option value="thursday">THURSDAY</option>
-                    <option value="friday">FRIDAY</option>
-                    <option value="saturday">SATURDAY</option>
-                    <option value="sunday">SUNDAY</option>
-                </select>
-            </div>
-            
-            <button type="submit" id="btn-submit-task" class="btn-primary">ADD</button>
-        </form>
-    </section>
+        <!-- Modal: Nova Tarefa -->
+        <div id="modal-task" class="modal modal--hidden">
+            <article class="modal__content card">
+                <header class="modal__header">
+                    <h2 class="title-md">New Task</h2>
+                </header>
+                
+                <form id="task-form" class="modal__body">
+                    <div class="form-group">
+                        <input type="text" id="task" name="task" class="input-field" placeholder="Task description..." autocomplete="off" required>
+                    </div>
+                    
+                    <div class="form-group form-group--inline">
+                        <label for="startTime" class="text-small">Start</label>
+                        <input type="time" id="startTime" name="startTime" class="input-field" required>
+                    </div>
+                    
+                    <div class="form-group form-group--inline">
+                        <label for="endTime" class="text-small">End</label>
+                        <input type="time" id="endTime" name="endTime" class="input-field">
+                    </div>
+                    
+                    <div class="form-group">
+                        <select id="tag" name="tag" class="select-field" required>
+                            <option value="">Select a tag</option>
+                            <option value="work">Work</option>
+                            <option value="training">Training</option>
+                            <option value="study">Study</option>
+                            <option value="health">Health</option>
+                            <option value="nutrition">Nutrition</option>
+                            <option value="personal">Personal</option>
+                            <option value="hygiene">Hygiene</option>
+                            <option value="cleaning">Cleaning</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <select id="day" name="day" class="select-field" required>
+                            <option value="">Select a day</option>
+                            <option value="monday">MONDAY</option>
+                            <option value="tuesday">TUESDAY</option>
+                            <option value="wednesday">WEDNESDAY</option>
+                            <option value="thursday">THURSDAY</option>
+                            <option value="friday">FRIDAY</option>
+                            <option value="saturday">SATURDAY</option>
+                            <option value="sunday">SUNDAY</option>
+                        </select>
+                    </div>
+                    
+                    <footer class="modal__footer">
+                        <button type="button" id="btn-close-modal" class="btn btn--ghost">Cancel</button>
+                        <button type="submit" id="btn-submit-task" class="btn btn--primary">Add Task</button>
+                    </footer>
+                </form>
+            </article>
+        </div>
 
-    <section id="protocol-schedule" class="container protocol-schedule">
-        <div class="schedule-grid">
-            </div>
-    </section>
+        <section class="protocol__schedule">
+            <div id="schedule-grid" class="schedule">
+                </div>
+        </section>
 
-    <script src="../js/protocol.js"></script>
-    <script>
-        document.getElementById('btn-logout').addEventListener('click', function() {
-            sessionStorage.removeItem('portal_pessoal_auth');
-            window.location.replace('login.html');
-        });
-    </script>
+    </main>
+
+    <script src="../js/protocol.js" type="module"></script>
 </body>
 </html>

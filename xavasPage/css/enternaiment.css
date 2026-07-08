@@ -1,0 +1,275 @@
+/* =========================================
+   1. SHARED HEADER (Mesmo de Operations)
+========================================= */
+.header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: var(--sp-4); border-bottom: 1px solid var(--border-medium); position: relative;
+}
+.header__brand { display: flex; flex-direction: column; }
+.header__status { text-transform: uppercase; letter-spacing: 1px; margin-top: -4px; }
+.header__nav { display: flex; gap: var(--sp-4); align-items: center; }
+.header__link { font-weight: 600; text-transform: uppercase; font-size: 0.875rem; position: relative; padding-bottom: var(--sp-1); }
+.header__link::after {
+    content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px;
+    background-color: var(--text-primary); transform: scaleX(0); transform-origin: right; transition: transform var(--tr-base);
+}
+.header__link:hover::after, .header__link--active::after { transform: scaleX(1); transform-origin: left; }
+.header__menu-toggle { display: none; }
+@media (max-width: 768px) {
+    .header__menu-toggle { display: inline-flex; }
+    .header__nav {
+        display: none; position: absolute; top: 100%; right: var(--sp-4); left: var(--sp-4);
+        background-color: var(--bg-secondary); border: 1px solid var(--border-medium); flex-direction: column; padding: var(--sp-4); z-index: 100;
+    }
+    .header__nav.is-open { display: flex; }
+}
+
+/* =========================================
+   2. ENTERTAINMENT HERO & GRIDS
+========================================= */
+.ent__hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--sp-6) 0 var(--sp-4);
+    border-bottom: 1px solid var(--border-dark);
+}
+
+.ent__hero-title-group {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+}
+
+.ent__grid-categories,
+.ent__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--sp-4);
+    margin: var(--sp-5) 0;
+}
+
+/* =========================================
+   3. CATEGORY CARDS
+========================================= */
+.category-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 120px;
+    cursor: pointer;
+    transition: transform var(--tr-fast), border-color var(--tr-fast);
+    position: relative;
+}
+
+.category-card:hover {
+    border-color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+.category-card--create {
+    border-style: dashed;
+    background-color: transparent;
+    color: var(--text-secondary);
+}
+
+.category-card--create:hover {
+    color: var(--text-primary);
+}
+
+.category-card__del {
+    position: absolute;
+    top: var(--sp-2);
+    right: var(--sp-2);
+}
+
+/* =========================================
+   4. STATS CARDS
+========================================= */
+.stat-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-medium);
+    padding: var(--sp-3);
+    border-radius: var(--rad-md);
+    text-align: center;
+}
+.stat-card--dropped { opacity: 0.6; }
+.stat-card--done { border-color: var(--text-primary); }
+
+/* =========================================
+   5. KANBAN (Entertainment variant)
+========================================= */
+.kanban {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--sp-4);
+    margin-top: var(--sp-6);
+    padding-bottom: var(--sp-8);
+}
+
+.kanban__col {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--rad-md);
+    display: flex;
+    flex-direction: column;
+    min-height: 400px;
+}
+
+.kanban__col.is-dragover {
+    border-style: dashed;
+    border-color: var(--text-primary);
+    background-color: var(--bg-tertiary);
+}
+
+.kanban__col-header {
+    padding: var(--sp-3);
+    border-bottom: 1px solid var(--border-medium);
+    text-transform: uppercase;
+}
+
+.kanban__content {
+    padding: var(--sp-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    flex-grow: 1;
+}
+
+/* =========================================
+   6. ITEM CARDS
+========================================= */
+.item-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sp-2);
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--rad-sm);
+    padding: var(--sp-3);
+    cursor: grab;
+    transition: transform var(--tr-fast), border-color var(--tr-fast);
+}
+
+.item-card:hover {
+    border-color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+.item-card.is-dragging {
+    opacity: 0.5;
+    border-style: dashed;
+}
+
+.item-card__cover {
+    width: 80px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: var(--rad-sm);
+    border: 1px solid var(--border-dark);
+}
+
+.item-card__title {
+    font-size: 0.875rem;
+    text-align: center;
+}
+
+/* =========================================
+   7. MODALS
+========================================= */
+.modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity var(--tr-base);
+}
+
+.modal--hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal__content {
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-primary);
+}
+
+.modal__header {
+    border-bottom: 1px solid var(--border-medium);
+    padding-bottom: var(--sp-3);
+    margin-bottom: var(--sp-4);
+}
+
+.modal__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+}
+
+.modal__divider {
+    border: none;
+    border-bottom: 1px solid var(--border-medium);
+    margin: var(--sp-2) 0;
+}
+
+.modal__fields-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+}
+
+.modal__field-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-tertiary);
+    padding: var(--sp-2);
+    border-radius: var(--rad-sm);
+}
+
+.modal__field-builder {
+    background: var(--bg-secondary);
+    padding: var(--sp-3);
+    border-radius: var(--rad-md);
+    border: 1px solid var(--border-medium);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+}
+
+.modal__btn-add-field {
+    align-self: flex-end;
+    font-size: 0.75rem;
+    padding: var(--sp-1) var(--sp-2);
+}
+
+.modal__dynamic-fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    margin-top: var(--sp-2);
+}
+
+.modal__footer {
+    display: flex;
+    gap: var(--sp-3);
+    margin-top: var(--sp-5);
+    border-top: 1px solid var(--border-medium);
+    padding-top: var(--sp-4);
+}
+
+.modal__footer > button {
+    flex: 1;
+}

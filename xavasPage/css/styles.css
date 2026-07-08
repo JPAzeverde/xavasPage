@@ -1,71 +1,45 @@
 @import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&display=swap');
 
 /* =========================================
-   1. CSS VARIABLES (Tema & Design System)
+   1. DESIGN SYSTEM (Monochrome Dark)
 ========================================= */
 :root {
-  /* Backgrounds */
-  --bg-black:        #000000;
-  --bg-dark-grey:    #09090b;
-  --bg-grey:         #18181b;
-  --bg-white:        #ffffff;
-  --bg-off-white:    #fafafa;
-  --bg-light-grey:   #f4f4f5;
+  /* Colors */
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-tertiary: #141414;
+  --bg-hover: #1f1f1f;
 
-  /* Textos */
-  --txt-white:       #ffffff;
-  --txt-light-grey:  #a1a1aa;
-  --txt-grey:        #52525b;
-  --txt-black:       #000000;
-  --txt-dark-grey:   #3f3f46;
-  --txt-medium-grey: #71717a;
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-muted: #52525b;
 
-  /* Cores de Destaque & Status */
-  --color-green-light: #4ade80;
-  --color-green-dark:  #166534;
-  --color-green-neon:  #09ff00;
-  --color-red-light:   #f87171; 
-  --color-red-dark:    #7f1d1d;
-  --color-yellow:      #fbbf24;
-  --color-blue-light:  #a9d0ff;
-  --color-blue:        #60a5fa;
+  --border-light: #3f3f46;
+  --border-medium: #27272a;
+  --border-dark: #18181b;
+  --border-focus: #ffffff;
 
-  /* Bordas Claras e Escuras */
-  --border-black:        #09090b;
-  --border-darker-grey:  #18181b;
-  --border-dark-grey:    #27272a;
-  --border-grey:         #3f3f46;
-  --border-light-grey:   #d4d4d8;
-  --border-medium-grey:  #a1a1aa;
-  --border-off-white:    #e4e4e7;
-  --border-white:        #f4f4f5;
+  /* Spacing */
+  --sp-1: 0.25rem; /* 4px */
+  --sp-2: 0.5rem;  /* 8px */
+  --sp-3: 0.75rem; /* 12px */
+  --sp-4: 1rem;    /* 16px */
+  --sp-5: 1.25rem; /* 20px */
+  --sp-6: 1.5rem;  /* 24px */
+  --sp-8: 2rem;    /* 32px */
+  --sp-12: 3rem;   /* 48px */
 
-  /* Espaçamentos (Abreviação "sp" para ficar curto) */
-  --sp-1: 4px;
-  --sp-2: 8px;
-  --sp-3: 12px;
-  --sp-4: 16px;
-  --sp-5: 20px;
-  --sp-6: 24px;
-  --sp-8: 32px;
-  --sp-10: 40px;
-  --sp-12: 48px;
+  /* Borders & Shadows */
+  --rad-sm: 4px;
+  --rad-md: 8px;
+  --rad-lg: 12px;
+  --shadow-sm: 0 1px 2px rgba(255, 255, 255, 0.05);
+  --shadow-md: 0 4px 12px rgba(255, 255, 255, 0.05);
 
-  /* Border Radius (Abreviação "rad") */
-  --rad-sm: 3px;
-  --rad-md: 6px;
-  --rad-lg: 9px;
-
-  /* Sombras (Abreviação "sh") */
-  --sh-sm: 0 1px 2px rgba(0,0,0,0.6);
-  --sh-md: 0 4px 12px rgba(0,0,0,0.5);
-  --sh-lg: 0 8px 24px rgba(0,0,0,0.7);
-
-  /* Transições (Abreviação "tr") */
-  --tr-fast: 120ms ease;
-  --tr-base: 200ms ease;
+  /* Transitions */
+  --tr-fast: 150ms ease;
+  --tr-base: 250ms ease;
 }
-
 
 /* =========================================
    2. RESET & BASE
@@ -74,7 +48,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  transition: var(--tr-base); /* Usando a variável de transição global */
 }
 
 html {
@@ -85,301 +58,218 @@ html {
 }
 
 body {
-  background-color: var(--bg-black);
-  color: var(--txt-dark-grey);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: "Cascadia Code", monospace, sans-serif;
   line-height: 1.6;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  font-family: "Cascadia Code", monospace, sans-serif;
-
 }
 
-
-/* =========================================
-   3. TIPOGRAFIA
-========================================= */
 h1, h2, h3, h4, h5, h6 {
-  color: var(--txt-white);
+  color: var(--text-primary);
   font-weight: 600;
-  line-height: 1;
+  line-height: 1.2;
   letter-spacing: -0.03em;
-  
-
-}
-
-h1 { font-size: 1.75rem; }
-h2 { font-size: 1.5rem;  }
-h3 { font-size: 1.25rem; }
-h4 { font-size: 1.1rem;  }
-
-p, li {
-  color: var(--txt-light-grey);
-  font-size: 1rem;
-}
-
-ul, ol {
-  padding-left: var(--sp-6);
 }
 
 a {
-  color: var(--txt-white);
+  color: var(--text-secondary);
   text-decoration: none;
+  transition: color var(--tr-fast);
 }
 
-a:hover { 
-  color: var(--color-green-neon);
+a:hover {
+  color: var(--text-primary);
 }
 
+ul, ol {
+  list-style-position: inside;
+}
 
 /* =========================================
-   4. FORMULÁRIOS, INPUTS & BOTÕES
+   3. TYPOGRAPHY
 ========================================= */
+.title-xl { font-size: 2rem; }
+.title-lg { font-size: 1.5rem; }
+.title-md { font-size: 1.25rem; }
+.title-sm { font-size: 1rem; }
+.text-body { font-size: 1rem; color: var(--text-secondary); }
+.text-small { font-size: 0.875rem; color: var(--text-muted); }
 
-form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-4);
-  align-items: center;
-}
-
-input {
-  background-color: var(--bg-grey);
-  color: var(--txt-white);
-  border: none;
-  padding: var(--sp-1);
+/* =========================================
+   4. FORMS & INPUTS
+========================================= */
+.input-field, .select-field {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
+  padding: var(--sp-2) var(--sp-3);
   width: 100%;
   font-size: 1rem;
-}
-
-select{
-  background-color: #000;
-  color: var(--txt-grey);
-  padding: var(--sp-1) var(--sp-2);
-  width: 100%;
   border-radius: var(--rad-sm);
+  font-family: inherit;
+  transition: border-color var(--tr-fast);
+  outline: none;
 }
 
-button {
-  border: none;
-  border-radius: var(--rad-sm);
-  padding: var(--sp-1) var(--sp-3);
-  font-weight: 800;
-  text-transform: uppercase;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer; /* Adicionado para melhor usabilidade */
-}
-
-/* Tipos de Botões */
-.btn-primary, .btn-ghost {
-  background-color: var(--bg-black);
-  color: var(--txt-white);
-  border: solid 1px var(--border-medium-grey);
-}
-
-.btn-primary:hover {
-  background-color: var(--bg-white);
-  color: var(--txt-black);
-  border: solid 1px var(--border-grey);
-}
-
-.btn-danger {
-  background-color: var(--bg-black);
-  color: var(--txt-white);
-  border: solid 1px #00000000;
-}
-
-.btn-danger:hover {
-  background-color: var(--color-red-dark);
-  color: var(--color-red-light);
-  border: solid 1px var(--color-red-light);
-}
-
-.btn-danger-mini {
-  background-color: #ffffff00;
-  color: var(--txt-white);
-  font-size: 9px;
-  line-height: 1;
-  font-weight: 100;
-  padding: 0;
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none;    /* Firefox */
-  -ms-user-select: none;     /* Internet Explorer/Edge legado */
-  user-select: none;         /* Padrão moderno (Chrome, Edge, Opera, etc) */
-}
-
-.btn-danger-mini:hover {
-  color: var(--color-red-light);
-}
-
-.btn-menu{
-  display: none;
-}
-
-#menu-header {
-  font-size: 12px;
-  
-}
-
+.input-field::placeholder { color: var(--text-muted); }
+.input-field:focus, .select-field:focus { border-color: var(--border-focus); }
 
 /* =========================================
-   5. COMPONENTES & LAYOUT
+   5. BUTTONS (BEM Methodology)
 ========================================= */
-.card {
-  background: var(--bg-dark-grey);
-  border: solid 1px var(--border-light-grey);
-  padding: var(--sp-3);
-  border-radius: var(--rad-md);
-}
-.mini-card{
-  background: var(--bg-dark-grey);
-  border: solid 1px var(--border-light-grey);
-  padding: var(--sp-1);
-  border-radius: var(--rad-md);
-}
-
-.ready {
-  color: var(--color-green-dark);
-}
-
-/* Header Principal */
-header {
-  display: flex;
-  flex-direction: row;
+.btn {
+  display: inline-flex;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
-  padding: var(--sp-3); /* Removida duplicação var(--space-3) var(--space-3) */
-  border-bottom: solid 1px var(--border-dark-grey);
-  position: relative;
+  padding: var(--sp-2) var(--sp-4);
+  font-weight: 700;
+  font-family: inherit;
+  text-transform: uppercase;
+  border-radius: var(--rad-sm);
+  cursor: pointer;
+  transition: all var(--tr-fast);
+  border: 1px solid transparent;
+  line-height: 1;
 }
 
-#header-01 {
+.btn--primary {
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+.btn--primary:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+.btn--ghost {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border-color: var(--border-medium);
+}
+
+.btn--ghost:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+.btn--danger {
+  background-color: transparent;
+  color: var(--text-primary);
+  border-color: var(--border-light);
+}
+
+.btn--danger:hover {
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+.btn--danger-mini {
+  background-color: transparent;
+  color: var(--text-/* =========================================
+   PAGE: LOGIN
+========================================= */
+.page-auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth {
+    width: 100%;
+    max-width: 400px;
+    padding: var(--sp-4);
+}
+
+.auth__box {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-6);
+}
+
+.auth__header {
+    text-align: center;
+    border-bottom: 1px solid var(--border-medium);
+    padding-bottom: var(--sp-3);
+}
+
+.auth__title {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.auth__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-4);
+}
+
+.auth__group {
+    display: flex;
+    flex-direction: column;
+}
+
+.auth__actions {
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--sp-2);
+}
+
+.auth__submit {
+    width: 100%;
+}
+
+.auth__alert {
+    font-size: 0.875rem;
+    color: var(--bg-primary);
+    background-color: var(--text-primary);
+    padding: var(--sp-2);
+    text-align: center;
+    border-radius: var(--rad-sm);
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: opacity var(--tr-base), transform var(--tr-base);
+    transform-origin: top;
+}
+
+.auth__alert--hidden {
+    display: none;
+    opacity: 0;
+    transform: scaleY(0);
+}secondary);
+  font-size: 0.75rem;
+  padding: var(--sp-1) var(--sp-2);
+  border: 1px solid var(--border-medium);
+}
+
+.btn--danger-mini:hover {
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+/* =========================================
+   6. LAYOUT & COMPONENTS
+========================================= */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--sp-4);
+}
+
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-medium);
+  padding: var(--sp-4);
+  border-radius: var(--rad-md);
+}
+
+.layout-dashboard {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-start; /* 'start' corrigido para 'flex-start' (padrão flexbox) */
-  text-align: center;
-}
-
-#header-01 a, #header-01 p {
-  margin-top: auto;
-  margin-bottom: auto;
-}
-
-#header-01 p {
-  margin-top: -6px;
-}
-
-#header-02 {
-  display: flex;
-  gap: 1rem;
-}
-
-#welcome-title {
-  font-size: 2rem;
-}
-
-#welcome-title:hover {
-  color: var(--color-green-neon);
-}
-
-#welcome-subtitle {
-  font-size: 0.875rem; /* 14px convertido para rem */
-  color: var(--color-green-dark);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.link-header {
-  position: relative;
-  padding-bottom: var(--sp-1); /* Espaço entre o texto e a linha */
-}
-
-/* 2. Cria a linha na parte inferior (invisível por padrão) */
-.link-header::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px; /* Espessura da borda */
-  background-color: var(--color-green-neon);
-  
-  /* Esconde a linha reduzindo a escala dela para 0 */
-  transform: scaleX(0); 
-  
-  /* Controla de onde a animação começa/termina */
-  transform-origin: right; 
-  transition: transform var(--tr-base);
-}
-
-/* 3. Aciona a animação quando o mouse passa por cima */
-.link-header:hover::after {
-  transform: scaleX(1); /* Expande a linha para 100% do tamanho */
-  transform-origin: left; 
-}
-
-/* Media Query para telas menores (Tablets e Celulares) */
-@media (max-width: 768px) {
-  /* 1. Mostra o botão do menu */
-  .btn-menu {
-    display: flex;
-    font-size: 1.2rem;
-    padding: var(--sp-2) var(--sp-3);
-  }
-
-  /* 2. Transforma o menu em um card flutuante moderno */
-  #header-02 {
-    position: absolute;
-    top: 100%;
-    right: var(--sp-3);
-    left: var(--sp-3);
-    background-color: var(--bg-dark-grey);
-    border: 1px solid var(--border-dark-grey);
-    border-radius: var(--rad-md);
-    padding: var(--sp-5);
-    flex-direction: column;
-    box-shadow: var(--sh-lg);
-    z-index: 100;
-    width: 50%;
-    left: 50%;
-    
-    /* Configuração da animação (escondido por padrão) */
-    opacity: 0;
-    transform: translateY(-15px);
-    pointer-events: none; /* Impede cliques quando invisível */
-    transition: opacity var(--tr-base), transform var(--tr-base);
-  }
-
-  /* 3. Classe ativada via JavaScript quando o menu abre */
-  header.menu-open #header-02 {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto; /* Reativa os cliques */
-  }
-
-  /* 4. Ajustes finos para os links e botões no mobile */
-  #header-02 a, #header-02 button {
-    width: 100%;
-    text-align: center;
-    padding: var(--sp-2) 0;
-  }
-  #btn-logout{
-    max-width: 100px;
-    margin: auto;
-  }
-}
-
-.container{
-  max-width: 1400px;
-  margin-right: auto;
-  margin-left: auto;
-}
-
-.border-vertical{
-  min-height: fit-content;
-  width: 1px;
-  background-color: var(--border-dark-grey);
 }

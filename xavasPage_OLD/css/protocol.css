@@ -1,0 +1,191 @@
+/* ============================================================
+   1. HERO SECTION
+   ============================================================ */
+.protocol-hero {
+  height: 10vh;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   2. TASK FORM
+   ============================================================ */
+.task-form-section {
+  display: flex;
+  flex-direction: column;
+  max-width: 200px;
+  margin: 0 auto;
+  padding: var(--sp-2) 0;
+}
+
+.task-form, 
+.form-group {
+  width: 100%;
+  transition: 1s;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  font-size: 14px;
+  text-align: left;
+  color: #fff;
+  width: 50%;
+}
+
+.form-group input {
+  font-size: 14px;
+  text-align: left;
+  color: #fff;
+}
+
+.form-input-time {
+  width: 80px;
+}
+
+.form-select {
+  
+}
+
+/* ============================================================
+   3. SCHEDULE GRID (Tabela da Semana)
+   ============================================================ */
+.protocol-schedule {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-bottom: var(--sp-12);
+}
+
+.schedule-grid {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  border: solid 1px var(--border-medium-grey);
+}
+
+/* Colunas (Dias e Horas) */
+.schedule-grid__time-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-right: solid 1px var(--border-grey);
+}
+
+.schedule-grid__day-col {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-grey);
+  border-right: solid 1px var(--border-medium-grey);
+  line-height: 1;
+  width: 100%;
+}
+
+.schedule-grid__day-col:last-of-type {
+  border: none;
+}
+
+.schedule-grid__day-title {
+  font-size: 18px;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--txt-light-grey);
+  border-bottom: solid 1px #fff;
+  width: 100%;
+  padding: var(--sp-1) 0;
+  font-weight: 400;
+}
+
+/* Células de tempo */
+.schedule-grid__hour-cell {
+  height: 20px;
+  width: 100%;
+  border-bottom: dotted 1px var(--border-grey);
+  padding: var(--sp-1);
+}
+
+.schedule-grid__hour-label {
+  font-size: 10px;
+}
+
+/* ============================================================
+   4. TASK CARDS (Os bloquinhos de tarefas)
+   ============================================================ */
+.task-card {
+  background-color: var(--bg-black);
+  padding: var(--sp-1);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: .25rem;
+  gap: .4rem;
+  border: solid 1px #000;
+  border-radius: var(--rad-sm);
+  height: max-content;
+}
+
+.task-card:hover {
+  border: solid 1px var(--border-grey);
+}
+
+.task-card__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.task-card__title {
+  font-size: 16px;
+  color: var(--txt-white);
+}
+
+.task-card__footer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: .5rem;
+}
+
+.task-card__time {
+  font-size: 12px;
+}
+
+.task-card__time-separator {
+  font-size: 10px;
+}
+
+/* ============================================================
+   5. TAGS & MODIFIERS
+   ============================================================ */
+.task-card__tag {
+  font-size: 10px;
+  padding: var(--sp-1) var(--sp-2);
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  font-weight: 900;
+  line-height: .9;
+  text-align: center;
+  border-radius: var(--rad-sm);
+}
+
+/* Cores das Tags */
+.tag--health    { background-color: var(--color-green-dark);  color: var(--txt-white); }
+.tag--nutrition { background-color: var(--color-yellow);      color: var(--txt-white); }
+.tag--study     { background-color: var(--color-blue-light);  color: var(--txt-white); }
+.tag--training  { background-color: var(--color-red-light);   color: var(--txt-white); }
+.tag--work      { background-color: var(--color-blue);        color: var(--txt-white); }
+.tag--other     { background-color: var(--border-grey);       color: var(--txt-white); }

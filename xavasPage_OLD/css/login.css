@@ -1,0 +1,33 @@
+body, main {
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--sp-12);
+    align-items: center;
+}
+
+#login-header {
+    border-bottom: solid 1px var(--border-light-grey);
+    margin-bottom: var(--sp-4);
+    padding: var(--sp-1) var(--sp-6);
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.alert-error {
+    font-size: 0.7rem; /* Adicionado o 0 antes do ponto para manter o padrão */
+    color: var(--color-red-light);
+    border: solid 1px var(--color-red-light);
+    padding: var(--sp-1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+    transition: .3s;
+}
+
+#error-message {
+    display: none;
+    transform: scale(0);
+    transition: transform 0.2s ease-out;
+    transform-origin: center;
+}

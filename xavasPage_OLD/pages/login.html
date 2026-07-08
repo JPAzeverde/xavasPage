@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUTH_xvs</title>
+    
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+<body id="login-page" class="layout-auth">
+
+
+    <main id="login-container" class="auth-box">
+        <header id="login-header" class="auth-header">
+            <h1 id="login-title" class="title-auth">Authentication</h1>
+        </header>
+
+        <form id="login-form" class="card auth-form ">
+            <div id="group-user" class="input-group">
+                <input type="text" id="input-username" class="input-field" placeholder="user">
+            </div>
+
+            <div id="group-pass" class="input-group">
+                <input type="password" id="input-password" class="input-field" placeholder="********">
+            </div>
+
+            <div id="error-message" class="alert-error">
+                Invalid user or password!
+            </div>
+
+            <div id="group-submit" class="action-group">
+                <button type="submit" id="btn-login" class="btn-primary">Confirm</button>
+            </div>
+        </form>
+    </main>
+
+    <script src="../js/login.js"></script>
+</body>
+</html>

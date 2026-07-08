@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logistc_xvs</title>
+
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/supplies.css">
+
+    <script src="js/guard.js"></script>
+</head>
+
+<body id="home-page" class="layout-dashboard">
+
+    <header id="main-header" class="header-container">
+        <div id="header-01">
+            <a href="../index.html" id="logo-header">
+                <h1 id="welcome-title">HUB</h1>
+            </a>
+            <p id="welcome-subtitle">Online</p>
+        </div>
+
+        <button id="menu-header" class="btn-primary btn-menu">Menu</button>
+
+        <div id="header-02">
+            <a href="protocol.html" class="link-header">Protocol</a>
+            <a href="operations.html" class="link-header">Operations</a>
+            <a href="enternaiment.html" class="link-header">Entertainment</a>
+            <a href="supplies.html" class="link-header">Supplies</a>
+            <a href="training.html" class="link-header" style="display: none;">Training</a>
+            <button id="btn-logout" class="btn-danger">Exit</button>
+        </div>
+    </header>
+    <section id="supplies-hero" class="container protocol-hero">
+        <h1>Supplies</h1>
+        <button id="btn-toggle-logistic-form" class="btn-primary">+ Item</button>
+    </section>
+    <section id="supplies-form-section" class="supplies-form-section">
+        <form id="supplies-form" class="supplies-form">
+            <div class="form-group">
+                <input type="text" id="supplies" name="supplies" placeholder="Item" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="brand" name="brand" placeholder="Brand" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="url" name="url" placeholder="Imagem(url)" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="qnt" name="qnt" placeholder="Quantity(ml/un/g)" required>
+            </div>
+            
+            
+            <div class="form-group">
+                <select id="tag" name="tag" class="form-select" required>
+                    <option value="">Select a tag</option>
+                    <option value="health">Health</option>
+                    <option value="nutrition">Nutrition</option>
+                    <option value="hygiene">Hygiene</option>
+                    <option value="cleaning">Cleaning</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group form-group-checkbox">
+                <p class="label-checkbox">Opened Today?</p>
+                <input type="checkbox" id="aceitar" class="input-checkbox">
+            </div>
+            
+            
+            <button type="submit" id="btn-submit-supplies" class="btn-primary">ADD</button>
+        </form>
+    </section>
+    <section id="supplies-itens" class="container" style="margin-top: 2rem;">
+        <div class="supply-category">
+            <h3 class="title-category">Stock</h3>
+            <div id="in-stock" class="items-grid"></div>
+        </div>
+        
+        <div class="supply-category">
+            <h3 class="title-category">Opened</h3>
+            <div id="opened" class="items-grid"></div>
+        </div>
+        
+        <div class="supply-category">
+            <h3 class="title-category">Ended</h3>
+            <div id="ended" class="items-grid"></div>
+        </div>
+    </section>
+
+    <div id="product-modal" class="modal-hidden">
+        <div class="modal-content card">
+            <h3 id="modal-title">Product</h3>
+            <p id="modal-desc" style="margin-bottom: 1rem; font-size: 0.9rem;"></p>
+            
+            <div class="form-group" id="modal-date-group">
+                <label id="modal-date-label">Date:</label>
+                <input type="date" id="modal-date" style="background: var(--bg-black);">
+            </div>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button id="modal-btn-confirm" class="btn-primary" style="flex: 1;">Save</button>
+                <button id="modal-btn-close" class="btn-ghost" style="flex: 1;">Cancel</button>
+            </div>
+            
+            <button id="modal-btn-delete" class="btn-danger" style="width: 100%; margin-top: 1rem; border-color: var(--color-red-dark);">🗑️ Excluir Produto</button>
+        </div>
+    </div>
+
+
+    <script src="../js/supplies.js"></script>
+
+    <script>
+        document.getElementById('btn-logout').addEventListener('click', function() {
+            sessionStorage.removeItem('portal_pessoal_auth');
+            window.location.replace('pages/login.html');
+        });
+    </script>
+
+</body>
+</html>

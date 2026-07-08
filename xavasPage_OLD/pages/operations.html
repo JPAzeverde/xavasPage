@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operations_xvs</title>
+
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/operations.css">
+    <script src="../js/guard.js"></script>
+</head>
+
+<body id="home-page" class="layout-dashboard">
+
+    <header id="main-header" class="header-container">
+        <div id="header-01">
+            <a href="../index.html" id="logo-header">
+                <h1 id="welcome-title">HUB</h1>
+            </a>
+            <p id="welcome-subtitle">Online</p>
+        </div>
+
+        <button id="menu-header" class="btn-primary btn-menu">Menu</button>
+
+        <div id="header-02">
+            <a href="protocol.html" class="link-header">Protocol</a>
+            <a href="operations.html" class="link-header">Operations</a>
+            <a href="enternaiment.html" class="link-header">Entertainment</a>
+            <a href="supplies.html" class="link-header">Supplies</a>
+            <a href="training.html" class="link-header" style="display: none;">Training</a>
+            <button id="btn-logout" class="btn-danger">Exit</button>
+        </div>
+    </header>
+    
+    <main class="container">
+        <div class="operations-header">
+            <h2>Operations</h2>
+            <button class="btn-primary" id="btn-add-task">+ Objective</button>
+        </div>
+
+        <div class="kanban-board">
+            <div class="kanban-column" id="col-todo">
+                <div class="column-header">
+                    <h3>Not Started</h3>
+                    <span class="task-count">0</span>
+                </div>
+                <div class="column-content" data-status="todo"></div>
+            </div>
+
+            <div class="kanban-column" id="col-in-progress">
+                <div class="column-header">
+                    <h3 style="color: var(--color-blue)">Active</h3>
+                    <span class="task-count">0</span>
+                </div>
+                <div class="column-content" data-status="in-progress"></div>
+            </div>
+
+            <div class="kanban-column" id="col-done">
+                <div class="column-header">
+                    <h3 style="color: var(--color-green-light)">Completed</h3>
+                    <span class="task-count">0</span>
+                </div>
+                <div class="column-content" data-status="done"></div>
+            </div>
+
+            <div class="kanban-column" id="col-dropped">
+                <div class="column-header">
+                    <h3 style="color: var(--color-red-light)">Aborted</h3>
+                    <span class="task-count">0</span>
+                </div>
+                <div class="column-content" data-status="dropped"></div>
+            </div>
+        </div>
+    </main>
+
+    <div id="task-modal" class="modal-overlay">
+        <div class="modal-content card">
+            <div class="modal-header">
+                <input type="text" id="modal-title" placeholder="Nome do Projeto..." class="title-input">
+                <button class="btn-danger-mini" id="btn-close-modal">X</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="modal-props">
+                    <div class="prop-row">
+                        <label>Status</label>
+                        <select id="modal-status">
+                            <option value="todo">Não Iniciado</option>
+                            <option value="in-progress">Em Andamento</option>
+                            <option value="done">Finalizado</option>
+                            <option value="dropped">Dropado</option>
+                        </select>
+                    </div>
+                    
+                    <div class="prop-row">
+                        <label>Tag</label>
+                        <select id="modal-tag">
+                            <option value="">Sem Tag</option>
+                            <option value="unilavras">Unilavras</option>
+                            <option value="solargun">SolarGun</option>
+                            <option value="pessoal">Pessoal</option>
+                        </select>
+                    </div>
+
+                    <div class="prop-row">
+                        <label>Prazo</label>
+                        <input type="date" id="modal-deadline">
+                    </div>
+                </div>
+
+                <div class="modal-editor">
+                    <label>Detalhes & Links (Estilo Notion)</label>
+                    <textarea id="modal-details" placeholder="Adicione links, checklist, anotações de progresso..."></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-danger" id="btn-delete-task">Deletar</button>
+                <button class="btn-primary" id="btn-save-task">Salvar Alterações</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/operations.js"></script>
+    <script>
+        document.getElementById('btn-logout').addEventListener('click', function() {
+            sessionStorage.removeItem('portal_pessoal_auth');
+            window.location.replace('pages/login.html');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,281 @@
+/* =========================================
+   1. SHARED HEADER
+========================================= */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--sp-4);
+    border-bottom: 1px solid var(--border-medium);
+    position: relative;
+}
+
+.header__brand {
+    display: flex;
+    flex-direction: column;
+}
+
+.header__status {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: -4px;
+}
+
+.header__nav {
+    display: flex;
+    gap: var(--sp-4);
+    align-items: center;
+}
+
+.header__link {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    position: relative;
+    padding-bottom: var(--sp-1);
+}
+
+.header__link::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 1px;
+    background-color: var(--text-primary);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--tr-base);
+}
+
+.header__link:hover::after,
+.header__link--active::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.header__menu-toggle {
+    display: none;
+}
+
+/* Responsividade do Menu */
+@media (max-width: 768px) {
+    .header__menu-toggle { display: inline-flex; }
+    .header__nav {
+        display: none;
+        position: absolute;
+        top: 100%; right: var(--sp-4); left: var(--sp-4);
+        background-color: var(--bg-secondary);
+        border: 1px solid var(--border-medium);
+        flex-direction: column;
+        padding: var(--sp-4);
+        z-index: 100;
+    }
+    .header__nav.is-open { display: flex; }
+}
+
+/* =========================================
+   2. OPERATIONS KANBAN
+========================================= */
+.operations__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--sp-6) 0 var(--sp-4);
+}
+
+.kanban {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--sp-4);
+    padding-bottom: var(--sp-8);
+    align-items: start;
+}
+
+.kanban__col {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--rad-md);
+    display: flex;
+    flex-direction: column;
+    min-height: 400px;
+    transition: border-color var(--tr-fast);
+}
+
+.kanban__col.is-dragover {
+    border-style: dashed;
+    border-color: var(--text-primary);
+    background-color: var(--bg-tertiary);
+}
+
+.kanban__col-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--sp-3);
+    border-bottom: 1px solid var(--border-medium);
+}
+
+.kanban__count {
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    padding: 2px var(--sp-2);
+    border-radius: var(--rad-sm);
+    font-size: 0.75rem;
+    border: 1px solid var(--border-dark);
+}
+
+.kanban__content {
+    padding: var(--sp-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    flex-grow: 1;
+}
+
+/* =========================================
+   3. TASK CARDS
+========================================= */
+.task-card {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--rad-sm);
+    padding: var(--sp-3);
+    cursor: grab;
+    transition: transform var(--tr-fast), border-color var(--tr-fast);
+}
+
+.task-card:active {
+    cursor: grabbing;
+}
+
+.task-card:hover {
+    border-color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+.task-card.is-dragging {
+    opacity: 0.5;
+    border-style: dashed;
+    transform: scale(0.98);
+}
+
+.task-card__title {
+    font-size: 1rem;
+    margin-bottom: var(--sp-2);
+}
+
+.task-card__tag {
+    display: inline-block;
+    padding: 2px var(--sp-2);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--rad-sm);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: var(--sp-2);
+}
+
+/* Identificadores Monocromáticos Visuais */
+.tag--unilavras { border-color: var(--text-primary); color: var(--text-primary); }
+.tag--solargun { border-style: dashed; }
+.tag--pessoal { background-color: var(--text-primary); color: var(--bg-primary); border: none; }
+
+.task-card__date {
+    display: block;
+    margin-top: var(--sp-2);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* =========================================
+   4. MODAL & EDITOR
+========================================= */
+.modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition: opacity var(--tr-base);
+}
+
+.modal--hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal__content {
+    width: 90%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-5);
+    background-color: var(--bg-primary);
+}
+
+.modal__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-medium);
+    padding-bottom: var(--sp-3);
+}
+
+.modal__title-input {
+    background: transparent;
+    color: var(--text-primary);
+    border: none;
+    border-bottom: 1px solid transparent;
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding: var(--sp-1) 0;
+    outline: none;
+    width: 100%;
+    margin-right: var(--sp-4);
+    font-family: inherit;
+}
+
+.modal__title-input:focus {
+    border-bottom-color: var(--text-primary);
+}
+
+.modal__props {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    background-color: var(--bg-secondary);
+    padding: var(--sp-4);
+    border-radius: var(--rad-sm);
+    border: 1px solid var(--border-medium);
+}
+
+.modal__prop-row {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    align-items: center;
+}
+
+.modal__editor {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    margin-top: var(--sp-4);
+}
+
+.modal__textarea {
+    min-height: 250px;
+    resize: vertical;
+}
+
+.modal__footer {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--border-medium);
+    padding-top: var(--sp-4);
+}

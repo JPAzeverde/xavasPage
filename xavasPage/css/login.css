@@ -1,33 +1,71 @@
-body, main {
-    display: flex;
-    flex-direction: column;
-    margin-top: var(--sp-12);
-    align-items: center;
-}
-
-#login-header {
-    border-bottom: solid 1px var(--border-light-grey);
-    margin-bottom: var(--sp-4);
-    padding: var(--sp-1) var(--sp-6);
-    text-align: center;
-    text-transform: uppercase;
-}
-
-.alert-error {
-    font-size: 0.7rem; /* Adicionado o 0 antes do ponto para manter o padrão */
-    color: var(--color-red-light);
-    border: solid 1px var(--color-red-light);
-    padding: var(--sp-1);
+/* =========================================
+   PAGE: LOGIN
+========================================= */
+.page-auth {
     display: flex;
     justify-content: center;
     align-items: center;
-    line-height: 1;
-    transition: .3s;
 }
 
-#error-message {
+.auth {
+    width: 100%;
+    max-width: 400px;
+    padding: var(--sp-4);
+}
+
+.auth__box {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-6);
+}
+
+.auth__header {
+    text-align: center;
+    border-bottom: 1px solid var(--border-medium);
+    padding-bottom: var(--sp-3);
+}
+
+.auth__title {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.auth__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-4);
+}
+
+.auth__group {
+    display: flex;
+    flex-direction: column;
+}
+
+.auth__actions {
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--sp-2);
+}
+
+.auth__submit {
+    width: 100%;
+}
+
+.auth__alert {
+    font-size: 0.875rem;
+    color: var(--bg-primary);
+    background-color: var(--text-primary);
+    padding: var(--sp-2);
+    text-align: center;
+    border-radius: var(--rad-sm);
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: opacity var(--tr-base), transform var(--tr-base);
+    transform-origin: top;
+}
+
+.auth__alert--hidden {
     display: none;
-    transform: scale(0);
-    transition: transform 0.2s ease-out;
-    transform-origin: center;
+    opacity: 0;
+    transform: scaleY(0);
 }

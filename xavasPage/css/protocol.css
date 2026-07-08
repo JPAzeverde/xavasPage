@@ -1,191 +1,215 @@
-/* ============================================================
-   1. HERO SECTION
-   ============================================================ */
-.protocol-hero {
-  height: 10vh;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  text-transform: uppercase;
+/* =========================================
+   1. SHARED HEADER (Mesmo das anteriores)
+========================================= */
+.header { display: flex; justify-content: space-between; align-items: center; padding: var(--sp-4); border-bottom: 1px solid var(--border-medium); position: relative; }
+.header__brand { display: flex; flex-direction: column; }
+.header__status { text-transform: uppercase; letter-spacing: 1px; margin-top: -4px; }
+.header__nav { display: flex; gap: var(--sp-4); align-items: center; }
+.header__link { font-weight: 600; text-transform: uppercase; font-size: 0.875rem; position: relative; padding-bottom: var(--sp-1); }
+.header__link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background-color: var(--text-primary); transform: scaleX(0); transform-origin: right; transition: transform var(--tr-base); }
+.header__link:hover::after, .header__link--active::after { transform: scaleX(1); transform-origin: left; }
+.header__menu-toggle { display: none; }
+@media (max-width: 768px) {
+    .header__menu-toggle { display: inline-flex; }
+    .header__nav { display: none; position: absolute; top: 100%; right: var(--sp-4); left: var(--sp-4); background-color: var(--bg-secondary); border: 1px solid var(--border-medium); flex-direction: column; padding: var(--sp-4); z-index: 100; }
+    .header__nav.is-open { display: flex; }
 }
 
-/* ============================================================
-   2. TASK FORM
-   ============================================================ */
-.task-form-section {
-  display: flex;
-  flex-direction: column;
-  max-width: 200px;
-  margin: 0 auto;
-  padding: var(--sp-2) 0;
+.protocol__hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--sp-6) 0 var(--sp-4);
+    border-bottom: 1px solid var(--border-dark);
 }
 
-.task-form, 
-.form-group {
-  width: 100%;
-  transition: 1s;
+/* =========================================
+   2. HERO & FORM
+========================================= */
+
+
+/* =========================================
+   3. SCHEDULE GRID
+========================================= */
+.protocol__schedule {
+    width: 100%;
+    padding: var(--sp-5) 0 var(--sp-12);
+    overflow-x: auto;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
+.schedule {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-width: 800px;
+    border: 1px solid var(--border-medium);
+    border-radius: var(--rad-sm);
+    background-color: var(--bg-secondary);
 }
 
-.form-group label {
-  font-size: 14px;
-  text-align: left;
-  color: #fff;
-  width: 50%;
+.schedule__time-col {
+    display: flex;
+    flex-direction: column;
+    width: 60px;
+    flex-shrink: 0;
+    border-right: 1px solid var(--border-medium);
 }
 
-.form-group input {
-  font-size: 14px;
-  text-align: left;
-  color: #fff;
+.schedule__col {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: calc(100% / 7);
+    border-right: 1px solid var(--border-dark);
 }
 
-.form-input-time {
-  width: 80px;
+.schedule__col:last-child {
+    border-right: none;
 }
 
-.form-select {
-  
+.schedule__header {
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-medium);
+    padding: var(--sp-2) 0;
+    font-size: 0.875rem;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* ============================================================
-   3. SCHEDULE GRID (Tabela da Semana)
-   ============================================================ */
-.protocol-schedule {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding-bottom: var(--sp-12);
+.schedule__cell {
+    min-height: 30px;
+    border-bottom: 1px dashed var(--border-dark);
+    padding: var(--sp-1);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
 
-.schedule-grid {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  border: solid 1px var(--border-medium-grey);
+.schedule__cell:last-child {
+    border-bottom: none;
 }
 
-/* Colunas (Dias e Horas) */
-.schedule-grid__time-col {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  border-right: solid 1px var(--border-grey);
+.schedule__hour-label {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-align: center;
 }
 
-.schedule-grid__day-col {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--bg-grey);
-  border-right: solid 1px var(--border-medium-grey);
-  line-height: 1;
-  width: 100%;
+/* =========================================
+   4. TASK CARDS (Monochrome Variations)
+========================================= */
+.protocol-card {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--rad-sm);
+    padding: var(--sp-1) var(--sp-2);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    transition: border-color var(--tr-fast);
 }
 
-.schedule-grid__day-col:last-of-type {
-  border: none;
+.protocol-card:hover {
+    border-color: var(--text-primary);
 }
 
-.schedule-grid__day-title {
-  font-size: 18px;
-  text-align: center;
-  text-transform: uppercase;
-  color: var(--txt-light-grey);
-  border-bottom: solid 1px #fff;
-  width: 100%;
-  padding: var(--sp-1) 0;
-  font-weight: 400;
+.protocol-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-/* Células de tempo */
-.schedule-grid__hour-cell {
-  height: 20px;
-  width: 100%;
-  border-bottom: dotted 1px var(--border-grey);
-  padding: var(--sp-1);
+.protocol-card__title {
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    line-height: 1;
+    word-break: break-word;
 }
 
-.schedule-grid__hour-label {
-  font-size: 10px;
+.protocol-card__footer {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+    color: var(--text-secondary);
 }
 
-/* ============================================================
-   4. TASK CARDS (Os bloquinhos de tarefas)
-   ============================================================ */
-.task-card {
-  background-color: var(--bg-black);
-  padding: var(--sp-1);
-  display: flex;
-  flex-direction: column;
-  margin-bottom: .25rem;
-  gap: .4rem;
-  border: solid 1px #000;
-  border-radius: var(--rad-sm);
-  height: max-content;
+.protocol-card__time {
+    font-size: 0.7rem;
 }
 
-.task-card:hover {
-  border: solid 1px var(--border-grey);
+.protocol-card__tag {
+    font-size: 0.6rem;
+    padding: 1px var(--sp-1);
+    width: fit-content;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-radius: 2px;
+    margin-top: 2px;
 }
 
-.task-card__header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+/* Monochrome Tag Variations */
+.tag--work      { background-color: var(--text-primary); color: var(--bg-primary); }
+.tag--training  { border: 1px dashed var(--text-primary); }
+.tag--study     { border: 1px dotted var(--text-secondary); color: var(--text-secondary); }
+.tag--health    { border-left: 2px solid var(--text-primary); }
+.tag--nutrition { border-right: 2px solid var(--text-primary); text-align: right; }
+.tag--personal  { background-color: var(--border-medium); color: var(--text-primary); }
+.tag--hygiene   { border-bottom: 1px solid var(--text-primary); }
+.tag--cleaning  { text-decoration: underline; }
+.tag--other     { color: var(--text-muted); }
+
+/* =========================================
+   5. MODAL
+========================================= */
+.modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity var(--tr-base);
 }
 
-.task-card__title {
-  font-size: 16px;
-  color: var(--txt-white);
+.modal--hidden {
+    opacity: 0;
+    pointer-events: none;
 }
 
-.task-card__footer {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: .5rem;
+.modal__content {
+    width: 90%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-primary);
 }
 
-.task-card__time {
-  font-size: 12px;
+.modal__header {
+    border-bottom: 1px solid var(--border-medium);
+    padding-bottom: var(--sp-3);
+    margin-bottom: var(--sp-3);
 }
 
-.task-card__time-separator {
-  font-size: 10px;
+.modal__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
 }
 
-/* ============================================================
-   5. TAGS & MODIFIERS
-   ============================================================ */
-.task-card__tag {
-  font-size: 10px;
-  padding: var(--sp-1) var(--sp-2);
-  width: fit-content;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-transform: uppercase;
-  font-weight: 900;
-  line-height: .9;
-  text-align: center;
-  border-radius: var(--rad-sm);
+.modal__footer {
+    display: flex;
+    gap: var(--sp-2);
+    margin-top: var(--sp-5);
+    border-top: 1px solid var(--border-medium);
+    padding-top: var(--sp-4);
 }
 
-/* Cores das Tags */
-.tag--health    { background-color: var(--color-green-dark);  color: var(--txt-white); }
-.tag--nutrition { background-color: var(--color-yellow);      color: var(--txt-white); }
-.tag--study     { background-color: var(--color-blue-light);  color: var(--txt-white); }
-.tag--training  { background-color: var(--color-red-light);   color: var(--txt-white); }
-.tag--work      { background-color: var(--color-blue);        color: var(--txt-white); }
-.tag--other     { background-color: var(--border-grey);       color: var(--txt-white); }
+.modal__footer > button {
+    flex: 1;
+}

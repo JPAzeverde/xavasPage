@@ -1,0 +1,582 @@
+/* =========================================
+   1. BARRA DE LINKS RÁPIDOS
+========================================= */
+#quick-links-bar {
+    display: flex;
+    flex-direction: row; 
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    padding: var(--sp-2) 0;
+    background-color: var(--bg-dark-grey);
+    border-bottom: solid 1px var(--border-dark-grey);
+}
+
+.quick-link-item {
+    display: inline-block;
+}
+
+.quick-link-item svg {
+    width: 20px;  
+    height: auto;
+    fill: #FFFFFF;
+    transition: fill 0.3s ease-in-out; 
+    display: block;
+}
+
+.quick-link-item.brand-whatsapp:hover svg {
+    fill: #25D366; 
+}
+
+.quick-link-item.brand-youtube:hover svg {
+    fill: #FF0000;
+}
+
+.quick-link-item.brand-crunchyroll:hover svg {
+    fill: #FE6313;
+}
+
+
+/* =========================================
+   2. CONTEÚDO PRINCIPAL DO DASHBOARD
+========================================= */
+#dashboard-main-content {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 2rem;
+    padding: var(--sp-10) 0;
+    border-bottom: solid 1px var(--border-grey);
+}
+
+
+/* =========================================
+   3. FEED DE NOTÍCIAS
+========================================= */
+#news-feed-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    justify-content: center;
+    align-items: start;
+}
+
+.news-card {
+    background-color: var(--bg-grey);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: var(--sp-3);
+    border: solid 2px var(--border-light-grey);
+    border-radius: var(--rad-sm);
+    height: 100%;
+}
+
+.news-card-title {
+    font-size: 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: var(--txt-white);
+    height: 60px;
+}
+
+.news-card-summary {
+    line-height: .9;
+    color: var(--txt-light-grey);
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.news-card:hover {
+    margin-top: -4px;
+    margin-bottom: 4px;
+    background-color: var(--bg-black);
+}
+
+.news-card:hover .news-card-title {
+    color: var(--txt-light-grey);
+}
+
+.news-card:hover .news-card-summary {
+    color: var(--txt-medium-grey);
+}
+
+
+/* =========================================
+   4. WIDGET DE CLIMA
+========================================= */
+#weather-widget {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#weather-cards-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: var(--sp-2);
+}
+
+.weather-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1; /* Valor mantido do original, embora recomendável usar px/rem */
+    border: solid 1.5px var(--border-light-grey);
+    border-radius: var(--rad-sm);
+    padding: var(--sp-2);
+    width: 100%;
+}
+.weather-card:hover {
+    margin-top: -3px;
+    margin-bottom: 3px;
+}
+
+.weather-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: var(--sp-3);
+}
+
+.weather-city-name {
+    font-size: 16px;
+}
+
+.weather-temp-current, 
+.weather-temp-range, 
+.weather-sun-time {
+    font-size: 13px;
+    line-height: 1.2;
+}
+
+/* Previsões Futuras */
+.weather-forecast-list {
+    display: flex;
+    gap: 4px;
+}
+
+.weather-forecast-day {
+    border: solid 1.1px var(--border-grey);
+    border-radius: var(--rad-sm);
+    padding: 2px 3px;
+}
+
+.forecast-day-name {
+    font-weight: 600;
+    line-height: 1;
+}
+
+.forecast-time, 
+.forecast-temp-range, 
+.forecast-condition {
+    font-size: 12px;
+    line-height: 1;
+}
+
+/* Formulário de Adicionar Cidade */
+.weather-add-city-form {
+    display: flex;
+    gap: 1rem;
+}
+
+.weather-error-msg {
+    display: none;
+    color: var(--color-red-light);
+}
+#nexts-protocol-sections{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: var(--sp-5) 0 ;
+    border-bottom: solid 1px var(--border-grey);
+    width: 100%;
+}
+#nexts-protocol {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: var(--sp-5) 0 var(--sp-1);
+    overflow-x: auto; /* Adicionado para permitir scroll horizontal caso tenha muitas tarefas */
+}
+.title-daily-protocol{
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--txt-light-grey);
+    font-size: 16px;
+    margin-bottom: -.8rem;
+    z-index: 9999;
+}
+
+.card-protocol-home {
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+    gap: .5rem;
+    min-width: 120px; /* Garante um tamanho mínimo legal para o card */
+    transition: 0.3s ease; /* Adicionado para deixar o hover mais suave */
+}
+
+.card-protocol-home:hover {
+    transform: translateY(-5px); /* Transform é mais otimizado que margin para animações de hover */
+}
+
+.card-protocol-home.mark {
+    opacity: 0.6;
+    border-color: var(--bg-black); /* Opcional: Borda indicando sucesso */
+}
+
+.card-protocol-home.mark .task-protocol {
+    text-decoration: line-through;
+    color: var(--txt-grey);
+}
+
+.card-protocol-home.mark .tag-protocol {
+    filter: grayscale(50%); /* Tira a cor da tag para dar foco às pendentes */
+}
+
+.task-protocol {
+    text-align: center;
+    color: var(--txt-white);
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+/* Estilo base da tag no Dashboard */
+.tag-protocol {
+    padding: var(--sp-1) var(--sp-2);
+    font-size: 13px;
+    font-weight: 900;
+    border-radius: var(--rad-sm);
+    text-transform: uppercase;
+    
+    /* Fundo transparente ou escuro para dar destaque apenas ao texto */
+    background-color: transparent; 
+    
+    /* Opcional: Adicionar uma bordinha sutil com a cor do texto também fica muito bom */
+    /* border: 1px solid currentColor; */
+}
+
+/* Cores do texto de acordo com a tag. 
+   Estou usando as variáveis que você já tinha e sugerindo cores hexadecimais para as tags extras do seu form.
+*/
+.tag--health    { color: var(--color-green-dark); }
+.tag--nutrition { color: var(--color-yellow); }
+.tag--study     { color: var(--color-blue-light); }
+.tag--training  { color: var(--color-red-light); }
+.tag--work      { color: var(--color-blue); }
+
+/* Cores sugeridas para as outras tags que estavam no seu HTML original */
+.tag--personal  { color: #ff9fb4; } /* Rosa claro */
+.tag--hygiene   { color: #00ced1; } /* Ciano */
+.tag--cleaning  { color: #f4a460; } /* Areia/Laranja claro */
+.tag--other     { color: var(--txt-light-grey); }
+
+.hour-protocol {
+    font-size: 10px;
+    color: var(--txt-light-grey); /* Sugestão para dar um leve contraste com o branco principal */
+}
+
+
+#supplies-home-sections{
+    padding: var(--sp-5) 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-bottom: solid 1px var(--border-grey);
+}
+.header-supplies-home{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+/* =========================================
+   SEÇÃO SUPPLIES HOME (Mini-cards)
+========================================= */
+#supplies-home {
+    margin-top: var(--sp-3);
+    margin-bottom: var(--sp-6);
+}
+
+.supplies-home-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+    align-items: center;
+}
+
+.mini-supply-card {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    background-color: var(--bg-dark-grey);
+    border: 1px solid var(--border-dark-grey);
+    border-radius: var(--rad-md);
+    padding: var(--sp-1) var(--sp-2);
+    box-shadow: var(--sh-sm);
+    min-width: 140px;
+    max-width: 180px;
+}
+
+.mini-supply-card:hover {
+    border-color: var(--border-medium-grey);
+}
+
+/* Identificadores visuais baseados no status */
+.mini-status-opened {
+    border-left: 3px solid var(--color-yellow);
+}
+
+.mini-status-stock {
+    border-left: 3px solid var(--color-blue);
+}
+
+.mini-supply-img {
+    width: 40px;
+    height: 60px;
+    border-radius: var(--rad-sm);
+    background-size: cover;
+    background-position: top;
+    border: 1px solid var(--border-grey);
+    flex-shrink: 0;
+}
+
+.mini-supply-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    margin-top: auto;
+}
+
+.mini-supply-name {
+    font-size: 14px;
+    color: var(--txt-white);
+    font-weight: 600;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+}
+
+.mini-supply-tag {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--txt-medium-grey);
+    line-height: 1.2;
+}
+
+.empty-supplies-msg {
+    font-size: 14px;
+    color: var(--txt-medium-grey);
+    font-style: italic;
+}
+
+/* =========================================
+   FORMULÁRIO SUPPLIES NA HOME
+========================================= */
+#home-supplies-form-container {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    max-width: 300px;
+    margin: 0 auto;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, margin 0.5s ease;
+}
+
+#home-supplies-form-container.show {
+    max-height: 800px;
+    opacity: 1;
+    margin: var(--sp-4) 0;
+}
+
+#home-supplies-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* =========================================
+   SEÇÃO SUPPLIES HOME (Mini-cards - Colunas)
+========================================= */
+
+/* Novo container flex para dividir em duas colunas */
+.supplies-home-columns {
+    display: flex;
+    gap: 2rem;
+    width: 100%;
+    align-items: flex-start;
+}
+
+@media (max-width: 768px) {
+    .supplies-home-columns {
+        flex-direction: column; /* Coloca uma embaixo da outra em telas menores */
+    }
+}
+
+.supplies-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    border: solid 1px var(--border-light-grey);
+    padding: var(--sp-2) var(--sp-3);
+}
+
+.column-title {
+    color: var(--txt-medium-grey); /* ou --txt-white dependendo do seu tema */
+    font-size: 14px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-grey);
+    padding-bottom: 0.5rem;
+    margin: 0;
+}
+
+/* O grid dentro de cada coluna */
+.supplies-home-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+    align-items: center;
+}
+
+.mini-supply-card {
+    position: relative; /* Necessário para o hover dos botões */
+    overflow: hidden; /* Evita que o overlay vaze dos cantos arredondados */
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    background-color: var(--bg-dark-grey);
+    border: 1px solid var(--border-dark-grey);
+    border-radius: var(--rad-md);
+    padding: var(--sp-1) var(--sp-2);
+    box-shadow: var(--sh-sm);
+    min-width: 140px;
+    max-width: 180px;
+}
+
+.mini-supply-card:hover {
+    border-color: var(--border-medium-grey);
+}
+
+/* =========================================
+   BOTÕES DE AÇÃO RÁPIDA (HOVER)
+========================================= */
+
+/* Fundo escuro que cobre o card */
+.mini-supply-action-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    z-index: 2;
+}
+
+.mini-supply-card:hover .mini-supply-action-overlay {
+    opacity: 1;
+}
+
+.mini-supply-action-btn {
+    padding: 3px 6px;
+    border: none;
+    border-radius: var(--rad-sm, 4px);
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: transform 0.1s ease;
+}
+
+.mini-supply-action-btn:active {
+    transform: scale(0.95);
+}
+
+.btn-open {
+    background-color: var(--color-blue);
+    color: #fff;
+}
+
+.btn-finish {
+    background-color: var(--color-yellow);
+    color: #000; /* Texto preto tem contraste melhor no amarelo */
+}
+
+/* =========================================
+   OBJECTIVES HOME (Tarefas em andamento)
+========================================= */
+#objectives-home-section{
+    padding: var(--sp-10) 0;
+}
+#objectviesHome {
+    padding: var(--sp-3) 0 var(--sp-6) 0;
+    display: flex;
+    justify-content: center;
+}
+
+.objectives-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+    width: 100%;
+}
+
+.objective-card {
+    background-color: var(--bg-dark-grey);
+    border: 1px solid var(--border-dark-grey);
+    border-left: 3px solid var(--color-blue); /* Linha azul indicando 'Em Andamento' */
+    border-radius: var(--rad-sm);
+    padding: var(--sp-3);
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-1);
+    box-shadow: var(--sh-sm);
+    transition: var(--tr-fast);
+}
+
+.objective-card:hover {
+    border-color: var(--border-medium-grey);
+    border-left-color: var(--color-blue);
+    transform: translateY(-2px);
+}
+
+.objective-title {
+    color: var(--txt-white);
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.objective-date {
+    font-size: 12px;
+    color: var(--txt-medium-grey);
+    margin-top: auto;
+}
+
+.empty-objectives {
+    color: var(--txt-medium-grey);
+    font-size: 14px;
+    font-style: italic;
+    text-align: center;
+    width: 100%;
+    padding: var(--sp-4) 0;
+}

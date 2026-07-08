@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entertainment_xvs</title>
+
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/enternaiment.css">
+    
+    <style>
+       
+    </style>
+</head>
+
+<body id="home-page" class="layout-dashboard">
+
+    <header id="main-header" class="header-container">
+        <div id="header-01">
+            <a href="../index.html" id="logo-header">
+                <h1 id="welcome-title">HUB</h1>
+            </a>
+            <p id="welcome-subtitle">Online</p>
+        </div>
+        <button id="menu-header" class="btn-primary btn-menu">Menu</button>
+        <div id="header-02">
+            <a href="protocol.html" class="link-header">Protocol</a>
+            <a href="operations.html" class="link-header">Operations</a>
+            <a href="enternaiment.html" class="link-header">Entertainment</a>
+            <a href="supplies.html" class="link-header">Supplies</a>
+            <button id="btn-logout" class="btn-danger">Exit</button>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <section id="entertainment-hero" class="entertainment-hero">
+            <div style="display: flex; align-items: center; gap: var(--sp-3);">
+                <button id="btn-back" class="btn-ghost" style="display: none;">&larr; Voltar</button>
+                <h1 id="page-title">Entertainment</h1>
+            </div>
+            
+            <div class="hero-actions" id="action-buttons" style="display: none;">
+                <button id="btn-new-item" class="btn-primary">+ Novo Item</button>
+            </div>
+        </section>
+
+        <section id="view-categories" class="grid-layout grid-categories">
+            <div class="card category-card category-create" id="btn-new-category">
+                <h3>+ Nova Categoria</h3>
+            </div>
+        </section>
+
+        <section id="view-category-details">
+            <div class="grid-layout grid-stats">
+                <div class="mini-card">
+                    <p>Não Iniciados</p>
+                    <h2 id="count-todo">0</h2>
+                </div>
+                <div class="mini-card">
+                    <p>Em Andamento</p>
+                    <h2 class="ready" id="count-in-progress">0</h2>
+                </div>
+                <div class="mini-card">
+                    <p>Dropados</p>
+                    <h2 style="color: var(--color-red-light);" id="count-dropped">0</h2>
+                </div>
+                <div class="mini-card">
+                    <p>Finalizados</p>
+                    <h2 style="color: var(--color-yellow);" id="count-done">0</h2>
+                </div>
+            </div>
+
+            <div class="kanban-board">
+                <div class="kanban-column" id="col-todo">
+                    <h3 class="kanban-header">Não Iniciado</h3>
+                    <div class="column-content" data-status="todo" style="min-height: 100%; display:flex; flex-direction:column; gap: var(--sp-3);"></div>
+                </div>
+                <div class="kanban-column" id="col-in-progress">
+                    <h3 class="kanban-header">Em Andamento</h3>
+                    <div class="column-content" data-status="in-progress" style="min-height: 100%; display:flex; flex-direction:column; gap: var(--sp-3);"></div>
+                </div>
+                
+                <div class="kanban-column" id="col-done">
+                    <h3 class="kanban-header">Finalizado</h3>
+                    <div class="column-content" data-status="done" style="min-height: 100%; display:flex; flex-direction:column; gap: var(--sp-3);"></div>
+                </div>
+                <div class="kanban-column" id="col-dropped">
+                    <h3 class="kanban-header">Dropado</h3>
+                    <div class="column-content" data-status="dropped" style="min-height: 100%; display:flex; flex-direction:column; gap: var(--sp-3);"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="modal-category" class="modal-overlay">
+        <div class="modal-content" style="max-width: 600px;">
+            <h2 style="margin-bottom: var(--sp-4);">Nova Categoria</h2>
+            
+            <form id="form-category">
+                <input type="text" id="cat-name" placeholder="Nome da Categoria (Ex: Games)" required>
+                
+                <hr style="border: none; border-bottom: 1px solid var(--border-dark-grey); margin: var(--sp-4) 0; width: 100%;">
+                
+                <h4 style="margin-bottom: var(--sp-2);">Campos Customizados</h4>
+                
+                <div id="cat-fields-list" style="display: flex; flex-direction: column; gap: var(--sp-2); width: 100%; margin-bottom: var(--sp-4);"></div>
+                
+                <div style="background: var(--bg-black); padding: var(--sp-3); border-radius: var(--rad-md); width: 100%; display: flex; flex-direction: column; gap: var(--sp-2);">
+                    <input type="text" id="new-field-label" placeholder="Nome do Campo (Ex: Console)">
+                    
+                    <select id="new-field-type">
+                        <option value="text">Texto</option>
+                        <option value="number">Número</option>
+                        <option value="select">Lista (Select)</option>
+                        <option value="checkbox">Caixa de Seleção (Checkbox)</option>
+                    </select>
+                    
+                    <input type="text" id="new-field-options" placeholder="Opções separadas por vírgula (Apenas para Select)" style="display: none;">
+                    
+                    <button type="button" id="btn-add-field" class="btn-ghost" style="width: fit-content; align-self: flex-end; font-size: 0.8rem;">+ Adicionar Campo</button>
+                </div>
+
+                <div style="display: flex; gap: var(--sp-3); width: 100%; margin-top: var(--sp-4);">
+                    <button type="button" class="btn-ghost btn-close-modal" style="flex: 1;">Cancelar</button>
+                    <button type="submit" class="btn-primary" style="flex: 1;">Salvar Categoria</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-item" class="modal-overlay">
+        <div class="modal-content">
+            <h2 style="margin-bottom: var(--sp-4);" id="modal-title-display">Cadastrar Item</h2>
+            
+            <form id="form-item">
+                <input type="text" id="modal-title" placeholder="Nome do Item" required>
+                <input type="url" id="modal-cover" placeholder="URL da Capa (Imagem) - OBRIGATÓRIO" required>
+
+                <select id="modal-status" required>
+                    <option value="todo">Não Iniciado</option>
+                    <option value="in-progress">Em Andamento</option>
+                    <option value="done">Finalizado</option>
+                    <option value="dropped">Dropado</option>
+                </select>
+
+                <div id="dynamic-fields-container" style="display: flex; flex-direction: column; gap: var(--sp-4); width: 100%; margin-top: var(--sp-2);">
+                    </div>
+
+                <div style="display: flex; gap: var(--sp-3); width: 100%; margin-top: var(--sp-4);">
+                    <button type="button" id="btn-delete-item" class="btn-danger" style="display: none; flex: 0.5;">Excluir</button>
+                    <button type="button" class="btn-ghost btn-close-modal" style="flex: 1;">Cancelar</button>
+                    <button type="button" id="btn-save-item" class="btn-primary" style="flex: 1;">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/enternaiment.js"></script>
+    <script>
+        // Elementos da UI
+        const viewCategories = document.getElementById('view-categories');
+        const viewCategoryDetails = document.getElementById('view-category-details');
+        const pageTitle = document.getElementById('page-title');
+        const btnBack = document.getElementById('btn-back');
+        const actionButtons = document.getElementById('action-buttons');
+        
+        // Modais
+        const modalCategory = document.getElementById('modal-category');
+        const btnNewCategory = document.getElementById('btn-new-category');
+        const btnsCloseModal = document.querySelectorAll('.btn-close-modal');
+
+        // Lógica de Troca de Telas (Views)
+        function openCategory(categoryName) {
+            // Esconde lista de categorias, mostra Kanban
+            viewCategories.style.display = 'none';
+            viewCategoryDetails.style.display = 'block';
+            
+            // Atualiza Header
+            pageTitle.innerText = `Entertainment > ${categoryName}`;
+            btnBack.style.display = 'block';
+            actionButtons.style.display = 'flex';
+            
+            // Aqui futuramente você fará o fetch no banco de dados
+            // para carregar apenas os itens de 'categoryName'
+        }
+
+        btnBack.addEventListener('click', () => {
+            // Esconde Kanban, mostra lista de categorias
+            viewCategoryDetails.style.display = 'none';
+            viewCategories.style.display = 'grid';
+            
+            // Reseta Header
+            pageTitle.innerText = 'Entertainment';
+            btnBack.style.display = 'none';
+            actionButtons.style.display = 'none';
+        });
+
+        // Controles do Modal de Categoria
+        btnNewCategory.addEventListener('click', () => { modalCategory.style.display = 'flex'; });
+        btnsCloseModal.forEach(btn => {
+            btn.addEventListener('click', () => { modalCategory.style.display = 'none'; });
+        });
+    </script>
+</body>
+</html>

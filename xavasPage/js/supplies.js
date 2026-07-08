@@ -1,38 +1,35 @@
-// ====== ESTADO E LOCALSTORAGE ======
+// =========================================
+// HEADER LOGIC
+// =========================================
+const btnMenu = document.getElementById('btn-menu');
+const mainNav = document.getElementById('main-nav');
+const btnLogout = document.getElementById('btn-logout');
+
+btnMenu?.addEventListener('click', () => {
+    mainNav.classList.toggle('is-open');
+    btnMenu.textContent = mainNav.classList.contains('is-open') ? 'Close' : 'Menu';
+});
+
+btnLogout?.addEventListener('click', () => {
+    sessionStorage.removeItem('portal_pessoal_auth');
+    window.location.replace('login.html');
+});
+
+// =========================================
+// STATE & STORAGE
+// =========================================
 let inventory = JSON.parse(localStorage.getItem('hub_inventory')) || [];
 let currentItemContext = null; 
 
-// ====== INJEÇÃO DE CSS ======
-function injectNewForecastStyles() {
-    const style = document.createElement('style');
-    style.innerHTML = `
-        .forecast-status {
-            font-size: 10px;
-            margin-top: 2px;
-            font-weight: bold;
-            text-align: center;
-            line-height: 1;
-            display: block;
-        }
-        .forecast-available { color: var(--color-yellow); }
-        .forecast-not-available { color: var(--txt-light-grey); }
-    `;
-    document.head.appendChild(style);
-}
-injectNewForecastStyles();
+const saveInventory = () => {
+    localStorage.setItem('hub_inventory', JSON.stringify(inventory));
+    renderInventory();
+};
 
-
-// ====== TRANSIÇÃO DO FORMULÁRIO ======
-const btnToggleForm = document.getElementById('btn-toggle-logistic-form');
-const formSection = document.getElementById('supplies-form-section');
-
-btnToggleForm.addEventListener('click', () => {
-    formSection.classList.toggle('show');
-    btnToggleForm.innerText = formSection.classList.contains('show') ? '- Fechar' : '+ Item';
-});
-
-// ====== FUNÇÕES PREDITIVAS ======
-function calculateAverageLifespan(itemName) {
+// =========================================
+// PREDICTIVE LOGIC
+// =========================================
+const calculateAverageLifespan = (itemName) => {
     const historicalItems = inventory.filter(item => 
         item.name.toLowerCase() === itemName.toLowerCase() && 
         item.status === 'ended' && 
@@ -42,80 +39,99 @@ function calculateAverageLifespan(itemName) {
 
     if (historicalItems.length === 0) return null;
 
-    let totalDays = 0;
-    historicalItems.forEach(item => {
+    const totalDays = historicalItems.reduce((acc, item) => {
         const opened = new Date(item.dateOpened);
         const ended = new Date(item.dateEnded);
-        const diffTime = Math.abs(ended - opened);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        totalDays += diffDays;
-    });
+        const diffDays = Math.ceil(Math.abs(ended - opened) / (1000 * 60 * 60 * 24));
+        return acc + diffDays;
+    }, 0);
 
     return Math.round(totalDays / historicalItems.length);
-}
+};
 
-function formatForecastDate(dateOpenedString, daysToAdd) {
+const formatForecastDate = (dateOpenedString, daysToAdd) => {
     const date = new Date(dateOpenedString);
     date.setDate(date.getDate() + daysToAdd);
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
     return `${day}/${month}`;
-}
+};
 
-// ====== RENDERIZAÇÃO DA UI ======
-function renderInventory() {
-    const inStockDiv = document.getElementById('in-stock');
-    const openedDiv = document.getElementById('opened');
-    const endedDiv = document.getElementById('ended');
+// =========================================
+// RENDER UI
+// =========================================
+const DOM = {
+    grids: {
+        'in-stock': document.getElementById('grid-stock'),
+        'opened': document.getElementById('grid-opened'),
+        'ended': document.getElementById('grid-ended')
+    }
+};
 
-    inStockDiv.innerHTML = ''; openedDiv.innerHTML = ''; endedDiv.innerHTML = '';
+const renderInventory = () => {
+    Object.values(DOM.grids).forEach(grid => grid.innerHTML = '');
 
     inventory.forEach(item => {
         const card = document.createElement('div');
-        card.className = 'product-card';
+        card.className = `product-card product-card--${item.status}`;
         card.style.backgroundImage = `url('${item.url}')`;
-        card.onclick = () => openModal(item.id);
+        card.addEventListener('click', () => openModal(item.id));
 
         let forecastHTML = '';
-        
         if (item.status === 'opened') {
             const avgDays = calculateAverageLifespan(item.name);
             if (avgDays) {
                 const forecastDate = formatForecastDate(item.dateOpened, avgDays);
-                forecastHTML = `<p class="forecast-status forecast-available">previsao de acabar em: ${forecastDate}</p>`;
+                forecastHTML = `<div class="product-card__forecast forecast--available">Ends: ${forecastDate}</div>`;
             } else {
-                forecastHTML = `<p class="forecast-status forecast-not-available">Sem Previsão</p>`;
+                forecastHTML = `<div class="product-card__forecast forecast--unavailable">No Data</div>`;
             }
         }
 
         card.innerHTML = `
-            <div class="product-info">
-                <p><strong>${item.name}</strong></p>
-                <p class="brand">${item.brand} | ${item.qnt}</p>
-                ${forecastHTML}
+            ${forecastHTML}
+            <div class="product-card__info">
+                <p class="product-card__title">${item.name}</p>
+                <p class="product-card__brand">${item.brand} | ${item.qnt}</p>
             </div>
         `;
 
-        if (item.status === 'in-stock') inStockDiv.appendChild(card);
-        else if (item.status === 'opened') openedDiv.appendChild(card);
-        else endedDiv.appendChild(card);
+        if (DOM.grids[item.status]) {
+            DOM.grids[item.status].appendChild(card);
+        }
     });
-}
+};
 
-// ====== ADICIONAR NOVO ITEM ======
-document.getElementById('supplies-form').addEventListener('submit', function(e) {
+// =========================================
+// FORM LOGIC (Modal)
+// =========================================
+const btnToggleForm = document.getElementById('btn-toggle-form');
+const modalSupplyForm = document.getElementById('modal-supply-form');
+const formSupply = document.getElementById('form-supply');
+const btnCloseSupply = document.getElementById('btn-close-supply-modal');
+
+const openSupplyModal = () => modalSupplyForm.classList.remove('modal--hidden');
+const closeSupplyModal = () => modalSupplyForm.classList.add('modal--hidden');
+
+btnToggleForm.addEventListener('click', openSupplyModal);
+btnCloseSupply.addEventListener('click', closeSupplyModal);
+modalSupplyForm.addEventListener('mousedown', (e) => {
+    if (e.target === modalSupplyForm) closeSupplyModal();
+});
+
+formSupply.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const isOpenedToday = document.getElementById('aceitar').checked;
+    const isOpenedToday = document.getElementById('input-opened').checked;
     const todayStr = new Date().toISOString().split('T')[0];
 
     const newItem = {
         id: Date.now().toString(),
-        name: document.getElementById('supplies').value,
-        brand: document.getElementById('brand').value,
-        url: document.getElementById('url').value,
-        qnt: document.getElementById('qnt').value,
-        tag: document.getElementById('tag').value,
+        name: document.getElementById('input-name').value.trim(),
+        brand: document.getElementById('input-brand').value.trim(),
+        url: document.getElementById('input-url').value.trim(),
+        qnt: document.getElementById('input-qnt').value.trim(),
+        tag: document.getElementById('input-tag').value,
         status: isOpenedToday ? 'opened' : 'in-stock',
         dateAdded: todayStr,
         dateOpened: isOpenedToday ? todayStr : null,
@@ -123,101 +139,90 @@ document.getElementById('supplies-form').addEventListener('submit', function(e) 
     };
 
     inventory.push(newItem);
-    localStorage.setItem('hub_inventory', JSON.stringify(inventory));
+    saveInventory();
     
-    this.reset();
-    formSection.classList.remove('show');
-    btnToggleForm.innerText = '+ Item';
-    renderInventory();
+    closeSupplyModal();
+    formSupply.reset();
 });
 
-// ====== LÓGICA DO MODAL ======
-const modal = document.getElementById('product-modal');
-const modalTitle = document.getElementById('modal-title');
-const modalDesc = document.getElementById('modal-desc');
-const modalDate = document.getElementById('modal-date');
-const modalDateLabel = document.getElementById('modal-date-label');
-const modalDateGroup = document.getElementById('modal-date-group');
-const modalBtnConfirm = document.getElementById('modal-btn-confirm');
+// =========================================
+// MODAL LOGIC
+// =========================================
+const modal = {
+    overlay: document.getElementById('modal-product'),
+    title: document.getElementById('modal-title'),
+    desc: document.getElementById('modal-desc'),
+    dateGroup: document.getElementById('modal-date-group'),
+    dateLabel: document.getElementById('modal-date-label'),
+    dateInput: document.getElementById('modal-date'),
+    btnConfirm: document.getElementById('modal-btn-confirm'),
+    btnClose: document.getElementById('modal-btn-close'),
+    btnDelete: document.getElementById('modal-btn-delete')
+};
 
-function openModal(id) {
+const openModal = (id) => {
     const item = inventory.find(i => i.id === id);
-    if (!item) return; // Agora permite abrir itens "ended"
+    if (!item) return;
 
     currentItemContext = item;
-    modalDate.value = new Date().toISOString().split('T')[0];
-
-    // Reseta visualização padrão dos botões
-    modalDateGroup.style.display = 'flex';
-    modalBtnConfirm.style.display = 'block';
+    modal.dateInput.value = new Date().toISOString().split('T')[0];
+    modal.dateGroup.style.display = 'flex';
+    modal.btnConfirm.style.display = 'block';
 
     if (item.status === 'in-stock') {
-        modalTitle.innerText = "Abrir Produto";
-        modalDesc.innerText = `Deseja marcar '${item.name}' como aberto em uso?`;
-        modalDateLabel.innerText = "Data de Abertura:";
+        modal.title.innerText = "Open Product";
+        modal.desc.innerText = `Mark '${item.name}' as currently in use?`;
+        modal.dateLabel.innerText = "Date Opened:";
     } else if (item.status === 'opened') {
-        modalTitle.innerText = "Finalizar Produto";
-        modalDesc.innerText = `O produto '${item.name}' acabou?`;
-        modalDateLabel.innerText = "Data do Término:";
+        modal.title.innerText = "Finish Product";
+        modal.desc.innerText = `Is '${item.name}' completely empty/ended?`;
+        modal.dateLabel.innerText = "Date Ended:";
     } else if (item.status === 'ended') {
-        modalTitle.innerText = "Produto Finalizado";
-        modalDesc.innerText = `Este produto já foi finalizado. Deseja excluí-lo do histórico?`;
-        // Esconde input de data e botão de salvar para itens finalizados
-        modalDateGroup.style.display = 'none';
-        modalBtnConfirm.style.display = 'none';
+        modal.title.innerText = "Product Ended";
+        modal.desc.innerText = `This product is already finished. Do you want to delete it from history?`;
+        modal.dateGroup.style.display = 'none';
+        modal.btnConfirm.style.display = 'none';
     }
 
-    modal.classList.replace('modal-hidden', 'modal-visible');
-}
+    modal.overlay.classList.remove('modal--hidden');
+};
 
-// Ação: Fechar Modal
-document.getElementById('modal-btn-close').addEventListener('click', () => {
-    modal.classList.replace('modal-visible', 'modal-hidden');
+const closeModal = () => {
+    modal.overlay.classList.add('modal--hidden');
     currentItemContext = null;
+};
+
+modal.btnClose.addEventListener('click', closeModal);
+modal.overlay.addEventListener('mousedown', (e) => {
+    if (e.target === modal.overlay) closeModal();
 });
 
-// Ação: Salvar/Atualizar Produto
-document.getElementById('modal-btn-confirm').addEventListener('click', () => {
-    if (!currentItemContext || !modalDate.value) return;
+modal.btnConfirm.addEventListener('click', () => {
+    if (!currentItemContext || !modal.dateInput.value) return;
 
     if (currentItemContext.status === 'in-stock') {
         currentItemContext.status = 'opened';
-        currentItemContext.dateOpened = modalDate.value;
+        currentItemContext.dateOpened = modal.dateInput.value;
     } else if (currentItemContext.status === 'opened') {
         currentItemContext.status = 'ended';
-        currentItemContext.dateEnded = modalDate.value;
+        currentItemContext.dateEnded = modal.dateInput.value;
     }
 
-    localStorage.setItem('hub_inventory', JSON.stringify(inventory));
-    modal.classList.replace('modal-visible', 'modal-hidden');
-    currentItemContext = null;
-    renderInventory();
+    saveInventory();
+    closeModal();
 });
 
-// Ação: Excluir Produto
-document.getElementById('modal-btn-delete').addEventListener('click', () => {
+modal.btnDelete.addEventListener('click', () => {
     if (!currentItemContext) return;
-
-    // Confirmação nativa do navegador para evitar acidentes
-    const isConfirmed = confirm(`Tem certeza que deseja excluir "${currentItemContext.name}" permanentemente?`);
     
-    if (isConfirmed) {
-        // Filtra o array mantendo apenas os itens com ID diferente do atual
+    if (confirm(`Are you sure you want to permanently delete "${currentItemContext.name}"?`)) {
         inventory = inventory.filter(i => i.id !== currentItemContext.id);
-        
-        // Atualiza o local storage e a interface
-        localStorage.setItem('hub_inventory', JSON.stringify(inventory));
-        modal.classList.replace('modal-visible', 'modal-hidden');
-        currentItemContext = null;
-        renderInventory();
+        saveInventory();
+        closeModal();
     }
 });
 
-// Ação de Logout (mantida do seu código original)
-document.getElementById('btn-logout').addEventListener('click', function() {
-    sessionStorage.removeItem('portal_pessoal_auth');
-    window.location.replace('pages/login.html');
-});
-
-// ====== INIT ======
-renderInventory();
+// =========================================
+// INIT
+// =========================================
+document.addEventListener('DOMContentLoaded', renderInventory);

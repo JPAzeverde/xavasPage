@@ -1,187 +1,238 @@
-#supplies-hero{
-  height: 10vh;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  text-transform: uppercase;
+/* =========================================
+   1. SHARED HEADER
+========================================= */
+.header { display: flex; justify-content: space-between; align-items: center; padding: var(--sp-4); border-bottom: 1px solid var(--border-medium); position: relative; }
+.header__brand { display: flex; flex-direction: column; }
+.header__status { text-transform: uppercase; letter-spacing: 1px; margin-top: -4px; }
+.header__nav { display: flex; gap: var(--sp-4); align-items: center; }
+.header__link { font-weight: 600; text-transform: uppercase; font-size: 0.875rem; position: relative; padding-bottom: var(--sp-1); }
+.header__link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background-color: var(--text-primary); transform: scaleX(0); transform-origin: right; transition: transform var(--tr-base); }
+.header__link:hover::after, .header__link--active::after { transform: scaleX(1); transform-origin: left; }
+.header__menu-toggle { display: none; }
+@media (max-width: 768px) {
+    .header__menu-toggle { display: inline-flex; }
+    .header__nav { display: none; position: absolute; top: 100%; right: var(--sp-4); left: var(--sp-4); background-color: var(--bg-secondary); border: 1px solid var(--border-medium); flex-direction: column; padding: var(--sp-4); z-index: 100; }
+    .header__nav.is-open { display: flex; }
 }
-#supplies-form-section{
+
+/* =========================================
+   2. SUPPLIES HERO & FORM
+========================================= */
+.supplies__hero {
     display: flex;
-    flex-direction: column;
-    max-width: 200px;
-    margin: 0 auto;
-    padding: var(--sp-2) 0;
-}
-
-
-
-.task-form, 
-.form-group {
-  width: 100%;
-  transition: 1s;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.form-group label {
-  font-size: 14px;
-  text-align: left;
-  color: #fff;
-  width: 50%;
-}
-
-.form-group input {
-  font-size: 14px;
-  text-align: left;
-  color: #fff;
-}
-
-.form-input-time {
-  width: 80px;
-}
-.form-group-checkbox{
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    padding: 0;
-    line-height: 1;
-}
-.input-checkbox{
-    width: 10%;
-}
-/* Animação suave para o formulário */
-#supplies-form-section {
-    display: flex;
-    flex-direction: column;
-    max-width: 300px; /* Levemente aumentado para caber os inputs melhor */
-    margin: 0 auto;
-    padding: 0;
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, padding 0.5s ease;
-}
-
-#supplies-form-section.show {
-    max-height: 800px;
-    opacity: 1;
-    padding: var(--sp-4) 0;
-}
-#supplies-itens{
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    gap: 3rem;
-}
-/* Grids de exibição dos itens */
-.supply-category {
-    margin-bottom: var(--sp-6);
-    background-color: var(--bg-grey);
-    display: flex;
-    flex-direction: column;
-    padding: var(--sp-2);
-    border-radius: var(--rad-sm);
-    border: solid 1px var(--border-grey);
-    width: 100%;
+    justify-content: space-between;
     align-items: center;
-}
-.title-category{
-    text-align: center;
+    padding: var(--sp-6) 0 var(--sp-4);
+    border-bottom: 1px solid var(--border-dark);
 }
 
-.items-grid {
+
+
+.supplies__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-1);
+}
+
+.form-group--checkbox {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--sp-2);
+}
+
+.checkbox-field {
+    cursor: pointer;
+    accent-color: var(--text-primary);
+}
+
+.supplies__submit {
+    margin-top: var(--sp-2);
+}
+
+/* =========================================
+   3. INVENTORY GRIDS
+========================================= */
+.inventory {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--sp-6);
+    margin: var(--sp-6) 0;
+}
+
+.inventory__category {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--rad-md);
+    padding: var(--sp-4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 400px;
+}
+
+.inventory__header {
+    text-transform: uppercase;
+    margin-bottom: var(--sp-4);
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid var(--border-dark);
+    padding-bottom: var(--sp-2);
+}
+
+.inventory__grid {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--sp-4);
-    margin-top: var(--sp-3);
+    gap: var(--sp-3);
+    justify-content: center;
+    width: 100%;
 }
 
-/* Cards dos Produtos (Estilo Capa) */
+/* =========================================
+   4. PRODUCT CARDS
+========================================= */
 .product-card {
-    width: 128px;
-    height: 100px;
-    border-radius: var(--rad-md);
+    width: 120px;
+    height: 160px;
+    border-radius: var(--rad-sm);
     background-size: cover;
-    background-position: top;
+    background-position: center;
     position: relative;
     cursor: pointer;
-    box-shadow: var(--sh-md);
-    border: 1px solid var(--border-grey);
     overflow: hidden;
-    transition: transform var(--tr-fast);
+    transition: transform var(--tr-fast), border-color var(--tr-fast);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
 .product-card:hover {
-    transform: scale(1.05);
-    border-color: var(--color-green-light);
+    transform: translateY(-3px);
 }
 
-.product-info {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.85);
+/* Identificadores Visuais por Status */
+.product-card--stock {
+    border: 1px dashed var(--border-light);
+}
+
+.product-card--opened {
+    border: 1px solid var(--text-primary);
+}
+
+.product-card--ended {
+    border: 1px dotted var(--border-medium);
+    opacity: 0.5;
+    filter: grayscale(100%);
+}
+
+.product-card:hover {
+    border-color: var(--text-primary);
+    opacity: 1;
+}
+
+.product-card__info {
+    background: rgba(0, 0, 0, 0.9);
     padding: var(--sp-2) var(--sp-1);
     text-align: center;
-    backdrop-filter: blur(2px);
+    border-top: 1px solid var(--border-dark);
 }
 
-.product-info p {
-    font-size: 11px;
-    margin: 0;
-    color: var(--txt-white);
+.product-card__title {
+    font-size: 0.75rem;
+    color: var(--text-primary);
     line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.product-info .brand {
-    font-size: 9px;
-    color: var(--color-blue-light);
+.product-card__brand {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    margin-top: 2px;
 }
 
-/* Badge de Previsão */
-.forecast-badge {
+/* Forecast Badge */
+.product-card__forecast {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 0; left: 0;
     width: 100%;
-    background: var(--color-yellow);
-    color: var(--bg-black);
-    font-size: 10px;
-    font-weight: bold;
+    font-size: 0.6rem;
+    font-weight: 700;
     text-align: center;
     padding: 2px 0;
+    text-transform: uppercase;
 }
 
-/* Estilos do Modal */
-.modal-hidden {
-    display: none;
+.forecast--available {
+    background-color: var(--text-primary);
+    color: var(--bg-primary);
 }
 
-.modal-visible {
-    display: flex;
+.forecast--unavailable {
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-dark);
+}
+
+/* =========================================
+   5. MODAL
+========================================= */
+.modal {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    transition: opacity var(--tr-base);
 }
 
-.modal-content {
+.modal--hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal__content {
     width: 90%;
-    max-width: 350px;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal__header {
+    border-bottom: 1px solid var(--border-medium);
+    padding-bottom: var(--sp-3);
+    margin-bottom: var(--sp-3);
+}
+
+.modal__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-4);
+}
+
+.modal__footer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    margin-top: var(--sp-5);
+    border-top: 1px solid var(--border-medium);
+    padding-top: var(--sp-4);
+}
+
+.modal__actions {
+    display: flex;
+    gap: var(--sp-2);
+}
+
+.modal__actions > button {
+    flex: 1;
 }

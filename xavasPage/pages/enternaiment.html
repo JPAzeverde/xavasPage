@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entertainment - HUB</title>
+    
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/enternaiment.css">
+    
+    <script src="../js/guard.js"></script>
+</head>
+<body class="layout-dashboard">
+
+    <header class="header">
+        <div class="header__brand">
+            <a href="../index.html" class="header__logo">
+                <h1 class="title-lg">HUB</h1>
+            </a>
+            <p class="text-small header__status">Online</p>
+        </div>
+
+        <button id="btn-menu" class="btn btn--ghost header__menu-toggle">Menu</button>
+
+        <nav id="main-nav" class="header__nav">
+            <a href="protocol.html" class="header__link">Protocol</a>
+            <a href="operations.html" class="header__link">Operations</a>
+            <a href="enternaiment.html" class="header__link header__link--active">Entertainment</a>
+            <a href="supplies.html" class="header__link">Supplies</a>
+            <button id="btn-logout" class="btn btn--danger header__logout">Exit</button>
+        </nav>
+    </header>
+
+    <main class="container ent">
+        
+        <section class="ent__hero">
+            <div class="ent__hero-title-group">
+                <button id="btn-back" class="btn btn--ghost ent__btn-back" style="display: none;">&larr; Back</button>
+                <h2 id="page-title" class="title-lg">Entertainment</h2>
+            </div>
+            
+            <div class="ent__hero-actions" id="action-buttons" style="display: none;">
+                <button id="btn-new-item" class="btn btn--primary">+ New Item</button>
+            </div>
+        </section>
+
+        <section id="view-categories" class="ent__grid-categories">
+            <div class="card category-card category-card--create" id="btn-new-category">
+                <h3 class="title-md">+ New Category</h3>
+            </div>
+        </section>
+
+        <section id="view-category-details" style="display: none;">
+            <div class="ent__stats">
+                <article class="stat-card">
+                    <p class="text-small">Not Started</p>
+                    <h2 class="title-lg" id="count-todo">0</h2>
+                </article>
+                <article class="stat-card">
+                    <p class="text-small">Active</p>
+                    <h2 class="title-lg" id="count-in-progress">0</h2>
+                </article>
+                <article class="stat-card stat-card--dropped">
+                    <p class="text-small">Aborted</p>
+                    <h2 class="title-lg" id="count-dropped">0</h2>
+                </article>
+                <article class="stat-card stat-card--done">
+                    <p class="text-small">Completed</p>
+                    <h2 class="title-lg" id="count-done">0</h2>
+                </article>
+            </div>
+
+            <div class="kanban">
+                <div class="kanban__col" data-status="todo">
+                    <header class="kanban__col-header"><h3 class="title-sm">Not Started</h3></header>
+                    <div class="kanban__content" id="col-todo"></div>
+                </div>
+                <div class="kanban__col" data-status="in-progress">
+                    <header class="kanban__col-header"><h3 class="title-sm">Active</h3></header>
+                    <div class="kanban__content" id="col-in-progress"></div>
+                </div>
+                <div class="kanban__col" data-status="done">
+                    <header class="kanban__col-header"><h3 class="title-sm">Completed</h3></header>
+                    <div class="kanban__content" id="col-done"></div>
+                </div>
+                <div class="kanban__col" data-status="dropped">
+                    <header class="kanban__col-header"><h3 class="title-sm">Aborted</h3></header>
+                    <div class="kanban__content" id="col-dropped"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="modal-category" class="modal modal--hidden">
+        <article class="modal__content card">
+            <header class="modal__header">
+                <h2 class="title-md">New Category</h2>
+            </header>
+            
+            <form id="form-category" class="modal__body">
+                <input type="text" id="cat-name" class="input-field" placeholder="Category Name (e.g. Games)" required>
+                
+                <hr class="modal__divider">
+                
+                <h4 class="title-sm">Custom Fields</h4>
+                <div id="cat-fields-list" class="modal__fields-list"></div>
+                
+                <div class="modal__field-builder">
+                    <input type="text" id="new-field-label" class="input-field" placeholder="Field Name (e.g. Platform)">
+                    <select id="new-field-type" class="select-field">
+                        <option value="text">Text</option>
+                        <option value="number">Number</option>
+                        <option value="select">Dropdown (Select)</option>
+                        <option value="checkbox">Checkbox</option>
+                    </select>
+                    <input type="text" id="new-field-options" class="input-field" placeholder="Options separated by comma" style="display: none;">
+                    <button type="button" id="btn-add-field" class="btn btn--ghost modal__btn-add-field">+ Add Field</button>
+                </div>
+
+                <footer class="modal__footer">
+                    <button type="button" class="btn btn--ghost btn-close-modal">Cancel</button>
+                    <button type="submit" class="btn btn--primary">Save Category</button>
+                </footer>
+            </form>
+        </article>
+    </div>
+
+    <div id="modal-item" class="modal modal--hidden">
+        <article class="modal__content card">
+            <header class="modal__header">
+                <h2 id="modal-item-title-display" class="title-md">Register Item</h2>
+            </header>
+            
+            <form id="form-item" class="modal__body">
+                <input type="text" id="modal-item-title" class="input-field" placeholder="Item Name" required>
+                <input type="url" id="modal-item-cover" class="input-field" placeholder="Cover URL (Image) - REQUIRED" required>
+
+                <select id="modal-item-status" class="select-field" required>
+                    <option value="todo">Not Started</option>
+                    <option value="in-progress">Active</option>
+                    <option value="done">Completed</option>
+                    <option value="dropped">Aborted</option>
+                </select>
+
+                <div id="dynamic-fields-container" class="modal__dynamic-fields"></div>
+
+                <footer class="modal__footer">
+                    <button type="button" id="btn-delete-item" class="btn btn--danger" style="display: none;">Delete</button>
+                    <button type="button" class="btn btn--ghost btn-close-modal">Cancel</button>
+                    <button type="submit" id="btn-save-item" class="btn btn--primary">Save</button>
+                </footer>
+            </form>
+        </article>
+    </div>
+
+    <script src="../js/enternaiment.js" type="module"></script>
+</body>
+</html>

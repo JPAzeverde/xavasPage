@@ -1,133 +1,95 @@
-// protocol.js
+// =========================================
+// HEADER LOGIC
+// =========================================
+const btnMenu = document.getElementById('btn-menu');
+const mainNav = document.getElementById('main-nav');
+const btnLogout = document.getElementById('btn-logout');
 
-// ============================================================
-// 1. MAPEAMENTOS E CONSTANTES
-// ============================================================
+btnMenu?.addEventListener('click', () => {
+    mainNav.classList.toggle('is-open');
+    btnMenu.textContent = mainNav.classList.contains('is-open') ? 'Close' : 'Menu';
+});
 
-const dayMap = {
-    monday: 0,
-    tuesday: 1,
-    wednesday: 2,
-    thursday: 3, 
-    friday: 4,
-    saturday: 5,
-    sunday: 6
-};
+btnLogout?.addEventListener('click', () => {
+    sessionStorage.removeItem('portal_pessoal_auth');
+    window.location.replace('login.html');
+});
 
-const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+// =========================================
+// STATE & STORAGE
+// =========================================
 const STORAGE_KEY = 'protocol_tasks';
+const dayMap = { monday: 0, tuesday: 1, wednesday: 2, thursday: 3, friday: 4, saturday: 5, sunday: 6 };
+const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-// ============================================================
-// 2. LOCAL STORAGE
-// ============================================================
-
-function loadTasks() {
+const loadTasks = () => {
     const data = localStorage.getItem(STORAGE_KEY);
     return data ? JSON.parse(data) : [];
-}
+};
 
-function saveTasks(tasks) {
+const saveTasks = (tasks) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
-}
+};
 
-// ============================================================
-// 3. CARREGAMENTO INICIAL VIA JSON (SE LOCALSTORAGE VAZIO)
-// ============================================================
+// =========================================
+// RENDER GRID
+// =========================================
+const renderWeek = () => {
+    const grid = document.getElementById('schedule-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
 
-async function loadInitialData() {
-    if (loadTasks().length > 0) return;
-
-    try {
-        const response = await fetch('../assets/json/protocol.json');
-        if (!response.ok) throw new Error('JSON não encontrado');
-        const jsonTasks = await response.json();
-        if (Array.isArray(jsonTasks) && jsonTasks.length > 0) {
-            saveTasks(jsonTasks);
-        }
-    } catch (error) {
-        console.log('Nenhum JSON inicial carregado, usando localStorage vazio.');
-    }
-}
-
-// ============================================================
-// 4. RENDERIZAÇÃO DA SEMANA VIA JS
-// ============================================================
-
-function renderWeek() {
-    const weekContainer = document.querySelector('#protocol-schedule .schedule-grid');
-    if (!weekContainer) return;
-    weekContainer.innerHTML = '';
-
-    // Coluna de horas (schedule-grid__time-col)
-    const hourColum = document.createElement('div');
-    hourColum.className = 'schedule-grid__time-col';
+    // Coluna de Horas
+    const timeCol = document.createElement('div');
+    timeCol.className = 'schedule__time-col';
+    timeCol.innerHTML = `<div class="schedule__header">-</div>`;
     
-    const headerHours = document.createElement('h3');
-    headerHours.className = 'schedule-grid__day-title';
-    headerHours.textContent = '-';
-    hourColum.appendChild(headerHours);
-
     for (let h = 0; h < 24; h++) {
-        const hourDiv = document.createElement('div');
-        hourDiv.className = 'schedule-grid__hour-cell';
-        hourDiv.setAttribute('data-hour', h);
-        
-        const p = document.createElement('p');
-        p.className = 'schedule-grid__hour-label';
-        p.textContent = `${String(h).padStart(2, '0')}:00`;
-        hourDiv.appendChild(p);
-        
-        hourColum.appendChild(hourDiv);
+        const cell = document.createElement('div');
+        cell.className = 'schedule__cell';
+        cell.dataset.hour = h;
+        cell.innerHTML = `<span class="schedule__hour-label">${String(h).padStart(2, '0')}:00</span>`;
+        timeCol.appendChild(cell);
     }
-    weekContainer.appendChild(hourColum);
+    grid.appendChild(timeCol);
 
-    // Colunas dos 7 dias
-    for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
-        const dayDiv = document.createElement('div');
-        dayDiv.className = 'schedule-grid__day-col';
-        dayDiv.id = `day${dayIndex}`;
-
-        const dayTitle = document.createElement('h3');
-        dayTitle.className = 'schedule-grid__day-title';
-        dayTitle.textContent = dayNames[dayIndex];
-        dayDiv.appendChild(dayTitle);
+    // Colunas dos Dias
+    dayNames.forEach((dayName, index) => {
+        const dayCol = document.createElement('div');
+        dayCol.className = 'schedule__col';
+        dayCol.id = `day${index}`;
+        dayCol.innerHTML = `<div class="schedule__header">${dayName}</div>`;
 
         for (let h = 0; h < 24; h++) {
-            const hourDiv = document.createElement('div');
-            hourDiv.className = 'schedule-grid__hour-cell';
-            hourDiv.setAttribute('data-hour', h);
-            dayDiv.appendChild(hourDiv);
+            const cell = document.createElement('div');
+            cell.className = 'schedule__cell';
+            cell.dataset.hour = h;
+            dayCol.appendChild(cell);
         }
-        weekContainer.appendChild(dayDiv);
-    }
-}
+        grid.appendChild(dayCol);
+    });
+};
 
-// ============================================================
-// 5. INSERÇÃO DAS TAREFAS COM ALTURA UNIFORME POR HORA
-// ============================================================
-
-function populateTasks() {
+// =========================================
+// POPULATE TASKS
+// =========================================
+const populateTasks = () => {
     const tasks = loadTasks();
     const taskCount = Array.from({ length: 7 }, () => Array(24).fill(0));
 
-    // Conta tarefas por dia/hora
+    // Conta tarefas para ajustar a altura da célula dinamicamente
     tasks.forEach(task => {
         const dayIndex = dayMap[task.day];
         if (dayIndex === undefined) return;
 
         const startHour = parseInt(task.startTime.split(':')[0], 10);
-        const endHour = task.endTime
-            ? parseInt(task.endTime.split(':')[0], 10)
-            : startHour + 1;
+        const endHour = task.endTime ? parseInt(task.endTime.split(':')[0], 10) : startHour + 1;
 
         for (let h = startHour; h < endHour; h++) {
-            if (h >= 0 && h < 24) {
-                taskCount[dayIndex][h]++;
-            }
+            if (h >= 0 && h < 24) taskCount[dayIndex][h]++;
         }
     });
 
-    // Altura máxima por hora (todos os dias)
     const maxTasksPerHour = Array(24).fill(0);
     for (let h = 0; h < 24; h++) {
         for (let d = 0; d < 7; d++) {
@@ -137,16 +99,15 @@ function populateTasks() {
         }
     }
 
-    // Aplica altura a todas as células com data-hour
+    // Aplica altura
     for (let h = 0; h < 24; h++) {
-        const height = maxTasksPerHour[h] > 0 ? maxTasksPerHour[h] * 75 : 0;
-        const cells = document.querySelectorAll(`.schedule-grid__hour-cell[data-hour="${h}"]`);
-        cells.forEach(cell => {
+        const height = maxTasksPerHour[h] > 0 ? maxTasksPerHour[h] * 80 : 0;
+        document.querySelectorAll(`.schedule__cell[data-hour="${h}"]`).forEach(cell => {
             cell.style.height = height > 0 ? `${height}px` : '';
         });
     }
 
-    // Ordena tarefas
+    // Ordenação e Inserção
     const sortedTasks = [...tasks].sort((a, b) => {
         const dayA = dayMap[a.day] ?? 0;
         const dayB = dayMap[b.day] ?? 0;
@@ -154,203 +115,118 @@ function populateTasks() {
         return a.startTime.localeCompare(b.startTime);
     });
 
-    // Insere cards
     sortedTasks.forEach(task => {
         const dayIndex = dayMap[task.day];
         if (dayIndex === undefined) return;
 
         const [startH, startM] = task.startTime.split(':').map(Number);
         const startMinutes = startH * 60 + startM;
-
-        let endMinutes;
-        if (task.endTime) {
-            const [endH, endM] = task.endTime.split(':').map(Number);
-            endMinutes = endH * 60 + endM;
-        } else {
-            endMinutes = startMinutes + 60;
-        }
+        let endMinutes = task.endTime ? (parseInt(task.endTime.split(':')[0], 10) * 60 + parseInt(task.endTime.split(':')[1], 10)) : startMinutes + 60;
 
         for (let h = 0; h < 24; h++) {
             const hourStart = h * 60;
             const hourEnd = (h + 1) * 60;
 
             if (startMinutes < hourEnd && endMinutes > hourStart) {
-                const hourDiv = document.querySelector(`#day${dayIndex} [data-hour="${h}"]`);
+                const hourDiv = document.querySelector(`#day${dayIndex} .schedule__cell[data-hour="${h}"]`);
                 if (!hourDiv) continue;
 
-                // Cria o Card da Tarefa
-                const taskDiv = document.createElement('div');
-                taskDiv.className = 'task-card';
-                taskDiv.setAttribute('data-task-id', task.id);
+                const card = document.createElement('article');
+                card.className = 'protocol-card';
+                card.innerHTML = `
+                    <div class="protocol-card__header">
+                        <h4 class="protocol-card__title">${task.task}</h4>
+                        <button class="btn btn--danger-mini delete-btn" data-id="${task.id}">X</button>
+                    </div>
+                    <span class="protocol-card__tag tag--${task.tag}">${task.tag}</span>
+                    <div class="protocol-card__footer">
+                        <span class="protocol-card__time">${task.startTime} ${task.endTime ? '~ ' + task.endTime : ''}</span>
+                    </div>
+                `;
 
-                // Header
-                const headerDiv = document.createElement('div');
-                headerDiv.className = 'task-card__header';
-                
-                const titleP = document.createElement('p');
-                titleP.className = 'task-card__title';
-                titleP.textContent = task.task;
-                
-                const closeBtn = document.createElement('button');
-                closeBtn.className = 'btn-danger-mini';
-                closeBtn.textContent = 'X';
-                closeBtn.addEventListener('click', (e) => {
+                card.querySelector('.delete-btn').addEventListener('click', (e) => {
                     e.stopPropagation();
                     deleteTask(task.id);
                 });
-                
-                headerDiv.appendChild(titleP);
-                headerDiv.appendChild(closeBtn);
 
-                // Tag
-                const tagP = document.createElement('p');
-                tagP.className = `task-card__tag tag--${task.tag}`;
-                tagP.textContent = task.tag.charAt(0).toUpperCase() + task.tag.slice(1);
-
-                // Horários (Footer)
-                const bottomDiv = document.createElement('div');
-                bottomDiv.className = 'task-card__footer';
-                
-                const startP = document.createElement('p');
-                startP.className = 'task-card__time';
-                startP.textContent = task.startTime;
-                
-                const midP = document.createElement('p');
-                midP.className = 'task-card__time-separator';
-                midP.textContent = task.endTime ? '~' : '';
-                
-                const endP = document.createElement('p');
-                endP.className = 'task-card__time';
-                endP.textContent = task.endTime || '';
-
-                bottomDiv.appendChild(startP);
-                bottomDiv.appendChild(midP);
-                bottomDiv.appendChild(endP);
-
-                taskDiv.appendChild(headerDiv);
-                taskDiv.appendChild(tagP);
-                taskDiv.appendChild(bottomDiv);
-
-                hourDiv.appendChild(taskDiv);
+                hourDiv.appendChild(card);
             }
         }
     });
 
-    // Ajusta tarefas solitárias
+    // Ajusta visualização para células com 1 tarefa em espaços expandidos
     for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
         for (let h = 0; h < 24; h++) {
-            const cell = document.querySelector(`#day${dayIndex} [data-hour="${h}"]`);
+            const cell = document.querySelector(`#day${dayIndex} .schedule__cell[data-hour="${h}"]`);
             if (!cell) continue;
-            const tasksInCell = cell.querySelectorAll('.task-card');
-            if (tasksInCell.length === 1) {
-                const cellHeight = parseFloat(cell.style.height);
-                if (cellHeight > 75) { 
-                    tasksInCell[0].style.height = '100%';
-                }
+            const tasksInCell = cell.querySelectorAll('.protocol-card');
+            if (tasksInCell.length === 1 && parseFloat(cell.style.height) > 70) {
+                tasksInCell[0].style.height = '100%';
             }
         }
     }
-}
+};
 
-function fullRender() {
+const fullRender = () => {
     renderWeek();
     populateTasks();
-}
+};
 
-// ============================================================
-// 6. CRUD DE TAREFAS
-// ============================================================
-
-function addTask(taskData) {
+const addTask = (taskData) => {
     const tasks = loadTasks();
-    const newTask = {
-        id: Date.now().toString(),
-        ...taskData
-    };
-    tasks.push(newTask);
+    tasks.push({ id: Date.now().toString(), ...taskData });
     saveTasks(tasks);
     fullRender();
-}
+};
 
-function deleteTask(taskId) {
-    let tasks = loadTasks();
-    tasks = tasks.filter(t => t.id !== taskId);
+const deleteTask = (taskId) => {
+    const tasks = loadTasks().filter(t => t.id !== taskId);
     saveTasks(tasks);
     fullRender();
-}
+};
 
-// ============================================================
-// 7. FORMULÁRIO COM TRANSIÇÃO SUAVE
-// ============================================================
-
-function initForm() {
-    const addTaskBtn = document.getElementById('btn-toggle-task-form');
-    const formSection = document.getElementById('task-form-section');
+// =========================================
+// FORM LOGIC (Modal)
+// =========================================
+const initForm = () => {
+    const btnToggle = document.getElementById('btn-toggle-task-form');
+    const modal = document.getElementById('modal-task');
     const form = document.getElementById('task-form');
-    let isFormVisible = false;
+    const btnClose = document.getElementById('btn-close-modal');
 
-    addTaskBtn.addEventListener('click', () => {
-        isFormVisible = !isFormVisible;
-        if (isFormVisible) {
-            formSection.style.maxHeight = '500px';
-            formSection.style.opacity = '1';
-            formSection.style.paddingTop = '';
-            formSection.style.paddingBottom = '';
-        } else {
-            formSection.style.maxHeight = '0px';
-            formSection.style.opacity = '0';
-            formSection.style.paddingTop = '0px';
-            formSection.style.paddingBottom = '0px';
-        }
+    const openModal = () => modal.classList.remove('modal--hidden');
+    const closeModal = () => modal.classList.add('modal--hidden');
+
+    btnToggle.addEventListener('click', openModal);
+    btnClose.addEventListener('click', closeModal);
+    modal.addEventListener('mousedown', (e) => {
+        if (e.target === modal) closeModal();
     });
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-
+        
         const task = document.getElementById('task').value.trim();
         const startTime = document.getElementById('startTime').value;
         const endTime = document.getElementById('endTime').value;
         const tag = document.getElementById('tag').value;
         const day = document.getElementById('day').value;
 
-        if (!task || !startTime || !tag || !day) {
-            alert('Preencha todos os campos obrigatórios (Task, Start Time, Tag, Day).');
-            return;
-        }
         if (endTime && endTime <= startTime) {
-            alert('End Time deve ser posterior ao Start Time.');
-            return;
+            return alert('End Time must be after Start Time.');
         }
 
         addTask({ task, startTime, endTime, tag, day });
 
-        // Fecha o formulário suavemente
-        formSection.style.maxHeight = '0px';
-        formSection.style.opacity = '0';
-        formSection.style.paddingTop = '0px';
-        formSection.style.paddingBottom = '0px';
-        isFormVisible = false;
-
+        closeModal();
         form.reset();
     });
-}
+};
 
-// ============================================================
-// 8. INICIALIZAÇÃO GERAL
-// ============================================================
-
-document.addEventListener('DOMContentLoaded', async () => {
-    const formSection = document.getElementById('task-form-section');
-
-    // Configura transição inicial (oculto)
-    formSection.style.overflow = 'hidden';
-    formSection.style.maxHeight = '0px';
-    formSection.style.opacity = '0';
-    formSection.style.transition = 'max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease';
-    formSection.style.paddingTop = '0px';
-    formSection.style.paddingBottom = '0px';
-
-    await loadInitialData();
+// =========================================
+// INIT
+// =========================================
+document.addEventListener('DOMContentLoaded', () => {
     fullRender();
     initForm();
 });
