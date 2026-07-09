@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication - HUB</title>
+    
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+<body class="page-auth">
+
+    <main class="auth">
+        <section class="auth__box card">
+            <header class="auth__header">
+                <h1 class="title-lg auth__title">Authentication</h1>
+            </header>
+
+            <form id="auth-form" class="auth__form">
+                <div class="auth__group">
+                    <input type="text" id="input-username" class="input-field" placeholder="username" required>
+                </div>
+
+                <div class="auth__group">
+                    <input type="password" id="input-password" class="input-field" placeholder="********" required>
+                </div>
+
+                <!-- Alert Message -->
+                <div id="auth-error" class="auth__alert auth__alert--hidden" role="alert">
+                    Invalid username or password.
+                </div>
+
+                <div class="auth__actions">
+                    <button type="submit" class="btn btn--primary auth__submit">Confirm</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script src="../js/login.js" type="module"></script>
+</body>
+</html>

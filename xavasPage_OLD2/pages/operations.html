@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operations - HUB</title>
+    
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/operations.css">
+    
+    <script src="../js/guard.js"></script>
+</head>
+<body class="layout-dashboard">
+
+    <header class="header">
+        <div class="header__brand">
+            <a href="../index.html" class="header__logo">
+                <h1 class="title-lg">HUB</h1>
+            </a>
+            <p class="text-small header__status">Online</p>
+        </div>
+
+        <button id="btn-menu" class="btn btn--ghost header__menu-toggle">Menu</button>
+
+        <nav id="main-nav" class="header__nav">
+            <a href="protocol.html" class="header__link">Protocol</a>
+            <a href="operations.html" class="header__link header__link--active">Operations</a>
+            <a href="enternaiment.html" class="header__link">Entertainment</a>
+            <a href="supplies.html" class="header__link">Supplies</a>
+            <button id="btn-logout" class="btn btn--danger header__logout">Exit</button>
+        </nav>
+    </header>
+    
+    <main class="container operations">
+        <header class="operations__header">
+            <h2 class="title-lg">Operations</h2>
+            <button id="btn-add-task" class="btn btn--primary">+ Objective</button>
+        </header>
+
+        <section class="kanban">
+            
+            <div class="kanban__col" data-status="todo">
+                <header class="kanban__col-header">
+                    <h3 class="title-sm">Not Started</h3>
+                    <span class="kanban__count" id="count-todo">0</span>
+                </header>
+                <div class="kanban__content" id="col-todo"></div>
+            </div>
+
+            <div class="kanban__col" data-status="in-progress">
+                <header class="kanban__col-header">
+                    <h3 class="title-sm">Active</h3>
+                    <span class="kanban__count" id="count-in-progress">0</span>
+                </header>
+                <div class="kanban__content" id="col-in-progress"></div>
+            </div>
+
+            <div class="kanban__col" data-status="done">
+                <header class="kanban__col-header">
+                    <h3 class="title-sm">Completed</h3>
+                    <span class="kanban__count" id="count-done">0</span>
+                </header>
+                <div class="kanban__content" id="col-done"></div>
+            </div>
+
+            <div class="kanban__col" data-status="dropped">
+                <header class="kanban__col-header">
+                    <h3 class="title-sm">Aborted</h3>
+                    <span class="kanban__count" id="count-dropped">0</span>
+                </header>
+                <div class="kanban__content" id="col-dropped"></div>
+            </div>
+
+        </section>
+    </main>
+
+    <div id="modal-task" class="modal modal--hidden">
+        <article class="modal__content card">
+            <header class="modal__header">
+                <input type="text" id="modal-title" placeholder="Project Name..." class="modal__title-input" autocomplete="off" required>
+                <button id="btn-close-modal" class="btn btn--danger-mini">X</button>
+            </header>
+            
+            <div class="modal__body">
+                <div class="modal__props">
+                    <div class="modal__prop-row">
+                        <label class="text-small">Status</label>
+                        <select id="modal-status" class="select-field">
+                            <option value="todo">Not Started</option>
+                            <option value="in-progress">Active</option>
+                            <option value="done">Completed</option>
+                            <option value="dropped">Aborted</option>
+                        </select>
+                    </div>
+                    
+                    <div class="modal__prop-row">
+                        <label class="text-small">Tag</label>
+                        <select id="modal-tag" class="select-field">
+                            <option value="">No Tag</option>
+                            <option value="unilavras">Unilavras</option>
+                            <option value="solargun">SolarGun</option>
+                            <option value="pessoal">Personal</option>
+                        </select>
+                    </div>
+
+                    <div class="modal__prop-row">
+                        <label class="text-small">Deadline</label>
+                        <input type="date" id="modal-deadline" class="input-field">
+                    </div>
+                </div>
+
+                <div class="modal__editor">
+                    <label class="text-small">Details & Links</label>
+                    <textarea id="modal-details" class="input-field modal__textarea" placeholder="Add links, checklist, progress notes..."></textarea>
+                </div>
+            </div>
+
+            <footer class="modal__footer">
+                <button id="btn-delete-task" class="btn btn--danger">Delete</button>
+                <button id="btn-save-task" class="btn btn--primary">Save Changes</button>
+            </footer>
+        </article>
+    </div>
+
+    <script src="../js/operations.js" type="module"></script>
+</body>
+</html>

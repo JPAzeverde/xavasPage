@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYS.HUD // Media Execution</title>
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+    <script src="../js/core/guard.js"></script>
+</head>
+<body>
+
+    <header class="hud-header">
+        <div class="hud-header__brand">
+            <a href="../index.html" class="txt-heading-lg" style="letter-spacing: 0.1em;">SYS.HUD</a>
+            <p class="txt-micro hud-header__status">SYSTEM ONLINE</p>
+        </div>
+
+        <button id="btn-menu" class="btn btn--ghost hud-header__toggle" style="display: none;">Uplink</button>
+
+        <nav id="main-nav" class="hud-header__nav">
+            <a href="protocol.html" class="hud-header__link">Protocol</a>
+            <a href="operations.html" class="hud-header__link">Operations</a>
+            <a href="entertainment.html" class="hud-header__link is-active">Entertainment</a>
+            <a href="supplies.html" class="hud-header__link">Supplies</a>
+            <button id="btn-logout" class="btn btn--danger">Terminate</button>
+        </nav>
+    </header>
+
+    <main class="container" style="padding-top: var(--sp-6);">
+        
+        <section class="widget" style="margin-bottom: var(--sp-6);">
+            <div class="widget__header" style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; gap: var(--sp-4); align-items: center;">
+                    <button id="btn-back" class="btn btn--ghost" style="display: none;">&larr; Return</button>
+                    <h2 id="page-title" class="txt-micro">Media Arrays (Categories)</h2>
+                </div>
+                <div id="action-buttons" style="display: none;">
+                    <button id="btn-new-item" class="btn btn--primary">Inject Media</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-categories" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--sp-4);">
+            <div class="media-category-card media-category-card--create" id="btn-new-category">
+                <h3 class="txt-heading-md" style="color: var(--text-muted);">+ New Array</h3>
+            </div>
+        </section>
+
+        <section id="view-category-details" style="display: none;">
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-4); margin-bottom: var(--sp-6);">
+                <div class="widget" style="padding: var(--sp-3); text-align: center;"><p class="txt-micro">PENDING</p><h2 class="txt-heading-lg" id="count-todo">0</h2></div>
+                <div class="widget" style="padding: var(--sp-3); text-align: center; border-color: var(--accent-success);"><p class="txt-micro" style="color: var(--accent-success);">EXECUTING</p><h2 class="txt-heading-lg" id="count-in-progress">0</h2></div>
+                <div class="widget" style="padding: var(--sp-3); text-align: center;"><p class="txt-micro">TERMINATED</p><h2 class="txt-heading-lg" id="count-done">0</h2></div>
+                <div class="widget" style="padding: var(--sp-3); text-align: center; opacity: 0.5;"><p class="txt-micro" style="color: var(--accent-alert);">ABORTED</p><h2 class="txt-heading-lg" id="count-dropped">0</h2></div>
+            </div>
+
+            <div class="kanban-grid">
+                <div class="kanban-col" data-status="todo">
+                    <header class="kanban-col__header"><h3 class="txt-micro">PENDING</h3></header>
+                    <div class="kanban-col__content" id="col-todo"></div>
+                </div>
+                <div class="kanban-col" data-status="in-progress">
+                    <header class="kanban-col__header"><h3 class="txt-micro" style="color: var(--accent-success);">EXECUTING</h3></header>
+                    <div class="kanban-col__content" id="col-in-progress"></div>
+                </div>
+                <div class="kanban-col" data-status="done">
+                    <header class="kanban-col__header"><h3 class="txt-micro">TERMINATED</h3></header>
+                    <div class="kanban-col__content" id="col-done"></div>
+                </div>
+                <div class="kanban-col" data-status="dropped">
+                    <header class="kanban-col__header"><h3 class="txt-micro" style="color: var(--accent-alert);">ABORTED</h3></header>
+                    <div class="kanban-col__content" id="col-dropped"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="modal-category" class="modal-overlay modal--hidden">
+        <article class="widget modal-content">
+            <header class="widget__header">
+                <h2 class="txt-micro" style="color: var(--text-primary);">Configure New Array</h2>
+            </header>
+            
+            <form id="form-category" class="widget__body">
+                <input type="text" id="cat-name" class="input-field" placeholder="Array Designation (e.g., Anime, Games)" required>
+                
+                <div style="border-top: 1px dashed var(--border-dark); margin: var(--sp-2) 0; padding-top: var(--sp-3);">
+                    <h4 class="txt-micro" style="margin-bottom: var(--sp-2);">Custom Data Parameters</h4>
+                    <div id="cat-fields-list" style="display: flex; flex-direction: column; gap: var(--sp-2); margin-bottom: var(--sp-4);"></div>
+                    
+                    <div style="background: var(--bg-elevated); padding: var(--sp-3); border: 1px solid var(--border-base); border-radius: var(--rad-sm); display: flex; flex-direction: column; gap: var(--sp-2);">
+                        <input type="text" id="new-field-label" class="input-field" placeholder="Parameter Name (e.g., Platform)">
+                        <select id="new-field-type" class="input-field">
+                            <option value="text">Text String</option>
+                            <option value="number">Numeric Value</option>
+                            <option value="select">Dropdown (Select)</option>
+                            <option value="checkbox">Boolean (Checkbox)</option>
+                        </select>
+                        <input type="text" id="new-field-options" class="input-field" placeholder="Options (comma separated)" style="display: none;">
+                        <button type="button" id="btn-add-field" class="btn btn--ghost" style="align-self: flex-end;">+ Add Parameter</button>
+                    </div>
+                </div>
+
+                <footer style="display: flex; gap: var(--sp-3); margin-top: var(--sp-2);">
+                    <button type="button" class="btn btn--ghost btn-close-modal" style="flex: 1;">Abort</button>
+                    <button type="submit" class="btn btn--primary" style="flex: 1;">Initialize Array</button>
+                </footer>
+            </form>
+        </article>
+    </div>
+
+    <div id="modal-item" class="modal-overlay modal--hidden">
+        <article class="widget modal-content" style="max-height: 90vh; overflow-y: auto;">
+            <header class="widget__header">
+                <h2 id="modal-item-title-display" class="txt-micro" style="color: var(--text-primary);">Inject Media Element</h2>
+            </header>
+            
+            <form id="form-item" class="widget__body">
+                <input type="text" id="modal-item-title" class="input-field" placeholder="Media Title" required>
+                <input type="url" id="modal-item-cover" class="input-field" placeholder="Cover Art URL (Required)" required>
+
+                <select id="modal-item-status" class="input-field" required>
+                    <option value="todo">PENDING</option>
+                    <option value="in-progress">EXECUTING</option>
+                    <option value="done">TERMINATED</option>
+                    <option value="dropped">ABORTED</option>
+                </select>
+
+                <div id="dynamic-fields-container" style="display: flex; flex-direction: column; gap: var(--sp-3); border-top: 1px dashed var(--border-dark); padding-top: var(--sp-3); margin-top: var(--sp-2);"></div>
+
+                <footer style="display: flex; justify-content: space-between; gap: var(--sp-3); margin-top: var(--sp-4);">
+                    <button type="button" id="btn-delete-item" class="btn btn--danger" style="display: none;">Scrub</button>
+                    <div style="display: flex; gap: var(--sp-2); flex-grow: 1;">
+                        <button type="button" class="btn btn--ghost btn-close-modal" style="flex: 1;">Abort</button>
+                        <button type="submit" id="btn-save-item" class="btn btn--primary" style="flex: 1;">Commit</button>
+                    </div>
+                </footer>
+            </form>
+        </article>
+    </div>
+
+    <script src="../js/components/header.js"></script>
+    <script src="../js/pages/entertainment.js" type="module"></script>
+</body>
+</html>
