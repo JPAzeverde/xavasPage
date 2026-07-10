@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" href="css/style.css">
 
-    <script src="js/core/guard.js"></script>
+    <script src="js/core/guard.js" type="module"></script>
 </head>
 <body>
 
@@ -44,7 +44,7 @@
 
         <div class="dashboard-grid">
             
-            <section class="widget widget--span-3">
+            <section class="widget widget--span-full">
                 <header class="widget__header">
                     <h2 class="txt-micro">Protocol Directive // T-0</h2>
                 </header>
@@ -104,7 +104,7 @@
                 <header class="widget__header">
                     <h2 class="txt-micro">Global Intel Feed</h2>
                 </header>
-                <div id="news-feed-container" class="widget__body" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3);">
+                <div id="news-feed-container" class="widget__body" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--sp-3);">
                     <p class="sys-msg" style="grid-column: 1 / -1;">Intercepting signals...</p>
                 </div>
             </section>
@@ -114,7 +114,7 @@
         </div>
     </main>
 
-    <script src="js/components/header.js"></script>
-    <script src="js/pages/dashboard.js"></script> 
+    <script src="js/components/header.js" type="module"></script>
+    <script src="js/pages/dashboard.js" type="module"></script> 
     </body>
 </html>

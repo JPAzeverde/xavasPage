@@ -1,3 +1,5 @@
+import { auth, signOut } from '../core/firebase-config.js';
+
 // ============================================================
 // HUD HEADER & COMMS CONTROLLER
 // ============================================================
@@ -23,9 +25,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (btnLogout) {
-        btnLogout.addEventListener('click', () => {
-            sessionStorage.removeItem('portal_pessoal_auth');
-            window.location.replace('pages/login.html'); // Gateway termination
+        btnLogout.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                // O guard.js detectará a saída e fará o redirecionamento
+            } catch (error) {
+                console.error("Error terminating connection", error);
+            }
         });
     }
 });

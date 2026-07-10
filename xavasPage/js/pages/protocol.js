@@ -1,20 +1,18 @@
 // ============================================================
-// PROTOCOL DIRECTIVE: MATRIX LOGIC
+// PROTOCOL DIRECTIVE: FIREBASE MATRIX LOGIC
 // ============================================================
-const STORAGE_KEY = 'protocol_tasks';
+import { db, collection, addDoc, deleteDoc, doc, onSnapshot } from '../core/firebase-config.js';
+
+let protocolTasks = [];
 const DAY_MAP = { monday: 0, tuesday: 1, wednesday: 2, thursday: 3, friday: 4, saturday: 5, sunday: 6 };
 const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-const loadDirectives = () => JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-const saveDirectives = (tasks) => localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
-
-// Renderiza a base da matriz (Tabela/Calendário)
+// --- RENDERIZAÇÃO DA GRADE ---
 const renderMatrixGrid = () => {
     const grid = document.getElementById('schedule-grid');
     if (!grid) return;
     grid.innerHTML = '';
 
-    // Eixo Y (Tempo)
     const timeCol = document.createElement('div');
     timeCol.className = 'matrix-col matrix-col--time';
     timeCol.innerHTML = `<div class="matrix-header txt-micro">T-XX</div>`;
@@ -28,7 +26,6 @@ const renderMatrixGrid = () => {
     }
     grid.appendChild(timeCol);
 
-    // Eixo X (Dias)
     DAY_NAMES.forEach((dayName, index) => {
         const dayCol = document.createElement('div');
         dayCol.className = 'matrix-col';
@@ -45,19 +42,15 @@ const renderMatrixGrid = () => {
     });
 };
 
-// Injeta os dados na matriz
 const injectDirectives = () => {
-    const tasks = loadDirectives();
+    renderMatrixGrid(); // Limpa e recria a grade antes de injetar
     const taskCount = Array.from({ length: 7 }, () => Array(24).fill(0));
 
-    // Passo 1: Calcular sobreposições para ajustar a altura da célula
-    tasks.forEach(task => {
+    protocolTasks.forEach(task => {
         const dayIndex = DAY_MAP[task.day];
         if (dayIndex === undefined) return;
-
         const startHour = parseInt(task.startTime.split(':')[0], 10);
         const endHour = task.endTime ? parseInt(task.endTime.split(':')[0], 10) : startHour + 1;
-
         for (let h = startHour; h < endHour; h++) {
             if (h >= 0 && h < 24) taskCount[dayIndex][h]++;
         }
@@ -66,13 +59,10 @@ const injectDirectives = () => {
     const maxTasksPerHour = Array(24).fill(0);
     for (let h = 0; h < 24; h++) {
         for (let d = 0; d < 7; d++) {
-            if (taskCount[d][h] > maxTasksPerHour[h]) {
-                maxTasksPerHour[h] = taskCount[d][h];
-            }
+            if (taskCount[d][h] > maxTasksPerHour[h]) maxTasksPerHour[h] = taskCount[d][h];
         }
     }
 
-    // Passo 2: Ajustar Altura do Grid
     for (let h = 0; h < 24; h++) {
         const height = maxTasksPerHour[h] > 0 ? maxTasksPerHour[h] * 55 : 0;
         document.querySelectorAll(`.matrix-cell[data-hour="${h}"]`).forEach(cell => {
@@ -80,8 +70,7 @@ const injectDirectives = () => {
         });
     }
 
-    // Passo 3: Renderizar Cards
-    const sortedTasks = [...tasks].sort((a, b) => {
+    const sortedTasks = [...protocolTasks].sort((a, b) => {
         const dayA = DAY_MAP[a.day] ?? 0;
         const dayB = DAY_MAP[b.day] ?? 0;
         if (dayA !== dayB) return dayA - dayB;
@@ -115,9 +104,11 @@ const injectDirectives = () => {
                     <span class="txt-micro" style="font-size: 0.6rem;">${task.startTime} ${task.endTime ? '~ ' + task.endTime : ''}</span>
                 `;
 
-                card.querySelector('.delete-btn').addEventListener('click', (e) => {
+                card.querySelector('.delete-btn').addEventListener('click', async (e) => {
                     e.stopPropagation();
-                    executeDeletion(task.id);
+                    try {
+                        await deleteDoc(doc(db, "protocol_tasks", task.id));
+                    } catch(err) { console.error("SYS.ERR: Deletion failed.", err); }
                 });
 
                 hourDiv.appendChild(card);
@@ -126,27 +117,7 @@ const injectDirectives = () => {
     });
 };
 
-const syncMatrix = () => {
-    renderMatrixGrid();
-    injectDirectives();
-};
-
-const executeInsertion = (taskData) => {
-    const tasks = loadDirectives();
-    tasks.push({ id: Date.now().toString(), ...taskData });
-    saveDirectives(tasks);
-    syncMatrix();
-};
-
-const executeDeletion = (taskId) => {
-    const tasks = loadDirectives().filter(t => t.id !== taskId);
-    saveDirectives(tasks);
-    syncMatrix();
-};
-
-// ============================================================
-// MODAL CONTROLLER
-// ============================================================
+// --- INTERFACE DO MODAL ---
 const initInterface = () => {
     const btnToggle = document.getElementById('btn-toggle-task-form');
     const modal = document.getElementById('modal-task');
@@ -158,31 +129,37 @@ const initInterface = () => {
 
     btnToggle.addEventListener('click', openModal);
     btnClose.addEventListener('click', closeModal);
-    modal.addEventListener('mousedown', (e) => {
-        if (e.target === modal) closeModal();
-    });
+    modal.addEventListener('mousedown', (e) => { if (e.target === modal) closeModal(); });
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
-        const task = document.getElementById('task').value.trim();
-        const startTime = document.getElementById('startTime').value;
-        const endTime = document.getElementById('endTime').value;
-        const tag = document.getElementById('tag').value;
-        const day = document.getElementById('day').value;
+        const payload = {
+            task: document.getElementById('task').value.trim(),
+            startTime: document.getElementById('startTime').value,
+            endTime: document.getElementById('endTime').value,
+            tag: document.getElementById('tag').value,
+            day: document.getElementById('day').value
+        };
 
-        if (endTime && endTime <= startTime) {
+        if (payload.endTime && payload.endTime <= payload.startTime) {
             return alert('SYS.ERR: Time parameter invalid (End <= Start).');
         }
 
-        executeInsertion({ task, startTime, endTime, tag, day });
-
-        closeModal();
-        form.reset();
+        try {
+            await addDoc(collection(db, "protocol_tasks"), payload);
+            closeModal();
+            form.reset();
+        } catch (error) { console.error("SYS.ERR: Deployment failed.", error); }
     });
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    syncMatrix();
+    renderMatrixGrid();
     initInterface();
+    
+    // Conexão em tempo real
+    onSnapshot(collection(db, "protocol_tasks"), (snapshot) => {
+        protocolTasks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        injectDirectives();
+    });
 });

@@ -1,14 +1,10 @@
 // ============================================================
-// LOGISTICS & INVENTORY: CORE LOGIC
+// LOGISTICS & INVENTORY: FIREBASE CORE LOGIC
 // ============================================================
+import { db, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from '../core/firebase-config.js';
 
-let inventory = JSON.parse(localStorage.getItem('hub_inventory')) || [];
+let inventory = [];
 let currentItemContext = null; 
-
-const saveInventory = () => {
-    localStorage.setItem('hub_inventory', JSON.stringify(inventory));
-    renderInventory();
-};
 
 // --- PREDICTIVE MATRIX ---
 const calculateAverageLifespan = (itemName) => {
@@ -97,14 +93,13 @@ modalSupplyForm.addEventListener('mousedown', (e) => {
     if (e.target === modalSupplyForm) closeSupplyModal();
 });
 
-formSupply.addEventListener('submit', (e) => {
+formSupply.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const isOpenedToday = document.getElementById('input-opened').checked;
     const todayStr = new Date().toISOString().split('T')[0];
 
     const newItem = {
-        id: Date.now().toString(),
         name: document.getElementById('input-name').value.trim(),
         brand: document.getElementById('input-brand').value.trim(),
         url: document.getElementById('input-url').value.trim(),
@@ -116,11 +111,13 @@ formSupply.addEventListener('submit', (e) => {
         dateEnded: null
     };
 
-    inventory.push(newItem);
-    saveInventory();
-    
-    closeSupplyModal();
-    formSupply.reset();
+    try {
+        await addDoc(collection(db, "hub_inventory"), newItem);
+        closeSupplyModal();
+        formSupply.reset();
+    } catch (error) {
+        console.error("SYS.ERR: Supply injection failed.", error);
+    }
 });
 
 // --- STATUS UPDATE MODAL ---
@@ -173,30 +170,42 @@ modal.overlay.addEventListener('mousedown', (e) => {
     if (e.target === modal.overlay) closeModal();
 });
 
-modal.btnConfirm.addEventListener('click', () => {
+modal.btnConfirm.addEventListener('click', async () => {
     if (!currentItemContext || !modal.dateInput.value) return;
 
+    let updateData = {};
+
     if (currentItemContext.status === 'in-stock') {
-        currentItemContext.status = 'opened';
-        currentItemContext.dateOpened = modal.dateInput.value;
+        updateData = { status: 'opened', dateOpened: modal.dateInput.value };
     } else if (currentItemContext.status === 'opened') {
-        currentItemContext.status = 'ended';
-        currentItemContext.dateEnded = modal.dateInput.value;
+        updateData = { status: 'ended', dateEnded: modal.dateInput.value };
     }
 
-    saveInventory();
-    closeModal();
+    try {
+        await updateDoc(doc(db, "hub_inventory", currentItemContext.id), updateData);
+        closeModal();
+    } catch (error) {
+        console.error("SYS.ERR: Status update failed.", error);
+    }
 });
 
-modal.btnDelete.addEventListener('click', () => {
+modal.btnDelete.addEventListener('click', async () => {
     if (!currentItemContext) return;
     
     if (confirm(`SYS.WARN: Permanently scrub "${currentItemContext.name}" from database?`)) {
-        inventory = inventory.filter(i => i.id !== currentItemContext.id);
-        saveInventory();
-        closeModal();
+        try {
+            await deleteDoc(doc(db, "hub_inventory", currentItemContext.id));
+            closeModal();
+        } catch (error) {
+            console.error("SYS.ERR: Scrub failed.", error);
+        }
     }
 });
 
-// Init
-document.addEventListener('DOMContentLoaded', renderInventory);
+// --- FIREBASE INITIALIZATION ---
+document.addEventListener('DOMContentLoaded', () => {
+    onSnapshot(collection(db, "hub_inventory"), (snapshot) => {
+        inventory = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        renderInventory();
+    });
+});

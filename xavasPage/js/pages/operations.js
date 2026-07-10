@@ -1,9 +1,9 @@
 // ============================================================
-// TACTICAL OPERATIONS: KANBAN LOGIC
+// TACTICAL OPERATIONS: FIREBASE KANBAN LOGIC
 // ============================================================
+import { db, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from '../core/firebase-config.js';
 
-const STORAGE_KEY = 'operations_tasks';
-let tasks = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+let tasks = [];
 let currentEditId = null;
 
 const TAG_MAP = {
@@ -42,7 +42,7 @@ const formatDeadline = (dateString) => {
     return `T-0: ${day}/${month}/${year}`;
 };
 
-// Renderiza os Cards no Grid
+// --- RENDERIZAÇÃO ---
 const syncKanban = () => {
     Object.keys(DOM.contents).forEach(key => {
         DOM.contents[key].innerHTML = '';
@@ -63,49 +63,31 @@ const syncKanban = () => {
         card.dataset.id = task.id;
 
         const tagHtml = (task.tag && TAG_MAP[task.tag]) 
-            ? `<span class="kanban-card__tag ${TAG_MAP[task.tag].class}">${TAG_MAP[task.tag].label}</span>` 
-            : '';
-
+            ? `<span class="kanban-card__tag ${TAG_MAP[task.tag].class}">${TAG_MAP[task.tag].label}</span>` : '';
         const dateHtml = task.deadline ? `<span class="kanban-card__date">${formatDeadline(task.deadline)}</span>` : '';
 
-        card.innerHTML = `
-            ${tagHtml}
-            <h4 class="kanban-card__title">${task.title}</h4>
-            ${dateHtml}
-        `;
+        card.innerHTML = `${tagHtml}<h4 class="kanban-card__title">${task.title}</h4>${dateHtml}`;
 
-        // D&D Events
         card.addEventListener('dragstart', (e) => {
             card.classList.add('is-dragging');
             e.dataTransfer.setData('text/plain', task.id);
         });
         card.addEventListener('dragend', () => card.classList.remove('is-dragging'));
-        
-        // Editor Event
         card.addEventListener('click', () => openEditor(task.id));
 
-        if (DOM.contents[task.status]) {
-            DOM.contents[task.status].appendChild(card);
-        }
+        if (DOM.contents[task.status]) DOM.contents[task.status].appendChild(card);
     });
 
-    // Update Counters
     Object.keys(DOM.contents).forEach(key => {
-        const count = tasks.filter(t => t.status === key).length;
-        document.getElementById(`count-${key}`).textContent = count;
+        document.getElementById(`count-${key}`).textContent = tasks.filter(t => t.status === key).length;
     });
 };
 
-// Pipeline D&D para Colunas
+// --- DRAG AND DROP (FIREBASE) ---
 DOM.columns.forEach(col => {
-    col.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        col.classList.add('is-dragover');
-    });
-
+    col.addEventListener('dragover', (e) => { e.preventDefault(); col.classList.add('is-dragover'); });
     col.addEventListener('dragleave', () => col.classList.remove('is-dragover'));
-
-    col.addEventListener('drop', (e) => {
+    col.addEventListener('drop', async (e) => {
         e.preventDefault();
         col.classList.remove('is-dragover');
         
@@ -113,23 +95,17 @@ DOM.columns.forEach(col => {
         const newStatus = col.dataset.status;
         
         if (taskId && newStatus) {
-            const taskIndex = tasks.findIndex(t => t.id.toString() === taskId);
-            if (taskIndex > -1 && tasks[taskIndex].status !== newStatus) {
-                tasks[taskIndex].status = newStatus;
-                saveAndSync();
+            const task = tasks.find(t => t.id === taskId);
+            if (task && task.status !== newStatus) {
+                try {
+                    await updateDoc(doc(db, "operations_tasks", taskId), { status: newStatus });
+                } catch (error) { console.error("SYS.ERR: Drag sync failed.", error); }
             }
         }
     });
 });
 
-const saveAndSync = () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
-    syncKanban();
-};
-
-// ============================================================
-// EDITOR MODAL
-// ============================================================
+// --- EDITOR DE DADOS ---
 const openEditor = (id = null) => {
     currentEditId = id;
     if (id) {
@@ -156,41 +132,42 @@ const closeEditor = () => {
     currentEditId = null;
 };
 
-// Listeners
 DOM.buttons.add.addEventListener('click', () => openEditor());
 DOM.buttons.close.addEventListener('click', closeEditor);
-DOM.modal.addEventListener('mousedown', (e) => {
-    if (e.target === DOM.modal) closeEditor();
-});
+DOM.modal.addEventListener('mousedown', (e) => { if (e.target === DOM.modal) closeEditor(); });
 
-DOM.buttons.save.addEventListener('click', () => {
-    const title = DOM.inputs.title.value.trim() || 'UNNAMED_OBJECTIVE';
+DOM.buttons.save.addEventListener('click', async () => {
     const payload = {
-        title,
+        title: DOM.inputs.title.value.trim() || 'UNNAMED_OBJECTIVE',
         status: DOM.inputs.status.value,
         tag: DOM.inputs.tag.value,
         deadline: DOM.inputs.deadline.value,
         details: DOM.inputs.details.value
     };
 
-    if (currentEditId) {
-        const idx = tasks.findIndex(t => t.id === currentEditId);
-        tasks[idx] = { ...tasks[idx], ...payload };
-    } else {
-        tasks.push({ id: Date.now(), ...payload });
-    }
-    
-    saveAndSync();
-    closeEditor();
-});
-
-DOM.buttons.del.addEventListener('click', () => {
-    if (confirm("SYS.WARN: Permanently scrub this objective from the database?")) {
-        tasks = tasks.filter(t => t.id !== currentEditId);
-        saveAndSync();
+    try {
+        if (currentEditId) {
+            await updateDoc(doc(db, "operations_tasks", currentEditId), payload);
+        } else {
+            await addDoc(collection(db, "operations_tasks"), payload);
+        }
         closeEditor();
+    } catch (error) { console.error("SYS.ERR: Commit failed.", error); }
+});
+
+DOM.buttons.del.addEventListener('click', async () => {
+    if (confirm("SYS.WARN: Permanently scrub this objective from the database?")) {
+        try {
+            await deleteDoc(doc(db, "operations_tasks", currentEditId));
+            closeEditor();
+        } catch (error) { console.error("SYS.ERR: Scrub failed.", error); }
     }
 });
 
-// Initialization
-document.addEventListener('DOMContentLoaded', syncKanban);
+// --- LISTENER EM TEMPO REAL ---
+document.addEventListener('DOMContentLoaded', () => {
+    onSnapshot(collection(db, "operations_tasks"), (snapshot) => {
+        tasks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        syncKanban();
+    });
+});
