@@ -30,9 +30,14 @@ const setTerminalError = (active) => {
 const processUplink = async (event) => {
     event.preventDefault();
     
-    // O Firebase exige um formato de email. Ex: admin@sys.hud
-    const operativeEmail = DOM.inputUser.value.trim(); 
+    // Pega apenas o que foi digitado
+    let operativeEmail = DOM.inputUser.value.trim(); 
     const accessCode = DOM.inputPass.value.trim();
+    
+    // Adiciona o @gmail.com automaticamente se não houver um @ no texto
+    if (!operativeEmail.includes('@')) {
+        operativeEmail += '@gmail.com';
+    }
     
     try {
         await signInWithEmailAndPassword(auth, operativeEmail, accessCode);
