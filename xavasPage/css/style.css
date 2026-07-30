@@ -96,8 +96,8 @@ button{
     transition: all var(--tr-fast);
     border: 1px solid transparent; background: transparent;
 }
-.btn--primary { background-color: var(--text-primary); color: var(--bg-base); }
-.btn--primary:hover { background-color: var(--text-secondary); }
+.btn--primary { background-color: var(--bg-highlight); color: var(--text-primary); }
+.btn--primary:hover { background-color: var(--bg-base); }
 .btn--ghost { border-color: var(--border-base); color: var(--text-secondary); }
 .btn--ghost:hover { border-color: var(--text-primary); color: var(--text-primary); background: var(--bg-highlight); }
 .btn--danger { border-color: var(--border-base); color: var(--accent-alert);background-color: var(--bg-base);transition: all var(--tr-fast);  }
