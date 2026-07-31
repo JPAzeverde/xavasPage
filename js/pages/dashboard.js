@@ -45,7 +45,8 @@ const initProtocol = () => {
             node.innerHTML = `
                 <span class="txt-micro" style="color: var(--text-muted)">[${task.tag}]</span>
                 <h4 class="txt-heading-md">${task.task}</h4>
-                <span class="txt-micro">${task.startTime}${task.endTime ? ' ~ ' + task.endTime : ''}</span>
+                <span class="txt-micro">${task.startTime}</span>
+                <span class="txt-micro" style="margin-top:-8px">${task.endTime ? '' + task.endTime : ' --:-- ' }</span>
             `;
 
             // Quando clicar, atualiza o status DIRETAMENTE NO FIREBASE

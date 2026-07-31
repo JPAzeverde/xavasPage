@@ -7,12 +7,12 @@ import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, o
 
 // COLE SUAS CHAVES AQUI (geradas no Passo 5 da Fase 1)
 const firebaseConfig = {
-    apiKey: "AIzaSyA0yg7FTOKKsWUbpuGCspTp3h6ntOSbEf0",
-    authDomain: "xvs-hub-db.firebaseapp.com",
-    projectId: "xvs-hub-db",
-    storageBucket: "xvs-hub-db.firebasestorage.app",
-    messagingSenderId: "204350459999",
-    appId: "1:204350459999:web:aea07419d830560e588bea"
+    apiKey: "",
+    authDomain: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: ":"
 };
 
 // Inicializa o Firebase

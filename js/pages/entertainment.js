@@ -304,10 +304,19 @@ document.querySelectorAll('.btn-close-modal').forEach(btn => {
 document.addEventListener('DOMContentLoaded', () => {
     onSnapshot(collection(db, "entertainment_categories"), (snapshot) => {
         categories = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        
+        // NOVO: Ordena as categorias em ordem alfabética pela propriedade 'name'
+        categories.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+        
         renderCategories();
     });
+
     onSnapshot(collection(db, "entertainment_items"), (snapshot) => {
         items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        
+        // NOVO: Ordena os itens de mídia em ordem alfabética pela propriedade 'title'
+        items.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+        
         renderCategories(); 
     });
 });

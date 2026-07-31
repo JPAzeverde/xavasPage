@@ -476,7 +476,7 @@ select.input-field {
 
 /* Adaptação do Kanban Card para Mídia */
 .kanban-card--media {
-    flex-direction: column; align-items: center; text-align: center;
+    flex-direction: row; align-items: start; text-align: start; gap: var(--sp-4);
 }
 .kanban-card__cover {
     width: 80px; height: 110px; object-fit: cover;
