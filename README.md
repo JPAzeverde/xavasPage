@@ -47,3 +47,36 @@ The main dashboard centralizes the system's vital information:
 1. **Clone the repository:**
    ```bash
    git clone [https://github.com/your-username/xavas-hud.git](https://github.com/your-username/xavas-hud.git)
+
+
+
+Database Configuration (Firebase):
+
+Create a project in the Firebase Console.
+
+Enable the Authentication (Email/Password) and Firestore Database modules.
+
+Register a web app to get your configuration keys.
+
+Navigate to the js/core/firebase-config.js file and insert your credentials into the firebaseConfig object[cite: 3]:
+
+JavaScript
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+Running the Application:
+
+Due to the use of ES6 Modules (type="module"), the project cannot be opened using the file:// protocol[cite: 1].
+
+Use an extension like Live Server (in VS Code) or run a local server (e.g., python -m http.server) in the root directory.
+
+Access:
+
+Create a test user directly in Firebase Authentication.
+
+Access through the login portal (login.html) by entering your email and password (note: the system automatically appends @gmail.com if no domain is provided in the username)[cite: 3].
