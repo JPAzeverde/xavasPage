@@ -42,15 +42,7 @@ The main dashboard centralizes the system's vital information:
 *   Inventory control divided into three operational states: *Stock*, *Active*, and *Depleted*.
 *   **Predictive System:** The system calculates the average lifespan of an item based on usage history and projects the estimated depletion date.
 
-##  Installation and Setup
 
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/your-username/xavas-hud.git](https://github.com/your-username/xavas-hud.git)
-
-
-
-OBS:
 
 ## Running the Application:
 
